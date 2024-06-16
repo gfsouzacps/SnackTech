@@ -1,12 +1,16 @@
 #Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
+##instalando icu-libs (InvariantGlobalization)
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+##Configurando usuario e porta
 USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
 #Construção com SDK do .NET
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
