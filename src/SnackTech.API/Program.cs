@@ -1,17 +1,20 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using SnackTech.API.Configuration.HealthChecks;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHealthChecks()
+                .ConfigureSQLHealthCheck(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-app.MapHealthChecks("/api/health");
-
+app.UseCustomHealthChecks();
 app.UseSwagger();
 app.UseSwaggerUI();
 
