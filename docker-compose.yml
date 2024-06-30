@@ -22,7 +22,7 @@ services:
   web-api:
     container_name: snack-tech-web-api
     build:
-      context: ./src/SnackTech.API
+      context: ./src/driving/SnackTech.API
       dockerfile: Dockerfile
     image: snack-tech-api:alpha
     environment:
