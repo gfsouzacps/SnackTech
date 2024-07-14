@@ -19,5 +19,11 @@ namespace SnackTech.Domain.Guards
                 throw new ArgumentException($"{parameterName} precisa ser maior do que zero.", parameterName);
             }
         }
+
+        public static void AgainstObjectNull(object value, string paramName){
+            if(value == null){
+                throw new ArgumentException($"{paramName} não pode ser nulo.", paramName);
+            }
+        }
     }
 }

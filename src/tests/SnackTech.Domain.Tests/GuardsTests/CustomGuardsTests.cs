@@ -130,5 +130,31 @@ namespace SnackTech.Domain.Tests.GuardsTests
                 Assert.Fail("Guarda lançou exception com um valor decimal maior que zero");
             }
         }
+
+        [Fact]
+        public void AgainstObjectNullWithNullObject(){
+            try{
+                string objeto = null;
+                CustomGuards.AgainstObjectNull(objeto, nameof(objeto));
+                Assert.Fail("Guarda deveria lançar exception em caso de objeto nulo");
+            }
+            catch(ArgumentException ex){
+                Assert.Equal("objeto não pode ser nulo. (Parameter 'objeto')",ex.Message);
+            }
+            catch(Exception){
+                Assert.Fail("Guarda deveria lançar exception do tipo ArgumentException");
+            }
+        }
+
+        [Fact]
+        public void AgainstObjectWithValue(){
+            try{
+                string objeto = "MeuObjetoRepresentadoPorString";
+                CustomGuards.AgainstObjectNull(objeto, nameof(objeto));
+            }
+            catch(Exception){
+                Assert.Fail("Guarda lançou exception com objeto que existe.");
+            }
+        }
     }
 }
