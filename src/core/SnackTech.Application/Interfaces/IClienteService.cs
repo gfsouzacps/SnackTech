@@ -1,3 +1,5 @@
+using SnackTech.Application.Common;
+using SnackTech.Application.DTOs.Cliente;
 
 namespace SnackTech.Application.Interfaces
 {
@@ -15,5 +17,8 @@ namespace SnackTech.Application.Interfaces
             BuscarClienteAnonimo
                 Retornar Identificação padrão que será usado em casos onde a pessoa não quer se identificar
         */
+        Task<Result<RetornoCliente>> Cadastrar(CadastroCliente cadastroCliente);
+        Task<Result<RetornoCliente>> IdentificarPorCpf(string cpf);
+        Task<Result<Guid>> SelecionarClientePadrao();
     }
 }

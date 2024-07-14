@@ -1,9 +1,14 @@
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using SnackTech.API.Configuration.HealthChecks;
+using SnackTech.Application;
+using SnackTech.Adapter.DataBase;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddAdapterDatabaseRepositories();
+builder.Services.AddApplicationServices();
+
 builder.Services.AddHealthChecks()
                 .ConfigureSQLHealthCheck(builder.Configuration);
 
