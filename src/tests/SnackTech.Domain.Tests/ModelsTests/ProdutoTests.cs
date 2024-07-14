@@ -9,7 +9,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void CreateProductWithTituloNull()
         {
             try{
-                CriarProduto(CategoriaProduto.Acompanhamento,null,"descricao",10);
+                CriarProduto(CategoriaProduto.Acompanhamento,null!,"descricao",10);
                 Assert.Fail("Produto não pode ter o nome nulo");
             }
             catch(ArgumentException ex){
@@ -54,7 +54,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void CreateProductWithDescriptionNull()
         {
             try{
-                CriarProduto(CategoriaProduto.Acompanhamento,"nome",null,10);
+                CriarProduto(CategoriaProduto.Acompanhamento,"nome",null!,10);
                 Assert.Fail("Produto não pode ter a descrição nula");
             }
             catch(ArgumentException ex){
@@ -125,7 +125,25 @@ namespace SnackTech.Domain.Tests.ModelsTests
             }
         }
 
-        private Produto CriarProduto(CategoriaProduto categoria, string nome, string descricao, decimal valor){
+        [Fact]
+        public void UpdateProductWithSuccess(){
+            try{
+                var produto = CriarProduto(CategoriaProduto.Lanche,"X-Salada","Lanche com tomate",20);
+
+                produto.AtualizarDadosProduto(CategoriaProduto.Acompanhamento,"Nuggets","Frango empanado",8);
+
+                Assert.NotNull(produto);
+                Assert.Equal(CategoriaProduto.Acompanhamento,produto.Categoria);
+                Assert.Equal("Nuggets",produto.Nome);
+                Assert.Equal("Frango empanado",produto.Descricao);
+                Assert.Equal(8,produto.Valor);
+            }
+            catch(Exception ex){
+                Assert.Fail($"Ocorreu erro inesperado. {ex.Message}");
+            }
+        }
+
+        private static Produto CriarProduto(CategoriaProduto categoria, string nome, string descricao, decimal valor){
             var newProduto = new Produto(categoria,nome,descricao,valor);
             return newProduto;
         }
