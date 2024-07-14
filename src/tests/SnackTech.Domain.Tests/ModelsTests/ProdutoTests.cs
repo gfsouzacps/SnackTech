@@ -28,7 +28,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
                 Assert.Fail("Produto não pode ter o nome vazio");
             }
             catch(ArgumentException ex){
-                Assert.Equal("nome não pode ser nulo ou texto em branco. (Parameter 'nome')",ex.Message);
+                Assert.Equal("nome não pode ser nulo, vazio ou texto em branco. (Parameter 'nome')",ex.Message);
             }
             catch(Exception ex){
                 Assert.Fail($"Ocorreu erro inesperado ao instanciar Produto. {ex.Message}");

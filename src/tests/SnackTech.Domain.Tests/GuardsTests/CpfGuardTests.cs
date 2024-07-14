@@ -148,5 +148,20 @@ namespace SnackTech.Domain.Tests.GuardsTests
                 Assert.Fail($"Guarda lançou uma exception com um valor de CPF válido. {ex.Message}");
             }
         }
+
+        [Fact]
+        public void AgainstInvalidCpfLengthLessThan11(){
+            try{
+                string cpf = "1234567890";
+                CpfGuard.AgainstInvalidCpf(cpf,nameof(cpf));
+                Assert.Fail("Guarda precisa lançar exception caso cpf tenha números repetidos formatados");
+            }
+            catch(ArgumentException ex){
+                Assert.Equal("cpf com valor 1234567890 não é um CPF válido. (Parameter 'cpf')",ex.Message);
+            }
+            catch(Exception){
+                Assert.Fail("Guarda precisa lançar uma exception do tipo ArgumentException");
+            }
+        }
     }
 }
