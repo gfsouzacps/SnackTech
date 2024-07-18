@@ -11,21 +11,26 @@ namespace SnackTech.Domain.Models
         public int Quantidade {get; private set;}
         public string Observacao {get; private set;}
         public decimal Valor => Quantidade * Produto.Valor;
+        public Guid IdPedido { get; private set; }
+        public Pedido? Pedido { get; private set; }
 
-        public PedidoItem(Guid id,int sequencial, Produto produto, int quantidade, string observacao){
+        public PedidoItem(Guid id, Guid idPedido, int sequencial, Produto produto, int quantidade, string observacao)
+        {
+            CustomGuards.AgainstObjectNull(idPedido, nameof(idPedido));
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
             CustomGuards.AgainstNegativeOrZeroValue(sequencial, nameof(sequencial));
-            
+
             Id = id;
             Produto = produto;
             Quantidade = quantidade;
             Sequencial = sequencial;
             Observacao = PreencherObservacao(observacao);
+            IdPedido = idPedido;
         }
 
-        public PedidoItem(int sequencial, Produto produto, int quantidade, string observacao)
-            :this(Guid.NewGuid(),sequencial,produto,quantidade,observacao)
+        public PedidoItem(Guid idPedido, int sequencial, Produto produto, int quantidade, string observacao)
+            :this(Guid.NewGuid(), idPedido, sequencial, produto, quantidade, observacao)
         {}
 
         public void AtualizarDadosItem(Produto produto, int quantidade, string observacao){

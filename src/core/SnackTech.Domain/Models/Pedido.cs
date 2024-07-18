@@ -11,6 +11,7 @@ namespace SnackTech.Domain.Models
         public IList<PedidoItem> Itens {get; private set;}
         public StatusPedido Status {get; private set;}
         public decimal Valor => CalcularValorTotal();
+
         public Pedido(Guid id, DateTime dataCriacao,StatusPedido statusPedido, Cliente cliente, IList<PedidoItem> itens){
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 
@@ -25,15 +26,15 @@ namespace SnackTech.Domain.Models
             :this(Guid.NewGuid(),DateTime.Now,StatusPedido.Iniciado,cliente,new List<PedidoItem>())
         {}
 
-        public Pedido(Cliente cliente, IList<PedidoItem> itens)
-            :this(Guid.NewGuid(),DateTime.Now,StatusPedido.Iniciado,cliente,itens)
-        {}
+        //public Pedido(Cliente cliente, IList<PedidoItem> itens)
+        //    :this(Guid.NewGuid(),DateTime.Now,StatusPedido.Iniciado,cliente,itens)
+        //{}
 
         public void AdicionarItem(Produto produto, int quantidade, string observacao){
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade,nameof(quantidade));
             var novoSequencial = Itens.Count + 1;
-            var pedidoItem = new PedidoItem(novoSequencial,produto,quantidade,observacao);
+            var pedidoItem = new PedidoItem(Id, novoSequencial,produto,quantidade,observacao);
             Itens.Add(pedidoItem);
         }
 

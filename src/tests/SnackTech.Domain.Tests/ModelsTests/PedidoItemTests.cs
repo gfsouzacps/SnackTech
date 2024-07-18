@@ -83,7 +83,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         }
 
         private PedidoItem CriarPedidoItem(Produto produto, int quantidade, string observacao)
-            => new PedidoItem(1,produto,quantidade,observacao);
+            => new PedidoItem(Guid.NewGuid(), 1, produto, quantidade, observacao);
 
         private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
             => new Produto(categoria,nome,nome,valor);

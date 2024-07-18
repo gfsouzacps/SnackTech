@@ -10,6 +10,7 @@ namespace SnackTech.Domain.Models
         public string Nome {get; private set;}
         public string Descricao {get; private set;}
         public decimal Valor {get; private set;}
+        public PedidoItem? PedidoItem { get; private set; }
 
         public Produto(CategoriaProduto categoriaProduto, string nome, string descricao, decimal valor)
             :this(Guid.NewGuid(),categoriaProduto,nome,descricao,valor)

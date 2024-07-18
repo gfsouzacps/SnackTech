@@ -176,21 +176,19 @@ namespace SnackTech.Domain.Tests.ModelsTests
         }
 
         private Pedido CriarPedidoComItens()
-            => new Pedido(CriarCliente(),CriarListaPedidoItem());
+        {
+            var produto = new Produto(CategoriaProduto.Lanche, "Lanche", "descrição", 30.0M);
+            var pedido = new Pedido(CriarCliente());
+            pedido.AdicionarItem(produto, 2, "");
+
+            return pedido;
+        }
 
         private Pedido CriarPedidoSoComCliente() 
             => new Pedido(CriarCliente());
 
         private Cliente CriarCliente()
             => new Cliente("Nome Cliente","email@gmail.com","89934782014");
-
-        private IList<PedidoItem> CriarListaPedidoItem(){
-            var lista = new List<PedidoItem>(){
-                new PedidoItem(1, new Produto(CategoriaProduto.Lanche,"Lanche","descrição",30.0M),2,"")
-            };
-
-            return lista;
-        }
 
         private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
             => new Produto(categoria,nome,nome,valor);
