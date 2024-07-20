@@ -5,7 +5,7 @@ namespace SnackTech.Domain.Contracts
     public interface IClienteRepository
     {
         Task InserirCliente(Cliente novoCliente);
-        Task PesquisarPorCpf(string cpf);
-        Task PesquisarClientePadrao();        
+        Task<Cliente?> PesquisarPorCpf(string cpf);
+        Task<Cliente> PesquisarClientePadrao();        
     }
 }

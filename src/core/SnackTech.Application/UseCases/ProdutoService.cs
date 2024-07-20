@@ -6,6 +6,11 @@ namespace SnackTech.Application.UseCases
 {
     public class ProdutoService : IProdutoService
     {
+        public ProdutoService()
+        {
+
+        }
+
         public Task<Result<IEnumerable<RetornoProduto>>> BuscarPorCategoria(int categoriaId)
         {
             throw new NotImplementedException();

@@ -10,12 +10,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
             throw new NotImplementedException();
         }
 
-        public Task PesquisarClientePadrao()
+        public Task<Cliente> PesquisarClientePadrao()
         {
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorCpf(string cpf)
+        public Task<Cliente?> PesquisarPorCpf(string cpf)
         {
             throw new NotImplementedException();
         }

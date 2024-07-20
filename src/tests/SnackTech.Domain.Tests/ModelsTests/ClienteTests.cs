@@ -174,15 +174,16 @@ namespace SnackTech.Domain.Tests.ModelsTests
         {
             try{
                 var cliente = CriarCliente("nome","email@outlook.com","62332646000");
-                Assert.Equal("nome",cliente.Pessoa.Nome);
+                Assert.Equal("nome",cliente.RecuperarNome());
                 Assert.Equal("email@outlook.com",cliente.Email);
                 Assert.Equal("62332646000",cliente.CPF);
+                var uid = cliente.RecuperarUid();
+                Assert.NotNull(uid.ToString());
             }
             catch(Exception ex){
                 Assert.Fail($"Ocorreu erro inesperado ao instanciar Cliente. {ex.Message}");
             }
         }
-
 
         private static Cliente CriarCliente(string nome, string email, string cpf)
             => new(nome,email,cpf);
