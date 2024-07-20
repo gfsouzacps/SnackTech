@@ -70,5 +70,21 @@ namespace SnackTech.Application.Tests.CommonTests
             Assert.Equal("Erro inesperado", resultado.Exception.Message);
             Assert.Equal("Erro inesperado", resultado.Message);
         }
+
+        [Fact]
+        public void CreateResultOfTWithBooleanFalse(){
+            try{
+                Result<int> resultado = new("Mensagem do resultado",false);
+                resultado.IsSuccess();
+                Assert.Fail("Deveria ter lançado Exception");
+            }
+            catch(ArgumentException ex){
+                Assert.Equal("Use Result<string>(string) como construtor para resultados de sucesso. (Parameter 'isError')",ex.Message);
+            }
+            catch(Exception){
+                Assert.Fail("Deveria ter lançado ArgumentException");
+            }
+
+        }
     }
 }

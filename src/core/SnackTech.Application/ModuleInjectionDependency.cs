@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using SnackTech.Application.Interfaces;
 using SnackTech.Application.UseCases;
 
 namespace SnackTech.Application
 {
+    [ExcludeFromCodeCoverage]
     public static class ModuleInjectionDependency
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services){

@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using SnackTech.Adapter.DataBase.Repositories;
 using SnackTech.Domain.Contracts;
 
 namespace SnackTech.Adapter.DataBase
 {
+    [ExcludeFromCodeCoverage]
     public static class ModuleInjectionDependency
     {
         public static IServiceCollection AddAdapterDatabaseRepositories(this IServiceCollection services){
