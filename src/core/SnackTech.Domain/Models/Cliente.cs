@@ -4,7 +4,7 @@ namespace SnackTech.Domain.Models
 {
     public class Cliente
     {
-        public Pessoa Pessoa {get; private set;}  
+        private readonly Pessoa Pessoa;  
         public string Email {get; private set;}
         public string CPF {get; private set;}
 
@@ -20,5 +20,11 @@ namespace SnackTech.Domain.Models
         public Cliente(string nome, string email, string cpf)
             :this(Guid.NewGuid(),nome,email,cpf)
         {}
+
+        public Guid RecuperarUid()
+            => Pessoa.Id;
+
+        public string RecuperarNome()
+            => Pessoa.Nome;
     }
 }

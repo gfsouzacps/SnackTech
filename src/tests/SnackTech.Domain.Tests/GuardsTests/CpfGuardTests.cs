@@ -8,8 +8,8 @@ namespace SnackTech.Domain.Tests.GuardsTests
         public void AgainstInvalidCpfCaseNull()
         {
             try{
-                string cpf = null;
-                CpfGuard.AgainstInvalidCpf(cpf, nameof(cpf));
+                string? cpf = null;
+                CpfGuard.AgainstInvalidCpf(cpf!, nameof(cpf));
                 Assert.Fail("Guarda precisa lançar exception caso cpf seja nulo");
             }
             catch(ArgumentException ex){

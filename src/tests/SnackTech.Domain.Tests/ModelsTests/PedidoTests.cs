@@ -8,7 +8,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         [Fact]
         public void CreatePedidoWithClientNull(){
             try{
-                Cliente clienteDoPedido = null;
+                Cliente clienteDoPedido = null!;
                 var pedido = new Pedido(clienteDoPedido);
                 Assert.Fail($"O pedido {pedido.Id} foi criado com cliente nulo.");
             }
@@ -56,7 +56,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void AdicionarItemProductNull(){
             try{
                 var pedido = CriarPedidoSoComCliente();
-                Produto novoProduto = null;
+                Produto novoProduto = null!;
                 pedido.AdicionarItem(novoProduto,1,"");
                 Assert.Fail("Foi possível adicionar um produto nulo a um pedido");
             }
@@ -88,7 +88,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             try{
                 var pedido = CriarPedidoSoComCliente();
                 pedido.AdicionarItem(CriarProduto(CategoriaProduto.Lanche,"lanche", 20),2,"");
-                Assert.Equal(1,pedido.Itens.Count());
+                Assert.Equal(1,pedido.Itens.Count);
 
                 var pedidoItem = pedido.Itens[0];
                 Assert.NotNull(pedidoItem);
@@ -175,24 +175,24 @@ namespace SnackTech.Domain.Tests.ModelsTests
             Assert.Equal(StatusPedido.AguardandoPagamento,pedido.Status);
         }
 
-        private Pedido CriarPedidoComItens()
-            => new Pedido(CriarCliente(),CriarListaPedidoItem());
+        private static Pedido CriarPedidoComItens()
+            => new(CriarCliente(),CriarListaPedidoItem());
 
-        private Pedido CriarPedidoSoComCliente() 
-            => new Pedido(CriarCliente());
+        private static Pedido CriarPedidoSoComCliente() 
+            => new(CriarCliente());
 
-        private Cliente CriarCliente()
-            => new Cliente("Nome Cliente","email@gmail.com","89934782014");
+        private static Cliente CriarCliente()
+            => new("Nome Cliente","email@gmail.com","89934782014");
 
-        private IList<PedidoItem> CriarListaPedidoItem(){
+        private static List<PedidoItem> CriarListaPedidoItem(){
             var lista = new List<PedidoItem>(){
-                new PedidoItem(1, new Produto(CategoriaProduto.Lanche,"Lanche","descrição",30.0M),2,"")
+                new(1, new Produto(CategoriaProduto.Lanche,"Lanche","descrição",30.0M),2,"")
             };
 
             return lista;
         }
 
-        private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
-            => new Produto(categoria,nome,nome,valor);
+        private static Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
+            => new(categoria,nome,nome,valor);
     }
 }

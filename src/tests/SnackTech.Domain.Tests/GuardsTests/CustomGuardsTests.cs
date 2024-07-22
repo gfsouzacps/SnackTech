@@ -8,8 +8,8 @@ namespace SnackTech.Domain.Tests.GuardsTests
         public void AgainstStringNullOrEmptyCaseStringNull()
         {
             try{
-                string newText = null;
-                CustomGuards.AgainstStringNullOrEmpty(newText, nameof(newText));
+                string? newText = null;
+                CustomGuards.AgainstStringNullOrEmpty(newText!, nameof(newText));
                 Assert.Fail("Guarda precisa lançar exception caso string esteja nula");
             }   
             catch(ArgumentException ex){
@@ -51,8 +51,8 @@ namespace SnackTech.Domain.Tests.GuardsTests
         [Fact]
         public void AgainstStringNullOrWhiteSpaceCaseNull(){
             try{
-                string newText = null;
-                CustomGuards.AgainstStringNullOrWhiteSpace(newText, nameof(newText));
+                string? newText = null;
+                CustomGuards.AgainstStringNullOrWhiteSpace(newText!, nameof(newText));
                 Assert.Fail("Guarda precisa lançar exception caso string esteja nula");
             }
             catch(ArgumentException ex){
@@ -134,8 +134,8 @@ namespace SnackTech.Domain.Tests.GuardsTests
         [Fact]
         public void AgainstObjectNullWithNullObject(){
             try{
-                string objeto = null;
-                CustomGuards.AgainstObjectNull(objeto, nameof(objeto));
+                string? objeto = null;
+                CustomGuards.AgainstObjectNull(objeto!, nameof(objeto));
                 Assert.Fail("Guarda deveria lançar exception em caso de objeto nulo");
             }
             catch(ArgumentException ex){

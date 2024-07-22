@@ -16,7 +16,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         [Fact]
         public void CreatePedidoItemWithNullObservation(){
             var produto = CriarProduto(CategoriaProduto.Bebida, "Refrigerante", 5);
-            var pedidoItem = CriarPedidoItem(produto,1,null);
+            var pedidoItem = CriarPedidoItem(produto,1,null!);
             Assert.Equal(string.Empty,pedidoItem.Observacao);
         }
 
@@ -26,7 +26,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
                 var produto = CriarProduto(CategoriaProduto.Bebida, "Refrigerante", 5);
                 var pedidoItem = CriarPedidoItem(produto,1,"observação");
 
-                pedidoItem.AtualizarDadosItem(null,1,"sabor morango");
+                pedidoItem.AtualizarDadosItem(null!,1,"sabor morango");
 
                 Assert.Fail("Permitiu atualizar dados do pedido item com produto nulo");
             }
@@ -82,13 +82,10 @@ namespace SnackTech.Domain.Tests.ModelsTests
             }
         }
 
-        private PedidoItem CriarPedidoItem(Produto produto, int quantidade, string observacao)
-            => new PedidoItem(1,produto,quantidade,observacao);
+        private static PedidoItem CriarPedidoItem(Produto produto, int quantidade, string observacao)
+            => new(1,produto,quantidade,observacao);
 
-        private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
-            => new Produto(categoria,nome,nome,valor);
-
-        private Cliente CriarCliente()
-            => new Cliente("Nome Cliente","email@gmail.com","89934782014");
+        private static Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
+            => new(categoria,nome,nome,valor);
     }
 }
