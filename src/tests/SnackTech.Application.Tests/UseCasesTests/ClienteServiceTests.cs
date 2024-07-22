@@ -141,16 +141,11 @@ namespace SnackTech.Application.Tests.UseCasesTests
             logger.Verify(l => l.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state,type) => (state.ToString() ?? "").Contains("ClienteService.IdentificartPorCpf - Exception")),
+                It.Is<It.IsAnyType>((state,type) => (state.ToString() ?? "").Contains("ClienteService.IdentificarPorCpf")),
                 It.IsAny<Exception>(),
                 (Func<object, Exception?, string>)It.IsAny<object>()
             ), Times.Once);
         }
-
-        /*
-            ClientePadrao - OK
-            ClientePadrao - Falha
-        */
 
         [Fact]
         public async Task SelecionarClientePadraoWithSuccess(){

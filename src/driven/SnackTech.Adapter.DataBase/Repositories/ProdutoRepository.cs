@@ -16,12 +16,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorCategoria(CategoriaProduto categoria)
+        public Task<IEnumerable<Produto>> PesquisarPorCategoria(CategoriaProduto categoria)
         {
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorId(Guid identificacao)
+        public Task<Produto> PesquisarPorId(Guid identificacao)
         {
             throw new NotImplementedException();
         }

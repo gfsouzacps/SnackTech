@@ -4,12 +4,9 @@ using SnackTech.Application.Common;
 
 namespace SnackTech.API.Controllers
 {
-    public class CustomBaseController : ControllerBase
+    public class CustomBaseController(ILogger logger) : ControllerBase
     {
-        private readonly ILogger logger;
-        public CustomBaseController(ILogger logger){
-            this.logger = logger;
-        }
+        private readonly ILogger logger = logger;
 
         public async Task<IActionResult> CommonExecution<T>(string nomeMetodo, Task<Result<T>> processo){
             try{

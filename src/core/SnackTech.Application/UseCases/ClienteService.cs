@@ -8,32 +8,24 @@ using SnackTech.Domain.Models;
 
 namespace SnackTech.Application.UseCases
 {
-    public class ClienteService(ILogger<ClienteService> logger, IClienteRepository clienteRepository) : IClienteService
+    public class ClienteService(ILogger<ClienteService> logger, IClienteRepository clienteRepository) : BaseService(logger),IClienteService
     {
-        private readonly ILogger<ClienteService> logger = logger;
         private readonly IClienteRepository clienteRepository = clienteRepository;
 
         public async Task<Result<RetornoCliente>> Cadastrar(CadastroCliente cadastroCliente)
         {
-            try{
+            async Task<Result<RetornoCliente>> processo(){
                 var novoCliente = new Cliente(cadastroCliente.Nome,cadastroCliente.Email,cadastroCliente.CPF);
                 await clienteRepository.InserirCliente(novoCliente);
                 var retorno = RetornoCliente.APartirDeCliente(novoCliente);
                 return new Result<RetornoCliente>(retorno);
             }
-            catch(ArgumentException aex){
-                logger.LogWarning("ClienteService.Cadastrar - ArgumentException - {Message}",aex.Message);
-                return new Result<RetornoCliente>(aex.Message,true); 
-            }
-            catch(Exception ex){
-                logger.LogError(ex,"ClienteService.Cadastrar - Exception - {Message}",ex.Message);
-                return new Result<RetornoCliente>(ex);
-            }
+            return await CommonExecution("ClienteService.Cadastrar",processo);
         }
 
         public async Task<Result<RetornoCliente>> IdentificarPorCpf(string cpf)
         {
-            try{
+            async Task<Result<RetornoCliente>> processo(){
                 CpfGuard.AgainstInvalidCpf(cpf, nameof(cpf));
                 var cliente = await clienteRepository.PesquisarPorCpf(cpf);
 
@@ -44,23 +36,17 @@ namespace SnackTech.Application.UseCases
                 var retorno = RetornoCliente.APartirDeCliente(cliente);
                 return new Result<RetornoCliente>(retorno);
             }
-            catch(Exception ex){
-                logger.LogError(ex,"ClienteService.IdentificartPorCpf - Exception - {Message}",ex.Message);
-                return new Result<RetornoCliente>(ex); 
-            }
+            return await CommonExecution($"ClienteService.IdentificarPorCpf - {cpf}",processo);
         }
 
         public async Task<Result<Guid>> SelecionarClientePadrao()
         {
-            try{
+            async Task<Result<Guid>> processo(){
                 var clientePadrao = await clienteRepository.PesquisarClientePadrao();
                 var retorno = clientePadrao.RecuperarUid();
                 return new Result<Guid>(retorno);
             }
-            catch(Exception ex){
-                logger.LogError(ex,"ClienteService.SelecionarClientePadrao - Exception - {Message}",ex.Message);
-                return new Result<Guid>(ex);
-            }
+            return await CommonExecution("ClienteService.SelecionarClientePadrao",processo);
         }
     }
 }
