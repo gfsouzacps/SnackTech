@@ -8,8 +8,8 @@ namespace SnackTech.Domain.Tests.GuardsTests
         public void AgainstInvalidEmailCaseNull()
         {
             try{
-                string email = null;
-                EmailGuard.AgainstInvalidEmail(email, nameof(email));
+                string? email = null;
+                EmailGuard.AgainstInvalidEmail(email!, nameof(email));
                 Assert.Fail("Guarda precisa lançar exception caso email seja nulo");
             }
             catch(ArgumentException ex){

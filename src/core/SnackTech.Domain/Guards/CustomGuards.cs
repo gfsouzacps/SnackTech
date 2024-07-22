@@ -1,3 +1,5 @@
+using SnackTech.Domain.Enums;
+
 namespace SnackTech.Domain.Guards
 {
     public static class CustomGuards
@@ -23,6 +25,24 @@ namespace SnackTech.Domain.Guards
         public static void AgainstObjectNull(object value, string paramName){
             if(value == null){
                 throw new ArgumentException($"{paramName} não pode ser nulo.", paramName);
+            }
+        }
+
+        public static CategoriaProduto AgainstInvalidCategoriaProduto(int value, string paramName){
+            if(!Enum.IsDefined(typeof(CategoriaProduto),value)){
+                throw new ArgumentException($"{paramName} não é um CategoriaProduto válido.",paramName);
+            }
+            else{
+                return (CategoriaProduto)value;
+            }
+        }
+
+        public static Guid AgainstInvalidGuid(string value, string paramName){
+            if(Guid.TryParse(value,out Guid guid)){
+                return guid;
+            }
+            else{
+                throw new ArgumentException($"{paramName} não é um Guid válido.",paramName);
             }
         }
     }
