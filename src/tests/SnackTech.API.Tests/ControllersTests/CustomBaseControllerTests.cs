@@ -10,20 +10,26 @@ namespace SnackTech.API.Tests.ControllersTests
     public class CustomBaseControllerTests
     {
         private readonly Mock<ILogger> logger;
+        private readonly Mock<CustomBaseController> mockBaseController;
         private readonly CustomBaseController baseController;
 
         public CustomBaseControllerTests(){
             logger = new Mock<ILogger>();
-            baseController = new CustomBaseController(logger.Object);
+            mockBaseController = new Mock<CustomBaseController>(logger.Object)
+            {
+                CallBase = true
+            };
+            baseController = mockBaseController.Object;
         }
 
         [Fact]
         public async Task CommonExecutionWithSuccess(){
             var nomeMetodo = "Controller.Nome";
-            var taskFunc = async () => {
+            static async Task<Result<int>> taskFunc()
+            {
                 await Task.FromResult(0);
                 return new Result<int>(10);
-            };
+            }
 
             var task = taskFunc();
 
@@ -37,10 +43,11 @@ namespace SnackTech.API.Tests.ControllersTests
         public async Task CommonExecutionReturningBadRequest(){
             var nomeMetodo = "Controller.Nome";
 
-            var taskFunc = async () => {
+            static async Task<Result<int>> taskFunc()
+            {
                 await Task.FromResult(0);
-                return new Result<int>("Erro de lógica",true);
-            };
+                return new Result<int>("Erro de lógica", true);
+            }
 
             var task = taskFunc();
 
@@ -55,10 +62,11 @@ namespace SnackTech.API.Tests.ControllersTests
         public async Task CommonExecutionReturningInternalServerErroFromTask(){
             var nomeMetodo = "Controller.Nome";
 
-            var taskFunc = async () => {
+            static async Task<Result<int>> taskFunc()
+            {
                 await Task.FromResult(0);
                 return new Result<int>(new Exception("Erro inesperado"));
-            };
+            }
 
             var task = taskFunc();
 
@@ -66,17 +74,18 @@ namespace SnackTech.API.Tests.ControllersTests
             var requestResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(requestResult.Value);
             Assert.NotNull(payload);
-            Assert.Equal("Erro inesperado",payload?.Message);
+            Assert.Equal("Erro inesperado",payload.Message);
         }
 
         [Fact]
         public async Task CommonExecutionReturningInternalServerErrorFromProcessing(){
             var nomeMetodo = "Controller.Nome";
 
-            Func<Task<Result<int>>> taskFunc = async () => {
+            static async Task<Result<int>> taskFunc()
+            {
                 await Task.FromResult(0);
                 throw new Exception("Erro inesperado");
-            };
+            }
 
             var task = taskFunc();
 
@@ -84,7 +93,7 @@ namespace SnackTech.API.Tests.ControllersTests
             var requestResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(requestResult.Value);
             Assert.NotNull(payload);
-            Assert.Equal("Erro inesperado",payload?.Message);
+            Assert.Equal("Erro inesperado",payload.Message);
         }
     }
 }

@@ -24,10 +24,10 @@ namespace SnackTech.Application.Tests.UseCasesTests
         public async Task BuscarPorCategoriaWithSuccessAndObjects(){
             produtoRepository.Setup(p => p.PesquisarPorCategoria(It.IsAny<CategoriaProduto>()))
                                 .ReturnsAsync(new List<Produto>{
-                                    new Produto(CategoriaProduto.Lanche,"Lanche A","descricao",10),
-                                    new Produto(CategoriaProduto.Lanche,"Lanche B","descricao",25),
-                                    new Produto(CategoriaProduto.Lanche,"Lanche C","descricao",30),
-                                    new Produto(CategoriaProduto.Lanche,"Lanche D","descricao",20)
+                                    new(CategoriaProduto.Lanche,"Lanche A","descricao",10),
+                                    new(CategoriaProduto.Lanche,"Lanche B","descricao",25),
+                                    new(CategoriaProduto.Lanche,"Lanche C","descricao",30),
+                                    new(CategoriaProduto.Lanche,"Lanche D","descricao",20)
                                 });
 
             var resultado = await produtoService.BuscarPorCategoria(1);
@@ -46,7 +46,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
             Assert.True(resultado.IsSuccess());
             Assert.True(!resultado.Data.Any());
-            Assert.Equal(0,resultado.Data.Count());
+            Assert.Empty(resultado.Data);
         }
 
         [Fact]
@@ -182,7 +182,6 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var produtoEditado = new EdicaoProduto{
                 Categoria = 2,
                 Descricao = "descricao a",
-                Identificacao = identificacao.ToString(),
                 Nome = "Nome",
                 Valor = 10
             };
@@ -192,7 +191,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.AlterarProduto(It.IsAny<Produto>()))
                             .Returns(Task.FromResult(0));
 
-            var resultado = await produtoService.EditarProduto(produtoEditado);
+            var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
 
             Assert.True(resultado.IsSuccess());
         }
@@ -203,7 +202,6 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var produtoEditado = new EdicaoProduto{
                 Categoria = 2,
                 Descricao = "descricao a",
-                Identificacao = identificacao.ToString(),
                 Nome = "Nome",
                 Valor = 10
             };
@@ -211,7 +209,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(default(Produto));
 
-            var resultado = await produtoService.EditarProduto(produtoEditado);
+            var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
 
              Assert.False(resultado.IsSuccess());
              Assert.Null(resultado.Exception);
@@ -224,7 +222,6 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var produtoEditado = new EdicaoProduto{
                 Categoria = 2,
                 Descricao = "descricao a",
-                Identificacao = identificacao.ToString(),
                 Nome = "Nome",
                 Valor = 10
             };
@@ -234,7 +231,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.AlterarProduto(It.IsAny<Produto>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
-            var resultado = await produtoService.EditarProduto(produtoEditado);
+            var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
 
              Assert.False(resultado.IsSuccess());
              Assert.NotNull(resultado.Exception);
