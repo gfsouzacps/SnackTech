@@ -19,9 +19,6 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasColumnType("varchar")
                 .IsRequired()
                 .HasMaxLength(15);
-
-            builder.HasOne(c => c.Pessoa)
-                .WithOne(p => p.Cliente);
         }
     }
 }

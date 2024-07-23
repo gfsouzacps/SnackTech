@@ -25,11 +25,14 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasMaxLength(500);
 
             builder.Property(p => p.Valor)
+                .HasField("_valor")
+                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
                 .IsRequired()
                 .HasColumnType("smallmoney");
 
             builder.HasOne(item => item.Produto)
-                .WithOne(produto => produto.PedidoItem);
+                .WithMany(produto => produto.PedidoItens)
+                .HasForeignKey(y => y.IdProduto);
         }
     }
 }

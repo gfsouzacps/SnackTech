@@ -8,6 +8,9 @@ namespace SnackTech.Adapter.DataBase.Configurations
     {
         public void Configure(EntityTypeBuilder<Pessoa> builder)
         {
+            //Configura tabela por tipo de Pessoa
+            builder.UseTptMappingStrategy();
+
             builder.ToTable(nameof(Pessoa));
 
             builder.HasKey(p => p.Id);

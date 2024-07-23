@@ -24,6 +24,10 @@ namespace SnackTech.Adapter.DataBase.Configurations
             builder.Property(p => p.Valor)
                 .IsRequired()
                 .HasColumnType("smallmoney");
+
+            builder.Navigation(nameof(Produto.PedidoItens))
+                .HasField("_pedidoItens")
+                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty);
         }
     }
 }
