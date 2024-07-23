@@ -6,7 +6,6 @@ namespace SnackTech.Domain.Models
     {
         public Guid Id {get; private set;}
         public string Nome {get; private set;}
-        public Cliente? Cliente { get; private set; }
 
         public Pessoa(Guid id, string nome){
             CustomGuards.AgainstStringNullOrWhiteSpace(nome, nameof(nome));
