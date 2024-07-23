@@ -89,6 +89,6 @@ namespace SnackTech.Domain.Tests.ModelsTests
             => new Produto(categoria,nome,nome,valor);
 
         private Cliente CriarCliente()
-            => new Cliente("Nome Cliente","email@gmail.com","89934782014");
+            => new( "Nome Cliente", "email@gmail.com", "89934782014");
     }
 }

@@ -174,7 +174,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         {
             try{
                 var cliente = CriarCliente("nome","email@outlook.com","62332646000");
-                Assert.Equal("nome",cliente.Pessoa.Nome);
+                Assert.Equal("nome",cliente.Nome);
                 Assert.Equal("email@outlook.com",cliente.Email);
                 Assert.Equal("62332646000",cliente.Cpf);
             }
@@ -183,8 +183,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             }
         }
 
-
-        private Cliente CriarCliente(string email, string nome, string cpf)
-            => new Cliente(email,nome,cpf);
+        private Cliente CriarCliente(string nome, string email, string cpf)
+            => new(nome, email, cpf);
     }
 }

@@ -88,7 +88,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             try{
                 var pedido = CriarPedidoSoComCliente();
                 pedido.AdicionarItem(CriarProduto(CategoriaProduto.Lanche,"lanche", 20),2,"");
-                Assert.Equal(1,pedido.Itens.Count());
+                Assert.Single(pedido.Itens);
 
                 var pedidoItem = pedido.Itens[0];
                 Assert.NotNull(pedidoItem);
@@ -188,7 +188,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             => new Pedido(CriarCliente());
 
         private Cliente CriarCliente()
-            => new Cliente("Nome Cliente","email@gmail.com","89934782014");
+            => new("Nome Cliente", "email@gmail.com", "89934782014");
 
         private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
             => new Produto(categoria,nome,nome,valor);
