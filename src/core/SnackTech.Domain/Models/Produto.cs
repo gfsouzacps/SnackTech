@@ -22,12 +22,22 @@ namespace SnackTech.Domain.Models
 
         public Produto(Guid id, CategoriaProduto categoriaProduto, string nome, string descricao, decimal valor)
         {
+            Nome = string.Empty;
+            Descricao = string.Empty;
+            PreencherDados(categoriaProduto,nome,descricao,valor);
+            Id = id;
+        }
+
+        public void AtualizarDadosProduto(CategoriaProduto categoria, string nome, string descricao, decimal valor){
+            PreencherDados(categoria,nome,descricao,valor);
+        }
+
+        private void PreencherDados(CategoriaProduto categoria, string nome, string descricao, decimal valor){
             CustomGuards.AgainstStringNullOrWhiteSpace(nome, nameof(nome));
             CustomGuards.AgainstStringNullOrEmpty(descricao, nameof(descricao));
             CustomGuards.AgainstNegativeOrZeroValue(valor, nameof(valor));
 
-            Id = id;
-            Categoria = categoriaProduto;
+            Categoria = categoria;
             Nome = nome;
             Descricao = descricao;
             Valor = valor;

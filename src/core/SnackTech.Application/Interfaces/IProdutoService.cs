@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SnackTech.Application.Common;
+using SnackTech.Application.DTOs.Produto;
 
 namespace SnackTech.Application.Interfaces
 {
     public interface IProdutoService
     {
-        /*
-            Criar produto novo
-            Editar produto
-            Remover produto
-            Buscar produtos por categoria
-        */
+        Task<Result<IEnumerable<RetornoProduto>>> BuscarPorCategoria(int categoriaId);
+        Task<Result<RetornoProduto>> BuscarProdutoPorIdentificacao(string identificacao);
+        Task<Result<Guid>> CriarNovoProduto(NovoProduto novoProduto);
+        Task<Result> EditarProduto(Guid identificacao, EdicaoProduto edicaoProduto);
+        Task<Result> RemoverProduto(string identificacao);
     }
 }

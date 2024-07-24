@@ -8,7 +8,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void CreateClienteWithNomeNull()
         {
             try{
-                CriarCliente(null,"email","12345678901");
+                CriarCliente(null!,"email","12345678901");
                 Assert.Fail("Cliente não pode ter o nome nulo");
             }
             catch(ArgumentException ex){
@@ -53,7 +53,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void CreateClienteWithEmailNull()
         {
             try{
-                CriarCliente("nome",null,"12345678901");
+                CriarCliente("nome",null!,"12345678901");
                 Assert.Fail("Cliente não pode ter o email nulo");
             }
             catch(ArgumentException ex){
@@ -113,7 +113,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void CreateClienteWithCpfNull()
         {
             try{
-                CriarCliente("nome","email@gmail.com",null);
+                CriarCliente("nome","email@gmail.com",null!);
                 Assert.Fail("Cliente não pode ter o CPF nulo");
             }
             catch(ArgumentException ex){
@@ -177,13 +177,15 @@ namespace SnackTech.Domain.Tests.ModelsTests
                 Assert.Equal("nome",cliente.Nome);
                 Assert.Equal("email@outlook.com",cliente.Email);
                 Assert.Equal("62332646000",cliente.Cpf);
+                var uid = cliente.Id;
+                Assert.NotNull(uid.ToString());
             }
             catch(Exception ex){
                 Assert.Fail($"Ocorreu erro inesperado ao instanciar Cliente. {ex.Message}");
             }
         }
 
-        private Cliente CriarCliente(string nome, string email, string cpf)
-            => new(nome, email, cpf);
+        private static Cliente CriarCliente(string nome, string email, string cpf)
+            => new(nome,email,cpf);
     }
 }

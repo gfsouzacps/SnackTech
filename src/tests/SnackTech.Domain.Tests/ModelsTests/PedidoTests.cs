@@ -8,7 +8,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         [Fact]
         public void CreatePedidoWithClientNull(){
             try{
-                Cliente clienteDoPedido = null;
+                Cliente clienteDoPedido = null!;
                 var pedido = new Pedido(clienteDoPedido);
                 Assert.Fail($"O pedido {pedido.Id} foi criado com cliente nulo.");
             }
@@ -56,7 +56,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         public void AdicionarItemProductNull(){
             try{
                 var pedido = CriarPedidoSoComCliente();
-                Produto novoProduto = null;
+                Produto novoProduto = null!;
                 pedido.AdicionarItem(novoProduto,1,"");
                 Assert.Fail("Foi possível adicionar um produto nulo a um pedido");
             }
@@ -175,7 +175,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             Assert.Equal(StatusPedido.AguardandoPagamento,pedido.Status);
         }
 
-        private Pedido CriarPedidoComItens()
+        private static Pedido CriarPedidoComItens()
         {
             var produto = new Produto(CategoriaProduto.Lanche, "Lanche", "descrição", 30.0M);
             var pedido = new Pedido(CriarCliente());
@@ -184,13 +184,14 @@ namespace SnackTech.Domain.Tests.ModelsTests
             return pedido;
         }
 
-        private Pedido CriarPedidoSoComCliente() 
-            => new Pedido(CriarCliente());
+        private static Pedido CriarPedidoSoComCliente() 
+            => new(CriarCliente());
 
-        private Cliente CriarCliente()
-            => new("Nome Cliente", "email@gmail.com", "89934782014");
+        private static Cliente CriarCliente()
+            => new ("Nome Cliente","email@gmail.com","89934782014");
 
-        private Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
-            => new Produto(categoria,nome,nome,valor);
+
+        private static Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
+            => new(categoria,nome,nome,valor);
     }
 }

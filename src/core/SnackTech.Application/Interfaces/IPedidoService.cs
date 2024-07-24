@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SnackTech.Application.Common;
+using SnackTech.Application.DTOs.Pedido;
 
 namespace SnackTech.Application.Interfaces
 {
@@ -21,5 +19,11 @@ namespace SnackTech.Application.Interfaces
             Procurar pedido por Cliente
                 Não permitir procurar pelo cliente anonimo
         */
+        Task<Result<Guid>> IniciarPedido(string identificacaoCliente);
+        Task<Result> FinalizarPedidoParaPagamento(string identificacao);
+        Task<Result> AtualizarPedido(AtualizacaoPedido pedidoAtualizado);
+        Task<Result<IEnumerable<RetornoPedido>>> ListarPedidosParaPagamento();
+        Task<Result<RetornoPedido>> BuscarPorIdenticacao(string identificacao);
+        Task<Result<RetornoPedido>> BuscarUltimoPedidoCliente(string identificacaoCliente);        
     }
 }
