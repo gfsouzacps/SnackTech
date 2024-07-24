@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Moq;
+using SnackTech.Application.Interfaces;
 using SnackTech.Application.UseCases;
 using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Enums;
@@ -74,6 +75,66 @@ namespace SnackTech.Application.Tests.UseCasesTests
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await pedidoService.BuscarPorIdenticacao(identificacao);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.NotNull(resultado.Exception);
+            Assert.Contains($"Erro inesperado", resultado.Message);
+        }
+
+        [Fact]
+        public async Task BuscarUltimoPedidoClienteWithSuccessAndObjects()
+        {
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedidoAtual = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>());
+            pedidoRepository.Setup(p => p.PesquisarPorCliente(It.IsAny<String>()))
+                                .ReturnsAsync(new List<Pedido>{
+                                    pedidoAtual,
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddDays(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>())
+                                });
+
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente(cliente.CPF);
+
+            Assert.True(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.NotNull(resultado.GetValue());
+            Assert.Equal(pedidoAtual.Id.ToString(), resultado.GetValue().Identificacao);
+        }
+
+        [Fact]
+        public async Task BuscarUltimoPedidoClienteWithSuccessButNoObjects()
+        {
+            var cpfCliente = "582.202.320-72";
+            pedidoRepository.Setup(p => p.PesquisarPorCliente(It.IsAny<String>()))
+                                .ReturnsAsync(Array.Empty<Pedido>());
+
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente(cpfCliente);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.NotNull(resultado.Message);
+            Assert.Contains($"Último Pedido do cliente com cpf {cpfCliente} não encontrado.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task BuscarUltimoPedidoClienteWithInvalidCpf()
+        {
+            var cpfCliente = "12312jjkj";
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente(cpfCliente);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.Contains($"cpfCliente com valor {cpfCliente} não é um CPF válido.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task BuscarUltimoPedidoClienteWithException()
+        {
+            pedidoRepository.Setup(p => p.PesquisarPorCliente(It.IsAny<String>()))
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente("582.202.320-72");
 
             Assert.False(resultado.IsSuccess());
             Assert.NotNull(resultado.Exception);
