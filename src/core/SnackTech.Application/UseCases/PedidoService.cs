@@ -1,19 +1,35 @@
+using Microsoft.Extensions.Logging;
 using SnackTech.Application.Common;
 using SnackTech.Application.DTOs.Pedido;
 using SnackTech.Application.Interfaces;
+using SnackTech.Domain.Contracts;
+using SnackTech.Domain.Guards;
 
 namespace SnackTech.Application.UseCases
 {
-    public class PedidoService : IPedidoService
+    public class PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository) : BaseService(logger), IPedidoService
     {
+        private readonly IPedidoRepository pedidoRepository = pedidoRepository;
+
         public Task<Result> AtualizarPedido(AtualizacaoPedido pedidoAtualizado)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<RetornoPedido>> BuscarPorIdenticacao(string identificacao)
+        public async Task<Result<RetornoPedido>> BuscarPorIdenticacao(string identificacao)
         {
-            throw new NotImplementedException();
+            async Task<Result<RetornoPedido>> processo()
+            {
+                var guid = CustomGuards.AgainstInvalidGuid(identificacao, nameof(identificacao));
+                var pedido = await pedidoRepository.PesquisarPorId(guid);
+
+                if (pedido is null)
+                    return new Result<RetornoPedido>($"Pedido com identifica��o {identificacao} n�o encontrado.", true);
+
+                var retorno = RetornoPedido.APartirDePedido(pedido);
+                return new Result<RetornoPedido>(retorno);
+            }
+            return await CommonExecution($"PedidoService.BuscarPorIdenticacao {identificacao}", processo);
         }
 
         public Task<Result<RetornoPedido>> BuscarUltimoPedidoCliente(string identificacaoCliente)

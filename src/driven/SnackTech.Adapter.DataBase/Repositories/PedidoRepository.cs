@@ -25,7 +25,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorId(Guid identificacao)
+        Task<Pedido?> IPedidoRepository.PesquisarPorId(Guid identificacao)
         {
             throw new NotImplementedException();
         }
