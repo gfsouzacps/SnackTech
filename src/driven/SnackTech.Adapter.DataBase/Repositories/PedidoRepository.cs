@@ -20,12 +20,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorCliente(string CPF)
+        public Task<IEnumerable<Pedido>> PesquisarPorCliente(string CPF)
         {
             throw new NotImplementedException();
         }
 
-        Task<Pedido?> IPedidoRepository.PesquisarPorId(Guid identificacao)
+        public Task<Pedido?> PesquisarPorId(Guid identificacao)
         {
             throw new NotImplementedException();
         }

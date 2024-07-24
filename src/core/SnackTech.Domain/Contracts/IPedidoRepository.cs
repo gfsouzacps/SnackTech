@@ -8,6 +8,6 @@ namespace SnackTech.Domain.Contracts
         Task AtualizarPedido(Pedido pedidoAtualizado);
         Task PesquisarPedidosParaPagamento();
         Task<Pedido?> PesquisarPorId(Guid identificacao);
-        Task PesquisarPorCliente(string CPF);
+        Task<IEnumerable<Pedido>> PesquisarPorCliente(string CPF);
     }
 }
