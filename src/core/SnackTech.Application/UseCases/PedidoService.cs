@@ -60,9 +60,15 @@ namespace SnackTech.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public Task<Result<IEnumerable<RetornoPedido>>> ListarPedidosParaPagamento()
+        public async Task<Result<IEnumerable<RetornoPedido>>> ListarPedidosParaPagamento()
         {
-            throw new NotImplementedException();
+            async Task<Result<IEnumerable<RetornoPedido>>> processo()
+            {
+                var pedidos = await pedidoRepository.PesquisarPedidosParaPagamento();
+                var retorno = pedidos.Select(RetornoPedido.APartirDePedido);
+                return new Result<IEnumerable<RetornoPedido>>(retorno);
+            }
+            return await CommonExecution($"PedidoService.ListarPedidosParaPagamento", processo);
         }
     }
 }

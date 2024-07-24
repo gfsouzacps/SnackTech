@@ -1,4 +1,3 @@
-using SnackTech.Application.DTOs.Produto;
 using DomainModels = SnackTech.Domain.Models;
 
 namespace SnackTech.Application.DTOs.Pedido
