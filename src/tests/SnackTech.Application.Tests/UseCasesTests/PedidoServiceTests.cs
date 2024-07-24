@@ -140,5 +140,50 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.NotNull(resultado.Exception);
             Assert.Contains($"Erro inesperado", resultado.Message);
         }
+
+        [Fact]
+        public async Task ListarPedidosParaPagamentoWithSuccessAndObjects()
+        {
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            pedidoRepository.Setup(p => p.PesquisarPedidosParaPagamento())
+                                .ReturnsAsync(new List<Pedido>{
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddDays(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>())
+                                });
+
+            var resultado = await pedidoService.ListarPedidosParaPagamento();
+
+            Assert.True(resultado.IsSuccess());
+            Assert.True(resultado.Data.Any());
+            Assert.Equal(3, resultado.Data.Count());
+        }
+
+        [Fact]
+        public async Task ListarPedidosParaPagamentoWithSuccessButNoObjects()
+        {
+            pedidoRepository.Setup(p => p.PesquisarPedidosParaPagamento())
+                                .ReturnsAsync(Array.Empty<Pedido>());
+
+            var resultado = await pedidoService.ListarPedidosParaPagamento();
+
+            Assert.True(resultado.IsSuccess());
+            Assert.True(!resultado.Data.Any());
+            Assert.Empty(resultado.Data);
+        }
+
+        [Fact]
+        public async Task ListarPedidosParaPagamentoException()
+        {
+            var identificacao = Guid.NewGuid().ToString();
+            pedidoRepository.Setup(p => p.PesquisarPedidosParaPagamento())
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await pedidoService.ListarPedidosParaPagamento();
+
+            Assert.False(resultado.IsSuccess());
+            Assert.NotNull(resultado.Exception);
+            Assert.Contains($"Erro inesperado", resultado.Message);
+        }
     }
 }
