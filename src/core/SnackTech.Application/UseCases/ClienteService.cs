@@ -43,7 +43,7 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<Guid>> processo(){
                 var clientePadrao = await clienteRepository.PesquisarClientePadrao();
-                var retorno = clientePadrao.RecuperarUid();
+                var retorno = clientePadrao.Id;
                 return new Result<Guid>(retorno);
             }
             return await CommonExecution("ClienteService.SelecionarClientePadrao",processo);
