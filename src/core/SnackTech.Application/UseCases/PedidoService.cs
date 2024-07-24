@@ -24,7 +24,7 @@ namespace SnackTech.Application.UseCases
                 var pedido = await pedidoRepository.PesquisarPorId(guid);
 
                 if (pedido is null)
-                    return new Result<RetornoPedido>($"Pedido com identifica��o {identificacao} n�o encontrado.", true);
+                    return new Result<RetornoPedido>($"Pedido com identificação {identificacao} não encontrado.", true);
 
                 var retorno = RetornoPedido.APartirDePedido(pedido);
                 return new Result<RetornoPedido>(retorno);
