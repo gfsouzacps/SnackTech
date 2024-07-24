@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Moq;
+using SnackTech.Application.DTOs.Produto;
 using SnackTech.Application.Interfaces;
 using SnackTech.Application.UseCases;
 using SnackTech.Domain.Contracts;
@@ -12,13 +13,15 @@ namespace SnackTech.Application.Tests.UseCasesTests
     {
         private readonly Mock<ILogger<PedidoService>> logger;
         private readonly Mock<IPedidoRepository> pedidoRepository;
+        private readonly Mock<IClienteRepository> clienteRepository;
         private readonly PedidoService pedidoService;
 
         public PedidoServiceTests()
         {
             logger = new Mock<ILogger<PedidoService>>();
             pedidoRepository = new Mock<IPedidoRepository>();
-            pedidoService = new PedidoService(logger.Object, pedidoRepository.Object);
+            clienteRepository = new Mock<IClienteRepository>();
+            pedidoService = new PedidoService(logger.Object, pedidoRepository.Object, clienteRepository.Object);
         }
 
         [Fact]
@@ -184,6 +187,66 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.False(resultado.IsSuccess());
             Assert.NotNull(resultado.Exception);
             Assert.Contains($"Erro inesperado", resultado.Message);
+        }
+
+        [Fact]
+        public async Task IniciarPedidoWithSuccess()
+        {
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.CPF))
+                            .ReturnsAsync(cliente);
+
+            pedidoRepository.Setup(p => p.InserirPedido(It.IsAny<Pedido>()))
+                                .Returns(Task.FromResult(0));
+
+            var resultado = await pedidoService.IniciarPedido(cliente.CPF);
+
+            Assert.True(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+        }
+
+        [Fact]
+        public async Task IniciarPedidoComClientePadraoWithSuccess()
+        {
+            var cliente = new Cliente(Guid.NewGuid(), "Padrao", "email@gmail.com", "123.456.789-09");
+            clienteRepository.Setup(c => c.PesquisarClientePadrao())
+                            .ReturnsAsync(cliente);
+
+            pedidoRepository.Setup(p => p.InserirPedido(It.IsAny<Pedido>()))
+                                .Returns(Task.FromResult(0));
+
+            var resultado = await pedidoService.IniciarPedido(null);
+
+            Assert.True(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+        }
+
+        [Fact]
+        public async Task IniciarPedidoWithArgumentException()
+        {
+            var cpfInvalido = "123451aaa";
+            var resultado = await pedidoService.IniciarPedido(cpfInvalido);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.Contains($"cpfCliente com valor {cpfInvalido} não é um CPF válido.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task IniciarPedidoWithException()
+        {
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.CPF))
+                            .ReturnsAsync(cliente);
+
+            pedidoRepository.Setup(p => p.InserirPedido(It.IsAny<Pedido>()))
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await pedidoService.IniciarPedido(cliente.CPF);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.NotNull(resultado.Exception);
+            Assert.Contains("Erro inesperado", resultado.Message);
         }
     }
 }
