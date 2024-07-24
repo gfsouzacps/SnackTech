@@ -8,9 +8,10 @@ using SnackTech.Domain.Models;
 
 namespace SnackTech.Application.UseCases
 {
-    public class PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository) : BaseService(logger), IPedidoService
+    public class PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository, IClienteRepository clienteRepository) : BaseService(logger), IPedidoService
     {
         private readonly IPedidoRepository pedidoRepository = pedidoRepository;
+        private readonly IClienteRepository clienteRepository = clienteRepository;
 
         public Task<Result> AtualizarPedido(AtualizacaoPedido pedidoAtualizado)
         {
@@ -55,9 +56,27 @@ namespace SnackTech.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public Task<Result<Guid>> IniciarPedido(string identificacaoCliente)
+        public async Task<Result<Guid>> IniciarPedido(string? cpfCliente)
         {
-            throw new NotImplementedException();
+            async Task<Result<Guid>> processo()
+            {
+                Cliente? cliente;
+                if(cpfCliente == null)
+                {
+                    cliente = await clienteRepository.PesquisarClientePadrao();
+                }
+                else
+                {
+                    CpfGuard.AgainstInvalidCpf(cpfCliente, nameof(cpfCliente));
+                    cliente = await clienteRepository.PesquisarPorCpf(cpfCliente);
+                }
+                
+                var novoPedido = new Pedido(cliente);
+                await pedidoRepository.InserirPedido(novoPedido);
+
+                return new Result<Guid>(novoPedido.Id);
+            }
+            return await CommonExecution($"PedidoService.IniciarPedido {cpfCliente}", processo);
         }
 
         public async Task<Result<IEnumerable<RetornoPedido>>> ListarPedidosParaPagamento()
