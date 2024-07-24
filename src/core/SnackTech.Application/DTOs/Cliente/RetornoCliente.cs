@@ -10,8 +10,8 @@ namespace SnackTech.Application.DTOs.Cliente
         public static RetornoCliente APartirDeCliente(DomainModels.Cliente cliente)
             => new()
             {
-                Id = cliente.RecuperarUid(),
-                Nome = cliente.RecuperarNome()
+                Id = cliente.Id,
+                Nome = cliente.Nome
             };
     }
 }

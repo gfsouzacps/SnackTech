@@ -94,8 +94,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task IdentificarPorCpfWithSuccess(){
             var cpf = "582.202.320-72";
-            var novoUid = Guid.NewGuid();
-            var retorno = new Cliente(novoUid,"Nome","email@gmail.com",cpf);
+            var retorno = new Cliente("Nome","email@gmail.com",cpf);
 
             clienteRepository.Setup(c => c.PesquisarPorCpf(It.IsAny<string>()))
                             .ReturnsAsync(retorno);
@@ -104,7 +103,6 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
             Assert.True(resultado.IsSuccess());
             Assert.NotNull(resultado.Data);
-            Assert.Equal(novoUid,resultado.Data.Id);
             Assert.Equal("Nome",resultado.Data.Nome);
         }
 
@@ -149,9 +147,8 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
         [Fact]
         public async Task SelecionarClientePadraoWithSuccess(){
-            var uidPadrao = Guid.NewGuid();
             var cpf = "582.202.320-72";
-            var retorno = new Cliente(uidPadrao,"Usuario padrao","email@gmail.com",cpf);
+            var retorno = new Cliente("Usuario padrao","email@gmail.com",cpf);
 
             clienteRepository.Setup(c => c.PesquisarClientePadrao())
                             .ReturnsAsync(retorno);
@@ -159,7 +156,6 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var resultado = await clienteService.SelecionarClientePadrao();
 
             Assert.True(resultado.IsSuccess());
-            Assert.Equal(uidPadrao,resultado.Data);
         }
 
         [Fact]

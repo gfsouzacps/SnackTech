@@ -2,11 +2,11 @@ namespace SnackTech.Domain.Enums
 {
     public enum StatusPedido
     {
-        Iniciado,
-        AguardandoPagamento,
-        Recebido,
-        EmPreparacao,
-        Pronto,
-        Finalizado
+        Iniciado = 1,
+        AguardandoPagamento = 2,
+        Recebido = 3,
+        EmPreparacao = 4,
+        Pronto = 5,
+        Finalizado = 6
     }
 }
