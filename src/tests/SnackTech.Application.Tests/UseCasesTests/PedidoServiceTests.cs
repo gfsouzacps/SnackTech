@@ -88,13 +88,13 @@ namespace SnackTech.Application.Tests.UseCasesTests
         public async Task BuscarUltimoPedidoClienteWithSuccessAndObjects()
         {
             var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            var pedidoAtual = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>());
+            var pedidoAtual = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente, Array.Empty<PedidoItem>());
             pedidoRepository.Setup(p => p.PesquisarPorCliente(It.IsAny<String>()))
                                 .ReturnsAsync(new List<Pedido>{
                                     pedidoAtual,
                                     new Pedido(Guid.NewGuid(), DateTime.Now.AddDays(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>())
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.Finalizado, cliente, Array.Empty<PedidoItem>()),
+                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.EmPreparacao, cliente, Array.Empty<PedidoItem>())
                                 });
 
             var resultado = await pedidoService.BuscarUltimoPedidoCliente(cliente.CPF);
@@ -247,6 +247,90 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.False(resultado.IsSuccess());
             Assert.NotNull(resultado.Exception);
             Assert.Contains("Erro inesperado", resultado.Message);
+        }
+
+        [Fact]
+        public async Task FinalizarPedidoParaPagamentoWithSuccess()
+        {
+            var identificacao = Guid.NewGuid();
+            var identificacaoString = identificacao.ToString();
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+
+            Produto produto = new Produto(CategoriaProduto.Lanche,"descricao","Produto",20);
+            var pedidoItem = new PedidoItem(1, produto, 2, "");
+            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.Iniciado, cliente, new List<PedidoItem>() { pedidoItem });
+            
+            pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+                            .ReturnsAsync(pedido);
+
+            pedidoRepository.Setup(p => p.AtualizarPedido(pedido))
+                            .Callback<Pedido>((obj) => Assert.Equal(StatusPedido.AguardandoPagamento, obj.Status))
+                            .Returns(Task.CompletedTask);
+
+            var resultado = await pedidoService.FinalizarPedidoParaPagamento(identificacao.ToString());
+
+            Assert.True(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+
+            pedidoRepository.Verify(mock => mock.AtualizarPedido(pedido), Times.Once());
+        }
+
+        [Fact]
+        public async Task FinalizarPedidoParaPagamentoSemItensReturnError()
+        {
+            var identificacao = Guid.NewGuid();
+            var identificacaoString = identificacao.ToString();
+            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.Iniciado, cliente, new List<PedidoItem>());
+
+            pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+                            .ReturnsAsync(pedido);
+
+            var resultado = await pedidoService.FinalizarPedidoParaPagamento(identificacao.ToString());
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Contains($"Pedido com identificação {identificacao.ToString()} não possui itens e não pode ser finalizado.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task FinalizarPedidoParaPagamentoSemItensNotFounded()
+        {
+            var identificacao = Guid.NewGuid();
+            
+            pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+                            .ReturnsAsync(default(Pedido));
+
+            var resultado = await pedidoService.FinalizarPedidoParaPagamento(identificacao.ToString());
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Contains($"Pedido com identificação {identificacao.ToString()} não encontrado.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task FinalizarPedidoParaPagamentoInvalidGuid()
+        {
+            var identificacao = "";
+
+            var resultado = await pedidoService.FinalizarPedidoParaPagamento(identificacao);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.NotNull(resultado.Message);
+            Assert.Contains("não é um Guid válido.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task FinalizarPedidoParaPagamentoException()
+        {
+            var identificacao = Guid.NewGuid().ToString();
+            pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await pedidoService.FinalizarPedidoParaPagamento(identificacao);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.NotNull(resultado.Exception);
+            Assert.Contains($"Erro inesperado", resultado.Message);
         }
     }
 }
