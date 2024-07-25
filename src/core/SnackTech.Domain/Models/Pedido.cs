@@ -32,7 +32,7 @@ namespace SnackTech.Domain.Models
         public void AdicionarItem(Produto produto, int quantidade, string observacao){
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade,nameof(quantidade));
-            var novoSequencial = Itens.Count + 1;
+            var novoSequencial = ProximoSequencial();
             var pedidoItem = new PedidoItem(novoSequencial,produto,quantidade,observacao);
             Itens.Add(pedidoItem);
         }
@@ -63,6 +63,16 @@ namespace SnackTech.Domain.Models
             var valorItens = Itens.Sum(i => i.Valor);
             //TODO: Adição de taxa/imposto ?
             return valorItens;
+        }
+
+        private int ProximoSequencial()
+        {
+            if(Itens.Count == 0)
+            {
+                return 1; 
+            }
+            int ultimoSequencial = Itens.Max(i => i.Sequencial);
+            return ultimoSequencial + 1;
         }
     }
 }
