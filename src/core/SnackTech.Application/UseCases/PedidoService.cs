@@ -8,14 +8,53 @@ using SnackTech.Domain.Models;
 
 namespace SnackTech.Application.UseCases
 {
-    public class PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository, IClienteRepository clienteRepository) : BaseService(logger), IPedidoService
+    public class PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository, IClienteRepository clienteRepository, IProdutoRepository produtoRepository) : BaseService(logger), IPedidoService
     {
         private readonly IPedidoRepository pedidoRepository = pedidoRepository;
         private readonly IClienteRepository clienteRepository = clienteRepository;
+        private readonly IProdutoRepository produtoRepository = produtoRepository;
 
-        public Task<Result> AtualizarPedido(AtualizacaoPedido pedidoAtualizado)
+        public async Task<Result> AtualizarPedido(AtualizacaoPedido pedidoAtualizado)
         {
-            throw new NotImplementedException();
+            async Task<Result> processo()
+            {
+                var guid = CustomGuards.AgainstInvalidGuid(pedidoAtualizado.Identificacao, nameof(pedidoAtualizado.Identificacao));
+                var pedido = await pedidoRepository.PesquisarPorId(guid);
+
+                if (pedido is null)
+                    return new Result($"Pedido com identificação {pedidoAtualizado.Identificacao} não encontrado.");
+
+                //adiciona ou atualiza itens do pedido
+                foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
+                {
+                    var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
+                    var produto = await produtoRepository.PesquisarPorId(guidProduto);
+                    if (produto is null)
+                        return new Result($"Produto com identificação {itemInclusao.IdentificacaoProduto} não encontrado.");
+
+                    if (pedido.Itens.Any(i => i.Sequencial == itemInclusao.Sequencial))
+                    {
+                        pedido.AtualizarItemPorSequencial(itemInclusao.Sequencial, produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                    }
+                    else
+                    {
+                        pedido.AdicionarItem(produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                    }
+                }
+
+                //remove pedidos inexistentes no pedidoAtualizado
+                foreach (var item in pedido.Itens.Where(i => !pedidoAtualizado.PedidoItens.Any(i => i.Sequencial == i.Sequencial)))
+                {
+                    pedido.RemoverItemPorSequencial(item.Sequencial);
+                }
+
+
+                pedidoRepository.AtualizarPedido(pedido);
+
+                return new Result();
+            }
+            return await CommonExecution($"PedidoService.AtualizarPedido {AtualizarPedido}", processo);
+
         }
 
         public async Task<Result<RetornoPedido>> BuscarPorIdenticacao(string identificacao)
@@ -58,7 +97,7 @@ namespace SnackTech.Application.UseCases
 
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao, nameof(identificacao));
                 var pedido = await pedidoRepository.PesquisarPorId(guid);
-                
+
                 if (pedido is null)
                     return new Result($"Pedido com identificação {identificacao} não encontrado.");
 
@@ -79,7 +118,7 @@ namespace SnackTech.Application.UseCases
             async Task<Result<Guid>> processo()
             {
                 Cliente? cliente;
-                if(cpfCliente == null)
+                if (cpfCliente == null)
                 {
                     cliente = await clienteRepository.PesquisarClientePadrao();
                 }
@@ -88,7 +127,7 @@ namespace SnackTech.Application.UseCases
                     CpfGuard.AgainstInvalidCpf(cpfCliente, nameof(cpfCliente));
                     cliente = await clienteRepository.PesquisarPorCpf(cpfCliente);
                 }
-                
+
                 var novoPedido = new Pedido(cliente);
                 await pedidoRepository.InserirPedido(novoPedido);
 
