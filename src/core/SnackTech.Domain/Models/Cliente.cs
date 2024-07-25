@@ -6,7 +6,6 @@ namespace SnackTech.Domain.Models
     {
         public string Email {get; private set;}
         public string Cpf {get; private set;}
-        public IList<Pedido>? Pedidos { get; private set; }
 
         public Cliente(string nome, string email, string cpf) 
             : base(Guid.NewGuid(), nome)

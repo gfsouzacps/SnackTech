@@ -27,7 +27,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasColumnType("smallmoney");
 
             builder.HasOne(p => p.Cliente)
-                .WithMany(c => c.Pedidos);
+                .WithMany();
 
             builder.HasMany(p => p.Itens)
                 .WithOne(i => i.Pedido)
