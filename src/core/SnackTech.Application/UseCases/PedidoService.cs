@@ -51,9 +51,27 @@ namespace SnackTech.Application.UseCases
             return await CommonExecution($"PedidoService.BuscarUltimoPedidoCliente {cpfCliente}", processo);
         }
 
-        public Task<Result> FinalizarPedidoParaPagamento(string identificacao)
+        public async Task<Result> FinalizarPedidoParaPagamento(string identificacao)
         {
-            throw new NotImplementedException();
+            async Task<Result> processo()
+            {
+
+                var guid = CustomGuards.AgainstInvalidGuid(identificacao, nameof(identificacao));
+                var pedido = await pedidoRepository.PesquisarPorId(guid);
+                
+                if (pedido is null)
+                    return new Result($"Pedido com identificação {identificacao} não encontrado.");
+
+                if (pedido.Itens.Count == 0)
+                    return new Result($"Pedido com identificação {identificacao} não possui itens e não pode ser finalizado.");
+
+                pedido.FecharPedidoParaPagamento();
+
+                await pedidoRepository.AtualizarPedido(pedido);
+
+                return new Result();
+            }
+            return await CommonExecution($"PedidoService.FinalizarPedidoParaPagamento {identificacao}", processo);
         }
 
         public async Task<Result<Guid>> IniciarPedido(string? cpfCliente)
