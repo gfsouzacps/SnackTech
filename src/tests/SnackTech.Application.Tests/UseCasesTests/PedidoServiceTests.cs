@@ -28,19 +28,17 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task BuscarPedidoPorIdentificacaoWithSuccess()
         {
-            var identificacao = Guid.NewGuid();
-            var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>());
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedido = new Pedido(cliente);
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
 
-            var resultado = await pedidoService.BuscarPorIdenticacao(identificacaoString);
+            var resultado = await pedidoService.BuscarPorIdenticacao(cliente.Id.ToString());
 
             Assert.True(resultado.IsSuccess());
             Assert.Null(resultado.Exception);
             Assert.NotNull(resultado.GetValue());
-            Assert.Equal(identificacaoString, resultado.GetValue().Identificacao);
+            Assert.Equal(pedido.Id.ToString(), resultado.GetValue().Identificacao);
         }
 
         [Fact]
@@ -88,17 +86,17 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task BuscarUltimoPedidoClienteWithSuccessAndObjects()
         {
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            var pedidoAtual = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente, Array.Empty<PedidoItem>());
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedidoAnterior = new Pedido(cliente);
+            await Task.Delay(500); //esperar meio segundo antes do proximo pedido para ter uma diferença entre o horario de criação de cada um
+            var pedidoAtual = new Pedido(cliente);
             pedidoRepository.Setup(p => p.PesquisarPorCliente(It.IsAny<String>()))
                                 .ReturnsAsync(new List<Pedido>{
                                     pedidoAtual,
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddDays(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.Finalizado, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.EmPreparacao, cliente, Array.Empty<PedidoItem>())
+                                    pedidoAnterior
                                 });
 
-            var resultado = await pedidoService.BuscarUltimoPedidoCliente(cliente.CPF);
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente(cliente.Cpf);
 
             Assert.True(resultado.IsSuccess());
             Assert.Null(resultado.Exception);
@@ -148,19 +146,22 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task ListarPedidosParaPagamentoWithSuccessAndObjects()
         {
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedido1 = new Pedido(cliente);
+            pedido1.FecharPedidoParaPagamento();
+            var pedido2 = new Pedido(cliente);
+            pedido2.FecharPedidoParaPagamento();
             pedidoRepository.Setup(p => p.PesquisarPedidosParaPagamento())
                                 .ReturnsAsync(new List<Pedido>{
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddDays(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddHours(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>()),
-                                    new Pedido(Guid.NewGuid(), DateTime.Now.AddMinutes(-1), StatusPedido.AguardandoPagamento, cliente, Array.Empty<PedidoItem>())
+                                    pedido1,
+                                    pedido2
                                 });
 
             var resultado = await pedidoService.ListarPedidosParaPagamento();
 
             Assert.True(resultado.IsSuccess());
             Assert.True(resultado.Data.Any());
-            Assert.Equal(3, resultado.Data.Count());
+            Assert.Equal(2, resultado.Data.Count());
         }
 
         [Fact]
@@ -193,14 +194,14 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task IniciarPedidoWithSuccess()
         {
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.CPF))
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.Cpf))
                             .ReturnsAsync(cliente);
 
             pedidoRepository.Setup(p => p.InserirPedido(It.IsAny<Pedido>()))
                                 .Returns(Task.FromResult(0));
 
-            var resultado = await pedidoService.IniciarPedido(cliente.CPF);
+            var resultado = await pedidoService.IniciarPedido(cliente.Cpf);
 
             Assert.True(resultado.IsSuccess());
             Assert.Null(resultado.Exception);
@@ -209,7 +210,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task IniciarPedidoComClientePadraoWithSuccess()
         {
-            var cliente = new Cliente(Guid.NewGuid(), "Padrao", "email@gmail.com", "123.456.789-09");
+            var cliente = new Cliente("Padrao", "email@gmail.com", "123.456.789-09");
             clienteRepository.Setup(c => c.PesquisarClientePadrao())
                             .ReturnsAsync(cliente);
 
@@ -236,14 +237,14 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task IniciarPedidoWithException()
         {
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.CPF))
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+            clienteRepository.Setup(c => c.PesquisarPorCpf(cliente.Cpf))
                             .ReturnsAsync(cliente);
 
             pedidoRepository.Setup(p => p.InserirPedido(It.IsAny<Pedido>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
-            var resultado = await pedidoService.IniciarPedido(cliente.CPF);
+            var resultado = await pedidoService.IniciarPedido(cliente.Cpf);
 
             Assert.False(resultado.IsSuccess());
             Assert.NotNull(resultado.Exception);
@@ -255,11 +256,11 @@ namespace SnackTech.Application.Tests.UseCasesTests
         {
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
 
             Produto produto = new Produto(CategoriaProduto.Lanche, "descricao", "Produto", 20);
-            var pedidoItem = new PedidoItem(1, produto, 2, "");
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.Iniciado, cliente, new List<PedidoItem>() { pedidoItem });
+            var pedido = new Pedido(cliente);
+            pedido.AdicionarItem(produto, 2, "");
 
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
@@ -281,8 +282,8 @@ namespace SnackTech.Application.Tests.UseCasesTests
         {
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.Iniciado, cliente, new List<PedidoItem>());
+            var cliente = new Cliente( "Nome completo", "email@gmail.com", "582.202.320-72");
+            var pedido = new Pedido(cliente);
 
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
@@ -339,7 +340,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         {
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
             var produto = new Produto(CategoriaProduto.Lanche, "descricao", "Produto", 20);
             var produto2 = new Produto(CategoriaProduto.Bebida, "descricao", "Produto2", 10);
             produtoRepository.Setup(p => p.PesquisarPorId(produto.Id))
@@ -347,7 +348,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.PesquisarPorId(produto2.Id))
                             .ReturnsAsync(produto2);
 
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.AguardandoPagamento, cliente, new List<PedidoItem>());
+            var pedido = new Pedido(cliente);
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
             pedidoRepository.Setup(p => p.AtualizarPedido(It.IsAny<Pedido>()))
@@ -385,7 +386,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         {
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
             var produto = new Produto(CategoriaProduto.Lanche, "descricao", "Produto", 20);
             var produto2 = new Produto(CategoriaProduto.Bebida, "descricao", "Produto2", 10);
             produtoRepository.Setup(p => p.PesquisarPorId(produto.Id))
@@ -393,8 +394,8 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.PesquisarPorId(produto2.Id))
                             .ReturnsAsync(produto2);
 
-            var pedidoItem = new PedidoItem(1, produto, 1, "");
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.AguardandoPagamento, cliente, new List<PedidoItem>() { pedidoItem });
+            var pedido = new Pedido(cliente);
+            pedido.AdicionarItem(produto, 1, "");
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
             pedidoRepository.Setup(p => p.AtualizarPedido(It.IsAny<Pedido>()))
@@ -430,7 +431,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         {
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            var cliente = new Cliente(Guid.NewGuid(), "Nome completo", "email@gmail.com", "582.202.320-72");
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
             var produto = new Produto(CategoriaProduto.Lanche, "descricao", "Produto", 20);
             var produto2 = new Produto(CategoriaProduto.Bebida, "descricao", "Produto2", 10);
             produtoRepository.Setup(p => p.PesquisarPorId(produto.Id))
@@ -438,26 +439,27 @@ namespace SnackTech.Application.Tests.UseCasesTests
             produtoRepository.Setup(p => p.PesquisarPorId(produto2.Id))
                             .ReturnsAsync(produto2);
 
-            var pedidoItem1 = new PedidoItem(1, produto, 2, "remover");
-            var pedidoItem2 = new PedidoItem(2, produto2, 1, "manter");
-            var pedido = new Pedido(identificacao, DateTime.Now, StatusPedido.AguardandoPagamento, cliente, new List<PedidoItem>() { pedidoItem1, pedidoItem2 });
+            var pedido = new Pedido(cliente);
+            pedido.AdicionarItem(produto, 2, "remover");
+            pedido.AdicionarItem(produto2, 1, "manter");
+
             pedidoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
                             .ReturnsAsync(pedido);
             pedidoRepository.Setup(p => p.AtualizarPedido(It.IsAny<Pedido>()))
                             .Callback<Pedido>((pedidoAtualizado) =>
                             {
                                 Assert.Equal(1, pedidoAtualizado.Itens.Count);
-                                Assert.Equal(pedidoItem2.Sequencial, pedidoAtualizado.Itens.First().Sequencial);
-                                Assert.Equal(pedidoItem2.Observacao, pedidoAtualizado.Itens.First().Observacao);
+                                Assert.Equal(2, pedidoAtualizado.Itens.First().Sequencial);
+                                Assert.Equal("manter", pedidoAtualizado.Itens.First().Observacao);
                             })
                             .Returns(Task.CompletedTask);
 
             var pedidoItemAtualizado = new AtualizacaoPedidoItem
             {
-                Sequencial = pedidoItem2.Sequencial,
-                IdentificacaoProduto = pedidoItem2.Produto.Id.ToString(),
-                Quantidade = pedidoItem2.Quantidade,
-                Observacao = pedidoItem2.Observacao,
+                Sequencial = 2,
+                IdentificacaoProduto = produto2.Id.ToString(),
+                Quantidade = 1,
+                Observacao = "manter",
             };
 
             var AtualizacaoPedido = new AtualizacaoPedido

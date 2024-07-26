@@ -88,7 +88,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             try{
                 var pedido = CriarPedidoSoComCliente();
                 pedido.AdicionarItem(CriarProduto(CategoriaProduto.Lanche,"lanche", 20),2,"");
-                Assert.Equal(1,pedido.Itens.Count);
+                Assert.Single(pedido.Itens);
 
                 var pedidoItem = pedido.Itens[0];
                 Assert.NotNull(pedidoItem);
@@ -176,21 +176,20 @@ namespace SnackTech.Domain.Tests.ModelsTests
         }
 
         private static Pedido CriarPedidoComItens()
-            => new(CriarCliente(),CriarListaPedidoItem());
+        {
+            var produto = new Produto(CategoriaProduto.Lanche, "Lanche", "descrição", 30.0M);
+            var pedido = new Pedido(CriarCliente());
+            pedido.AdicionarItem(produto, 2, "");
+
+            return pedido;
+        }
 
         private static Pedido CriarPedidoSoComCliente() 
             => new(CriarCliente());
 
         private static Cliente CriarCliente()
-            => new("Nome Cliente","email@gmail.com","89934782014");
+            => new ("Nome Cliente","email@gmail.com","89934782014");
 
-        private static List<PedidoItem> CriarListaPedidoItem(){
-            var lista = new List<PedidoItem>(){
-                new(1, new Produto(CategoriaProduto.Lanche,"Lanche","descrição",30.0M),2,"")
-            };
-
-            return lista;
-        }
 
         private static Produto CriarProduto(CategoriaProduto categoria,string nome, decimal valor)
             => new(categoria,nome,nome,valor);

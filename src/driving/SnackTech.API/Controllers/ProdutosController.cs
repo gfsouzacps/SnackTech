@@ -37,7 +37,6 @@ namespace SnackTech.API.Controllers
         public async Task<IActionResult> Delete([FromRoute] string identificacao)
             => await CommonExecution("Produtos.Delete",produtoService.RemoverProduto(identificacao));
 
-
         [HttpGet]
         [ProducesResponseType<IEnumerable<RetornoProduto>>(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]

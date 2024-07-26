@@ -15,8 +15,8 @@ namespace SnackTech.Application.DTOs.Pedido
             => new()
             {
                 Identificacao = pedido.Id.ToString(),
-                NomeCliente = pedido.Cliente.RecuperarNome(),
-                CPFCliente = pedido.Cliente.CPF,
+                NomeCliente = pedido.Cliente.Nome,
+                CPFCliente = pedido.Cliente.Cpf,
                 Status = (int)pedido.Status,
                 Valor = pedido.Valor,
                 Itens = pedido.Itens.Select(item => RetornoPedidoItem.APartirDeItem(item)).ToArray(),
