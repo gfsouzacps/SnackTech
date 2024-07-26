@@ -23,38 +23,54 @@ namespace SnackTech.Application.UseCases
 
                 if (pedido is null)
                     return new Result($"Pedido com identificação {pedidoAtualizado.Identificacao} não encontrado.");
-
-                //adiciona ou atualiza itens do pedido
-                foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
+                
+                try
                 {
-                    var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
-                    var produto = await produtoRepository.PesquisarPorId(guidProduto);
-                    if (produto is null)
-                        return new Result($"Produto com identificação {itemInclusao.IdentificacaoProduto} não encontrado.");
-
-                    if (pedido.Itens.Any(i => i.Sequencial == itemInclusao.Sequencial))
-                    {
-                        pedido.AtualizarItemPorSequencial(itemInclusao.Sequencial, produto, itemInclusao.Quantidade, itemInclusao.Observacao);
-                    }
-                    else
-                    {
-                        pedido.AdicionarItem(produto, itemInclusao.Quantidade, itemInclusao.Observacao);
-                    }
+                    await AdicionarOuAtualizarItensPedido(pedidoAtualizado, pedido);
+                }
+                catch (Exception ex)
+                {
+                    return new Result(ex.ToString());
                 }
 
-                //remove pedidos inexistentes no pedidoAtualizado
-                foreach (var item in pedido.Itens.Where(i => !pedidoAtualizado.PedidoItens.Any(i => i.Sequencial == i.Sequencial)))
-                {
-                    pedido.RemoverItemPorSequencial(item.Sequencial);
-                }
+                RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
 
-
-                pedidoRepository.AtualizarPedido(pedido);
+                await pedidoRepository.AtualizarPedido(pedido);
 
                 return new Result();
             }
             return await CommonExecution($"PedidoService.AtualizarPedido {AtualizarPedido}", processo);
 
+        }
+
+        private async Task AdicionarOuAtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        {
+            foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
+            {
+                var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
+                var produto = await produtoRepository.PesquisarPorId(guidProduto);
+                
+                if (produto is null)
+                    throw new Exception($"Produto com identificação {itemInclusao.IdentificacaoProduto} não encontrado.");
+
+                if (pedido.Itens.Any(i => i.Sequencial == itemInclusao.Sequencial))
+                {
+                    pedido.AtualizarItemPorSequencial(itemInclusao.Sequencial, produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                }
+                else
+                {
+                    pedido.AdicionarItem(produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                }
+            }
+        }
+
+        private static void RemoverItensAusentesNoPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        {
+            var pedidosRemovidos = pedido.Itens.Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
+            foreach (var item in pedidosRemovidos)
+            {
+                pedido.RemoverItemPorSequencial(item.Sequencial);
+            }
         }
 
         public async Task<Result<RetornoPedido>> BuscarPorIdenticacao(string identificacao)
