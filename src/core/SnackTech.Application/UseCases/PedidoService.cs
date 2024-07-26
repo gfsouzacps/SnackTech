@@ -43,13 +43,13 @@ namespace SnackTech.Application.UseCases
                 }
 
                 //remove pedidos inexistentes no pedidoAtualizado
-                foreach (var item in pedido.Itens.Where(i => !pedidoAtualizado.PedidoItens.Any(i => i.Sequencial == i.Sequencial)))
+                var pedidosRemovidos = pedido.Itens.Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
+                foreach (var item in pedidosRemovidos)
                 {
                     pedido.RemoverItemPorSequencial(item.Sequencial);
                 }
 
-
-                pedidoRepository.AtualizarPedido(pedido);
+                await pedidoRepository.AtualizarPedido(pedido);
 
                 return new Result();
             }
