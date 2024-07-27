@@ -76,6 +76,7 @@ namespace SnackTech.Domain.Models
                 var itemDaLista = _itens.First(i => i.Sequencial == sequencial);
                 itemDaLista.AtualizarDadosItem(produto, quantidade, observacao);
 
+
                 CalcularValorTotal();
 
                 return true;
