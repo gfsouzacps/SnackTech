@@ -31,7 +31,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasColumnType("smallmoney");
 
             builder.HasOne(item => item.Produto)
-                .WithMany(produto => produto.PedidoItens)
+                .WithMany()
                 .HasForeignKey(y => y.IdProduto);
         }
     }
