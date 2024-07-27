@@ -147,7 +147,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
             modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
                 {
                     b.HasOne("SnackTech.Domain.Models.Cliente", "Cliente")
-                        .WithMany("Pedidos")
+                        .WithMany()
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -164,7 +164,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
                         .IsRequired();
 
                     b.HasOne("SnackTech.Domain.Models.Produto", "Produto")
-                        .WithMany("PedidoItems")
+                        .WithMany()
                         .HasForeignKey("IdProduto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -186,16 +186,6 @@ namespace SnackTech.Adapter.DataBase.Migrations
             modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
                 {
                     b.Navigation("Itens");
-                });
-
-            modelBuilder.Entity("SnackTech.Domain.Models.Produto", b =>
-                {
-                    b.Navigation("PedidoItems");
-                });
-
-            modelBuilder.Entity("SnackTech.Domain.Models.Cliente", b =>
-                {
-                    b.Navigation("Pedidos");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,17 +15,17 @@ namespace SnackTech.Adapter.DataBase.Repositories
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPedidosParaPagamento()
+        public Task<IEnumerable<Pedido>> PesquisarPedidosParaPagamento()
         {
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorCliente(string CPF)
+        public Task<IEnumerable<Pedido>> PesquisarPorCliente(string CPF)
         {
             throw new NotImplementedException();
         }
 
-        public Task PesquisarPorId(Guid identificacao)
+        public Task<Pedido?> PesquisarPorId(Guid identificacao)
         {
             throw new NotImplementedException();
         }
