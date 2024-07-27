@@ -9,17 +9,18 @@ namespace SnackTech.Domain.Models
         private decimal _valor;
         private readonly List<PedidoItem> _itens;
 
-        public Guid Id {get; private set;}        
-        public DateTime DataCriacao {get; private set;}
+        public Guid Id { get; private set; }
+        public DateTime DataCriacao { get; private set; }
         public Cliente Cliente { get; private set; }
         public ReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
-        public StatusPedido Status {get; private set;}
-        public decimal Valor 
+        public StatusPedido Status { get; private set; }
+        public decimal Valor
         {
             get { return _valor; }
         }
 
-        private Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente){
+        private Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
+        {
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 
             Id = id;
@@ -30,23 +31,24 @@ namespace SnackTech.Domain.Models
         }
 
         public Pedido(Cliente cliente)
-            :this(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente)
-        {}
+            : this(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente)
+        { }
 
         /// <summary>
         /// For EF
         /// </summary>
-        public Pedido() 
+        public Pedido()
         {
             //TODO: Criei esse construtor vazio para usar no EF, mas creio que ele poderá ser reaproveitado para
             //criação de pedidos de clientes anônimos.
         }
 
-        public void AdicionarItem(Produto produto, int quantidade, string observacao){
+        public void AdicionarItem(Produto produto, int quantidade, string observacao)
+        {
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
-            CustomGuards.AgainstNegativeOrZeroValue(quantidade,nameof(quantidade));
-            var novoSequencial = _itens.Count + 1;
-            var pedidoItem = new PedidoItem(Id, novoSequencial,produto,quantidade,observacao);
+            CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
+            var novoSequencial = ProximoSequencial();
+            var pedidoItem = new PedidoItem(Id, novoSequencial, produto, quantidade, observacao);
             _itens.Add(pedidoItem);
 
             CalcularValorTotal();
@@ -72,7 +74,8 @@ namespace SnackTech.Domain.Models
             if (_itens.Any(i => i.Sequencial == sequencial))
             {
                 var itemDaLista = _itens.First(i => i.Sequencial == sequencial);
-                itemDaLista.AtualizarDadosItem(produto,quantidade,observacao);
+                itemDaLista.AtualizarDadosItem(produto, quantidade, observacao);
+
 
                 CalcularValorTotal();
 
@@ -82,13 +85,25 @@ namespace SnackTech.Domain.Models
             return false;
         }
 
-        public void FecharPedidoParaPagamento(){
+        public void FecharPedidoParaPagamento()
+        {
             Status = StatusPedido.AguardandoPagamento;
         }
 
-        private void CalcularValorTotal(){
+        private void CalcularValorTotal()
+        {
             _valor = _itens.Sum(i => i.Valor);
             //TODO: Adição de taxa/imposto ?
+        }
+
+        private int ProximoSequencial()
+        {
+            if (Itens.Count == 0)
+            {
+                return 1;
+            }
+            int ultimoSequencial = _itens.Max(i => i.Sequencial);
+            return ultimoSequencial + 1;
         }
     }
 }
