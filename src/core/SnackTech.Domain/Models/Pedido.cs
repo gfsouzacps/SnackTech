@@ -11,6 +11,7 @@ namespace SnackTech.Domain.Models
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
+        public Guid IdCliente { get; private set; }
         public Cliente Cliente { get; private set; }
         public ReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
         public StatusPedido Status { get; private set; }
@@ -26,6 +27,7 @@ namespace SnackTech.Domain.Models
             Id = id;
             DataCriacao = dataCriacao;
             Status = status;
+            IdCliente = cliente.Id;
             Cliente = cliente;
             _itens = new List<PedidoItem>();
         }
