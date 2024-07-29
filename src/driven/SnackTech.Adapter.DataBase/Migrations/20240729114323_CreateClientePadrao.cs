@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SnackTech.Adapter.DataBase.Migrations
 {
     /// <inheritdoc />
-    public partial class CorrecaoRelacionamentoPedidoXCliente : Migration
+    public partial class CreateClientePadrao : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +25,16 @@ namespace SnackTech.Adapter.DataBase.Migrations
                 table: "Pedido",
                 newName: "IX_Pedido_IdCliente");
 
+            migrationBuilder.InsertData(
+                table: "Pessoa",
+                columns: new[] { "Id", "Nome" },
+                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), "Cliente Padrão" });
+
+            migrationBuilder.InsertData(
+                table: "Cliente",
+                columns: new[] { "Id", "Cpf", "Email" },
+                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), "12345678901", "cliente.padrao@gmail.com" });
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Pedido_Cliente_IdCliente",
                 table: "Pedido",
@@ -39,6 +50,16 @@ namespace SnackTech.Adapter.DataBase.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Pedido_Cliente_IdCliente",
                 table: "Pedido");
+
+            migrationBuilder.DeleteData(
+                table: "Cliente",
+                keyColumn: "Id",
+                keyValue: new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"));
+
+            migrationBuilder.DeleteData(
+                table: "Pessoa",
+                keyColumn: "Id",
+                keyValue: new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"));
 
             migrationBuilder.RenameColumn(
                 name: "IdCliente",

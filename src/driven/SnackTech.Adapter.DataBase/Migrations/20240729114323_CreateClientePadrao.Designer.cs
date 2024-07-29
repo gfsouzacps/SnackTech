@@ -12,8 +12,8 @@ using SnackTech.Adapter.DataBase.Context;
 namespace SnackTech.Adapter.DataBase.Migrations
 {
     [DbContext(typeof(RepositoryDbContext))]
-    [Migration("20240728160207_CorrecaoRelacionamentoPedidoXCliente")]
-    partial class CorrecaoRelacionamentoPedidoXCliente
+    [Migration("20240729114323_CreateClientePadrao")]
+    partial class CreateClientePadrao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,6 +145,15 @@ namespace SnackTech.Adapter.DataBase.Migrations
                         .HasColumnType("varchar");
 
                     b.ToTable("Cliente", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
+                            Nome = "Cliente Padrão",
+                            Cpf = "12345678901",
+                            Email = "cliente.padrao@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
