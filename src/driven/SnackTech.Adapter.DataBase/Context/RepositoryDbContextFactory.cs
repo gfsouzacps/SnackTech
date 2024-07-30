@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace SnackTech.Adapter.DataBase.Context
 {
@@ -10,7 +12,14 @@ namespace SnackTech.Adapter.DataBase.Context
     {
         public RepositoryDbContext CreateDbContext(string[] args)
         {
-            var connString = "Server=localhost,1433;Database=snack-tech;User ID=sa;Password=Sorte@2020;Trusted_Connection=False; TrustServerCertificate=True;";
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var connString = configuration.GetConnectionString("DefaultConnection")
+                             ?? throw new InvalidOperationException("Connection string is not set in configuration.");
+
             var optionsBuilder = new DbContextOptionsBuilder<RepositoryDbContext>();
             optionsBuilder.UseSqlServer(connString);
 
