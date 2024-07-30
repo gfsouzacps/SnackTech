@@ -25,7 +25,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 {
                     Id = Guid.Parse("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
                     Email = "cliente.padrao@gmail.com",
-                    Cpf = "12345678901",
+                    Cpf = "67525226008",
                     Nome = "Cliente Padrão"
                 });
         }

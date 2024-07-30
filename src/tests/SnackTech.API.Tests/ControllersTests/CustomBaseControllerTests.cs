@@ -23,7 +23,8 @@ namespace SnackTech.API.Tests.ControllersTests
         }
 
         [Fact]
-        public async Task CommonExecutionWithSuccess(){
+        public async Task CommonExecutionWithSuccess()
+        {
             var nomeMetodo = "Controller.Nome";
             static async Task<Result<int>> taskFunc()
             {
@@ -33,14 +34,15 @@ namespace SnackTech.API.Tests.ControllersTests
 
             var task = taskFunc();
 
-            var resultado = await baseController.CommonExecution(nomeMetodo,task);
+            var resultado = await baseController.CommonExecution(nomeMetodo, task);
 
             Assert.IsType<OkObjectResult>(resultado);
 
         }
 
         [Fact]
-        public async Task CommonExecutionReturningBadRequest(){
+        public async Task CommonExecutionReturningBadRequest()
+        {
             var nomeMetodo = "Controller.Nome";
 
             static async Task<Result<int>> taskFunc()
@@ -51,15 +53,16 @@ namespace SnackTech.API.Tests.ControllersTests
 
             var task = taskFunc();
 
-            var resultado = await baseController.CommonExecution(nomeMetodo,task);
+            var resultado = await baseController.CommonExecution(nomeMetodo, task);
             var requestResult = Assert.IsType<BadRequestObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(requestResult.Value);
             Assert.Null(payload.Exception);
-            Assert.Equal("Erro de lógica",payload.Message);
+            Assert.Equal("Erro de lógica", payload.Message);
         }
 
         [Fact]
-        public async Task CommonExecutionReturningInternalServerErroFromTask(){
+        public async Task CommonExecutionReturningInternalServerErroFromTask()
+        {
             var nomeMetodo = "Controller.Nome";
 
             static async Task<Result<int>> taskFunc()
@@ -70,15 +73,16 @@ namespace SnackTech.API.Tests.ControllersTests
 
             var task = taskFunc();
 
-            var resultado = await baseController.CommonExecution(nomeMetodo,task);
+            var resultado = await baseController.CommonExecution(nomeMetodo, task);
             var requestResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(requestResult.Value);
             Assert.NotNull(payload);
-            Assert.Equal("Erro inesperado",payload.Message);
+            Assert.Equal("Erro inesperado", payload.Message);
         }
 
         [Fact]
-        public async Task CommonExecutionReturningInternalServerErrorFromProcessing(){
+        public async Task CommonExecutionReturningInternalServerErrorFromProcessing()
+        {
             var nomeMetodo = "Controller.Nome";
 
             static async Task<Result<int>> taskFunc()
@@ -89,11 +93,11 @@ namespace SnackTech.API.Tests.ControllersTests
 
             var task = taskFunc();
 
-            var resultado = await baseController.CommonExecution(nomeMetodo,task);
+            var resultado = await baseController.CommonExecution(nomeMetodo, task);
             var requestResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(requestResult.Value);
             Assert.NotNull(payload);
-            Assert.Equal("Erro inesperado",payload.Message);
+            Assert.Equal("Erro inesperado", payload.Message);
         }
     }
 }

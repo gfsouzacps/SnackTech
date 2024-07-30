@@ -7,13 +7,13 @@ namespace SnackTech.Domain.Models
     public class Pedido
     {
         private decimal _valor;
-        private readonly List<PedidoItem> _itens;
+        private readonly List<PedidoItem> _itens = new();
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
         public Guid IdCliente { get; private set; }
         public Cliente Cliente { get; private set; }
-        public ReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
+        public IReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
         public StatusPedido Status { get; private set; }
         public decimal Valor
         {
@@ -29,7 +29,6 @@ namespace SnackTech.Domain.Models
             Status = status;
             IdCliente = cliente.Id;
             Cliente = cliente;
-            _itens = new List<PedidoItem>();
         }
 
         public Pedido(Cliente cliente)
@@ -77,7 +76,6 @@ namespace SnackTech.Domain.Models
             {
                 var itemDaLista = _itens.First(i => i.Sequencial == sequencial);
                 itemDaLista.AtualizarDadosItem(produto, quantidade, observacao);
-
 
                 CalcularValorTotal();
 

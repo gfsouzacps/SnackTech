@@ -1,14 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.API.CustomResponses;
 using SnackTech.Application.Common;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("SnackTech.API.Tests")]
 namespace SnackTech.API.Controllers
 {
     public abstract class CustomBaseController(ILogger logger) : ControllerBase
     {
         private readonly ILogger logger = logger;
 
-        public async Task<IActionResult> CommonExecution<T>(string nomeMetodo, Task<Result<T>> processo){
+        internal async Task<IActionResult> CommonExecution<T>(string nomeMetodo, Task<Result<T>> processo){
             try{
                 var resultado = await processo;
                 
@@ -28,7 +30,7 @@ namespace SnackTech.API.Controllers
             }
         }
 
-        public async Task<IActionResult> CommonExecution(string nomeMetodo, Task<Result> processo){
+        internal async Task<IActionResult> CommonExecution(string nomeMetodo, Task<Result> processo){
             try{
                 var resultado = await processo;
                 

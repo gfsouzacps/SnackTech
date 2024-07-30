@@ -22,7 +22,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
         [Fact]
         public async Task BuscarPorCategoriaWithSuccessAndObjects(){
-            produtoRepository.Setup(p => p.PesquisarPorCategoria(It.IsAny<CategoriaProduto>()))
+            produtoRepository.Setup(p => p.PesquisarPorCategoriaAsync(It.IsAny<CategoriaProduto>()))
                                 .ReturnsAsync(new List<Produto>{
                                     new(CategoriaProduto.Lanche,"Lanche A","descricao",10),
                                     new(CategoriaProduto.Lanche,"Lanche B","descricao",25),
@@ -39,7 +39,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
         [Fact]
         public async Task BuscarPorCategoriaWithSuccessButNoObjects(){
-            produtoRepository.Setup(p => p.PesquisarPorCategoria(It.IsAny<CategoriaProduto>()))
+            produtoRepository.Setup(p => p.PesquisarPorCategoriaAsync(It.IsAny<CategoriaProduto>()))
                                 .ReturnsAsync(Array.Empty<Produto>());
 
             var resultado = await produtoService.BuscarPorCategoria(1);
@@ -60,7 +60,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
         [Fact]
         public async Task BuscarPorCategoriaWithException(){
-            produtoRepository.Setup(p => p.PesquisarPorCategoria(It.IsAny<CategoriaProduto>()))
+            produtoRepository.Setup(p => p.PesquisarPorCategoriaAsync(It.IsAny<CategoriaProduto>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
             var resultado = await produtoService.BuscarPorCategoria(1);
 
@@ -73,7 +73,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         public async Task BuscarProdutoPorIdentificacaoWithSuccess(){
             var identificacao = Guid.NewGuid();
             var identificacaoString = identificacao.ToString();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(new Produto(identificacao,CategoriaProduto.Lanche,"Lanche A","descricao",10));
 
             var resultado = await produtoService.BuscarProdutoPorIdentificacao(identificacaoString);
@@ -99,7 +99,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task BuscarProdutoPorIdentificacaoNotFounded(){
             var identificacao = Guid.NewGuid().ToString();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(default(Produto));
 
             var resultado = await produtoService.BuscarProdutoPorIdentificacao(identificacao);
@@ -113,7 +113,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task BuscarProdutoPorIdentificacaoException(){
             var identificacao = Guid.NewGuid().ToString();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await produtoService.BuscarProdutoPorIdentificacao(identificacao);
@@ -132,7 +132,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
                 Valor = 15
             };
 
-            produtoRepository.Setup(p => p.InserirProduto(It.IsAny<Produto>()))
+            produtoRepository.Setup(p => p.InserirProdutoAsync(It.IsAny<Produto>()))
                                 .Returns(Task.FromResult(0));
             
             var resultado = await produtoService.CriarNovoProduto(novoProduto);
@@ -166,7 +166,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
                 Valor = 20
             };
 
-            produtoRepository.Setup(p => p.InserirProduto(It.IsAny<Produto>()))
+            produtoRepository.Setup(p => p.InserirProdutoAsync(It.IsAny<Produto>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
              var resultado = await produtoService.CriarNovoProduto(novoProduto);
@@ -186,9 +186,9 @@ namespace SnackTech.Application.Tests.UseCasesTests
                 Valor = 10
             };
 
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(new Produto(CategoriaProduto.Acompanhamento,"Nome","descricao", 12));
-            produtoRepository.Setup(p => p.AlterarProduto(It.IsAny<Produto>()))
+            produtoRepository.Setup(p => p.AlterarProdutoAsync(It.IsAny<Produto>()))
                             .Returns(Task.FromResult(0));
 
             var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
@@ -206,7 +206,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
                 Valor = 10
             };
 
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(default(Produto));
 
             var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
@@ -226,9 +226,9 @@ namespace SnackTech.Application.Tests.UseCasesTests
                 Valor = 10
             };
 
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(new Produto(CategoriaProduto.Acompanhamento,"Nome","descricao", 12));
-            produtoRepository.Setup(p => p.AlterarProduto(It.IsAny<Produto>()))
+            produtoRepository.Setup(p => p.AlterarProdutoAsync(It.IsAny<Produto>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await produtoService.EditarProduto(identificacao,produtoEditado);
@@ -241,10 +241,10 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task RemoverProdutoWithSuccess(){
             var identificacao = Guid.NewGuid();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(new Produto(CategoriaProduto.Acompanhamento,"Nome","descricao", 12));
-            produtoRepository.Setup(p => p.RemoverProdutoPorIdentificacao(It.IsAny<Guid>()))
-                            .Returns(Task.FromResult(0));
+            produtoRepository.Setup(p => p.RemoverProdutoPorIdentificacaoAsync(It.IsAny<Guid>()))
+                            .Returns(Task.FromResult(true));
             var resultado = await produtoService.RemoverProduto(identificacao.ToString());
 
             Assert.True(resultado.IsSuccess());
@@ -253,7 +253,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task RemoverProdutoButProductNotFounded(){
             var identificacao = Guid.NewGuid();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(default(Produto));
 
             var resultado = await produtoService.RemoverProduto(identificacao.ToString());
@@ -266,9 +266,9 @@ namespace SnackTech.Application.Tests.UseCasesTests
         [Fact]
         public async Task RemoverProdutoWithException(){
             var identificacao = Guid.NewGuid();
-            produtoRepository.Setup(p => p.PesquisarPorId(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ReturnsAsync(new Produto(CategoriaProduto.Acompanhamento,"Nome","descricao", 12));
-            produtoRepository.Setup(p => p.RemoverProdutoPorIdentificacao(It.IsAny<Guid>()))
+            produtoRepository.Setup(p => p.RemoverProdutoPorIdentificacaoAsync(It.IsAny<Guid>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await produtoService.RemoverProduto(identificacao.ToString());

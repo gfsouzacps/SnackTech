@@ -1,34 +1,49 @@
+using Microsoft.EntityFrameworkCore;
+using SnackTech.Adapter.DataBase.Context;
 using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
-    public class ProdutoRepository : IProdutoRepository
+    public class ProdutoRepository(RepositoryDbContext repositoryDbContext) : IProdutoRepository
     {
-        public Task AlterarProduto(Produto produtoAlterado)
+        private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
+
+        public async Task AlterarProdutoAsync(Produto produtoAlterado)
         {
-            throw new NotImplementedException();
+            _repositoryDbContext.Entry(produtoAlterado).State = EntityState.Modified;
+            await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public Task InserirProduto(Produto novoProduto)
+        public async Task InserirProdutoAsync(Produto novoProduto)
         {
-            throw new NotImplementedException();
+            _repositoryDbContext.Add(novoProduto);
+            await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Produto>> PesquisarPorCategoria(CategoriaProduto categoria)
+        public async Task<IEnumerable<Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
         {
-            throw new NotImplementedException();
+            return await _repositoryDbContext.Produtos
+                    .Where(p => p.Categoria == categoria)
+                    .ToListAsync();
         }
 
-        public Task<Produto?> PesquisarPorId(Guid identificacao)
+        public async Task<Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
-            throw new NotImplementedException();
+            return await _repositoryDbContext.Produtos
+                .FirstOrDefaultAsync(p => p.Id == identificacao);
         }
 
-        public Task RemoverProdutoPorIdentificacao(Guid identificacao)
+        public async Task<bool> RemoverProdutoPorIdentificacaoAsync(Guid identificacao)
         {
-            throw new NotImplementedException();
+            var produto = await PesquisarPorIdentificacaoAsync(identificacao);
+
+            if (produto is null)
+                return false;
+
+            _repositoryDbContext.Produtos.Remove(produto);
+            return await _repositoryDbContext.SaveChangesAsync() > 0;
         }
     }
 }

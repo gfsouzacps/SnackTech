@@ -90,7 +90,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
                 pedido.AdicionarItem(CriarProduto(CategoriaProduto.Lanche,"lanche", 20),2,"");
                 Assert.Single(pedido.Itens);
 
-                var pedidoItem = pedido.Itens[0];
+                var pedidoItem = pedido.Itens.ElementAt(0);
                 Assert.NotNull(pedidoItem);
                 Assert.Equal(1,pedidoItem.Sequencial);
                 Assert.Equal(2,pedidoItem.Quantidade);
@@ -109,7 +109,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
         [Fact]
         public void RemoveItemByIdWithSuccess(){
             var pedido = CriarPedidoComItens();
-            var itemSequencial = pedido.Itens[0].Sequencial;
+            var itemSequencial = pedido.Itens.ElementAt(0).Sequencial;
             var result = pedido.RemoverItemPorSequencial(itemSequencial);
             Assert.True(result);
             Assert.False(pedido.Itens.Any());
@@ -127,13 +127,13 @@ namespace SnackTech.Domain.Tests.ModelsTests
         [Fact]
         public void UpdateItemWithSuccess(){
             var pedido = CriarPedidoComItens();
-            var itemSequencial = pedido.Itens[0].Sequencial;
+            var itemSequencial = pedido.Itens.ElementAt(0).Sequencial;
             var novoProduto = CriarProduto(CategoriaProduto.Acompanhamento,"Batata Frita",15);
             var novaObservacao = "Breve observação";
             var result = pedido.AtualizarItemPorSequencial(itemSequencial,novoProduto,3,novaObservacao);
             Assert.True(result);
 
-            var pedidoItem = pedido.Itens[0];
+            var pedidoItem = pedido.Itens.ElementAt(0);
             Assert.NotNull(pedidoItem);
             Assert.Equal(1,pedidoItem.Sequencial);
             Assert.Equal(3,pedidoItem.Quantidade);
@@ -155,7 +155,7 @@ namespace SnackTech.Domain.Tests.ModelsTests
             var result = pedido.AtualizarItemPorSequencial(itemSequencial,novoProduto,3,novaObservacao);
             Assert.False(result);
 
-            var pedidoItem = pedido.Itens[0];
+            var pedidoItem = pedido.Itens.ElementAt(0);
             Assert.NotNull(pedidoItem);
             Assert.Equal(1,pedidoItem.Sequencial);
             Assert.Equal(2,pedidoItem.Quantidade);

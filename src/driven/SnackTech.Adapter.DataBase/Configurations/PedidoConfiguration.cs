@@ -22,7 +22,6 @@ namespace SnackTech.Adapter.DataBase.Configurations
 
             builder.Property(p => p.Valor)
                 .HasField("_valor")
-                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
                 .IsRequired()
                 .HasColumnType("smallmoney");
 
@@ -35,8 +34,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasForeignKey(i => i.IdPedido);
 
             builder.Navigation(nameof(Pedido.Itens))
-                .HasField("_itens")
-                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty);
+                .HasField("_itens");
         }
     }
 }

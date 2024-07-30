@@ -17,7 +17,7 @@ namespace SnackTech.Application.UseCases
             async Task<Result<IEnumerable<RetornoProduto>>> processo()
             {
                 var categoriaProduto = CustomGuards.AgainstInvalidCategoriaProduto(categoriaId, nameof(categoriaId));
-                var produtos = await produtoRepository.PesquisarPorCategoria(categoriaProduto);
+                var produtos = await produtoRepository.PesquisarPorCategoriaAsync(categoriaProduto);
                 var retorno = produtos.Select(RetornoProduto.APartirDeProduto);
                 return new Result<IEnumerable<RetornoProduto>>(retorno);
             }
@@ -28,7 +28,7 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<RetornoProduto>> processo(){
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao,nameof(identificacao));
-                var produto = await produtoRepository.PesquisarPorId(guid);
+                var produto = await produtoRepository.PesquisarPorIdentificacaoAsync(guid);
 
                 if(produto is null)
                     return new Result<RetornoProduto>($"Produto com identificação {identificacao} não encontrado.",true);
@@ -44,7 +44,7 @@ namespace SnackTech.Application.UseCases
             async Task<Result<Guid>> processo(){
                 var categoriaProduto = CustomGuards.AgainstInvalidCategoriaProduto(novoProduto.Categoria,nameof(novoProduto.Categoria));
                 var produto = new Produto(categoriaProduto,novoProduto.Nome,novoProduto.Descricao,novoProduto.Valor);
-                await produtoRepository.InserirProduto(produto);
+                await produtoRepository.InserirProdutoAsync(produto);
                 return new Result<Guid>(produto.Id);
             }
             return await CommonExecution($"ProdutoService.CriarNovoProduto",processo);
@@ -55,13 +55,13 @@ namespace SnackTech.Application.UseCases
             async Task<Result> processo(){
                 var categoriaProduto = CustomGuards.AgainstInvalidCategoriaProduto(edicaoProduto.Categoria,nameof(edicaoProduto.Categoria));
 
-                var produtoDaBase = await produtoRepository.PesquisarPorId(identificacao);
+                var produtoDaBase = await produtoRepository.PesquisarPorIdentificacaoAsync(identificacao);
                 if(produtoDaBase is null)
                     return new Result($"Produto com identificação {identificacao} não encontrado na base.");
 
                 produtoDaBase.AtualizarDadosProduto(categoriaProduto,edicaoProduto.Nome,edicaoProduto.Descricao,edicaoProduto.Valor);
 
-                await produtoRepository.AlterarProduto(produtoDaBase);
+                await produtoRepository.AlterarProdutoAsync(produtoDaBase);
                 return new Result();
             }
             return await CommonExecution($"ProdutoService.EditarProduto {identificacao}",processo);
@@ -71,15 +71,15 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result> processo(){
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao,nameof(identificacao));
-                var produto = await produtoRepository.PesquisarPorId(guid);
 
-                if(produto is null)
+                var success = await produtoRepository.RemoverProdutoPorIdentificacaoAsync(guid);
+
+                if (success)
+                    return new Result();
+                else
                     return new Result($"Produto com identificação {identificacao} não encontrado.");
-
-                await produtoRepository.RemoverProdutoPorIdentificacao(guid);
-                return new Result();
             }
-            return await CommonExecution($"ProdutoService.RemoverProduto {identificacao}",processo);
+            return await CommonExecution($"ProdutoService.RemoverProduto {identificacao}", processo);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             };
 
             clienteRepository
-                .Setup(s => s.InserirCliente(It.IsAny<Cliente>()))
+                .Setup(s => s.InserirClienteAsync(It.IsAny<Cliente>()))
                 .Returns(Task.FromResult(0));
 
             var resultado = await clienteService.Cadastrar(cadastroCliente);
@@ -72,7 +72,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             };
 
             clienteRepository
-                .Setup(c => c.InserirCliente(It.IsAny<Cliente>()))
+                .Setup(c => c.InserirClienteAsync(It.IsAny<Cliente>()))
                 .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await clienteService.Cadastrar(cadastroCliente);
@@ -96,7 +96,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var cpf = "582.202.320-72";
             var retorno = new Cliente("Nome","email@gmail.com",cpf);
 
-            clienteRepository.Setup(c => c.PesquisarPorCpf(It.IsAny<string>()))
+            clienteRepository.Setup(c => c.PesquisarPorCpfAsync(It.IsAny<string>()))
                             .ReturnsAsync(retorno);
 
             var resultado = await clienteService.IdentificarPorCpf(cpf);
@@ -110,7 +110,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         public async Task IdentificarPorCpfNotFoundingClient(){
             var cpf = "582.202.320-72";
 
-            clienteRepository.Setup(c => c.PesquisarPorCpf(It.IsAny<string>()))
+            clienteRepository.Setup(c => c.PesquisarPorCpfAsync(It.IsAny<string>()))
                             .ReturnsAsync(default(Cliente));
 
             var resultado = await clienteService.IdentificarPorCpf(cpf);
@@ -126,7 +126,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
         public async Task IdentificarPorCpfWithException(){
             var cpf = "582.202.320-72";
 
-            clienteRepository.Setup(c =>( c.PesquisarPorCpf(It.IsAny<string>())))
+            clienteRepository.Setup(c =>( c.PesquisarPorCpfAsync(It.IsAny<string>())))
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await clienteService.IdentificarPorCpf(cpf);
@@ -150,7 +150,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var cpf = "582.202.320-72";
             var retorno = new Cliente("Usuario padrao","email@gmail.com",cpf);
 
-            clienteRepository.Setup(c => c.PesquisarClientePadrao())
+            clienteRepository.Setup(c => c.PesquisarClientePadraoAsync())
                             .ReturnsAsync(retorno);
 
             var resultado = await clienteService.SelecionarClientePadrao();
@@ -160,7 +160,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
 
         [Fact]
         public async Task SelecionarClientePadraoWithException(){
-            clienteRepository.Setup(c => c.PesquisarClientePadrao())
+            clienteRepository.Setup(c => c.PesquisarClientePadraoAsync())
                             .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await clienteService.SelecionarClientePadrao();
