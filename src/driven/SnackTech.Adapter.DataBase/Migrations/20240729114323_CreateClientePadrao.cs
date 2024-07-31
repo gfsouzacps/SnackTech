@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using SnackTech.Domain.Models;
 
 #nullable disable
 
@@ -33,7 +34,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
             migrationBuilder.InsertData(
                 table: "Cliente",
                 columns: new[] { "Id", "Cpf", "Email" },
-                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), "12345678901", "cliente.padrao@gmail.com" });
+                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), Cliente.CPF_CLIENTE_PADRAO, "cliente.padrao@padrao.com" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Pedido_Cliente_IdCliente",
