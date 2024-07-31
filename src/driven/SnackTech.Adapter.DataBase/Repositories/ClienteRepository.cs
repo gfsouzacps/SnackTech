@@ -11,6 +11,13 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task InserirClienteAsync(Cliente novoCliente)
         {
+            var clienteExistente = _repositoryDbContext.Clientes.FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
+
+            if (clienteExistente != null)
+            {
+                throw new Exception("J√° existe cliente cadastrado com esse email ou CPF.");
+            }
+
             _repositoryDbContext.Clientes.Add(novoCliente);
             await _repositoryDbContext.SaveChangesAsync();
         }
@@ -20,11 +27,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
             var cliente = await _repositoryDbContext.Clientes
                 .FirstOrDefaultAsync(c => c.Cpf == Cliente.CPF_CLIENTE_PADRAO);
 
-            if (cliente == null) {
-                throw new Exception("Cliente padr„o n„o foi localizado no banco de dados.");
+            if (cliente == null)
+            {
+                throw new Exception("Cliente padr√£o n√£o foi localizado no banco de dados.");
             }
 
-            return cliente; 
+            return cliente;
         }
 
         public async Task<Cliente?> PesquisarPorCpfAsync(string cpf)

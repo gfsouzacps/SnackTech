@@ -20,6 +20,13 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .IsRequired()
                 .HasMaxLength(15);
 
+            builder
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            builder
+                .HasIndex(u => u.Cpf)
+                .IsUnique();
+
             builder.HasData(
                 new
                 {
