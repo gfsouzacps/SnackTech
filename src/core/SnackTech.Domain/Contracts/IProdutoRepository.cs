@@ -5,10 +5,10 @@ namespace SnackTech.Domain.Contracts
 {
     public interface IProdutoRepository
     {
-        Task<IEnumerable<Produto>> PesquisarPorCategoria(CategoriaProduto categoria);
-        Task<Produto?> PesquisarPorId(Guid identificacao);
-        Task InserirProduto(Produto novoProduto);
-        Task AlterarProduto(Produto produtoAlterado);
-        Task RemoverProdutoPorIdentificacao(Guid identificacao);
+        Task<IEnumerable<Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria);
+        Task<Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao);
+        Task InserirProdutoAsync(Produto novoProduto);
+        Task AlterarProdutoAsync(Produto produtoAlterado);
+        Task<bool> RemoverProdutoPorIdentificacaoAsync(Guid identificacao);
     }
 }

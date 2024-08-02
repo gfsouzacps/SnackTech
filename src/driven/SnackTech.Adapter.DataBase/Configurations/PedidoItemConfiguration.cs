@@ -26,7 +26,6 @@ namespace SnackTech.Adapter.DataBase.Configurations
 
             builder.Property(p => p.Valor)
                 .HasField("_valor")
-                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
                 .IsRequired()
                 .HasColumnType("smallmoney");
 

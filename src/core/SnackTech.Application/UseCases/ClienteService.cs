@@ -16,7 +16,7 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<RetornoCliente>> processo(){
                 var novoCliente = new Cliente(cadastroCliente.Nome,cadastroCliente.Email,cadastroCliente.CPF);
-                await clienteRepository.InserirCliente(novoCliente);
+                await clienteRepository.InserirClienteAsync(novoCliente);
                 var retorno = RetornoCliente.APartirDeCliente(novoCliente);
                 return new Result<RetornoCliente>(retorno);
             }
@@ -27,7 +27,7 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<RetornoCliente>> processo(){
                 CpfGuard.AgainstInvalidCpf(cpf, nameof(cpf));
-                var cliente = await clienteRepository.PesquisarPorCpf(cpf);
+                var cliente = await clienteRepository.PesquisarPorCpfAsync(cpf);
 
                 if(cliente == null){
                     return new Result<RetornoCliente>($"{cpf} não encontrado.",true);
@@ -42,7 +42,7 @@ namespace SnackTech.Application.UseCases
         public async Task<Result<Guid>> SelecionarClientePadrao()
         {
             async Task<Result<Guid>> processo(){
-                var clientePadrao = await clienteRepository.PesquisarClientePadrao();
+                var clientePadrao = await clienteRepository.PesquisarClientePadraoAsync();
                 var retorno = clientePadrao.Id;
                 return new Result<Guid>(retorno);
             }
