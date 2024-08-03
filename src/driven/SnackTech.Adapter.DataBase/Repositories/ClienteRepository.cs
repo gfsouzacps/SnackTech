@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Context;
-using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
@@ -17,7 +17,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task<Cliente> PesquisarClientePadraoAsync()
         {
-            //TODO: Encontrar uma melhor forma de definir o cliente padrão. Por hora, criamos um cliente com esse ID hard coded
+            //TODO: Encontrar uma melhor forma de definir o cliente padrï¿½o. Por hora, criamos um cliente com esse ID hard coded
             var idClientePadrao = "6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1";
             var guid = Guid.Parse(idClientePadrao);
             return await _repositoryDbContext.Clientes

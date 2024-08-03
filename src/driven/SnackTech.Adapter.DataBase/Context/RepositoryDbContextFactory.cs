@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SnackTech.Adapter.DataBase.Context
 {
     /// <summary>
     /// For local use only
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class RepositoryDbContextFactory : IDesignTimeDbContextFactory<RepositoryDbContext>
     {
         public RepositoryDbContext CreateDbContext(string[] args)

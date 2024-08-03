@@ -1,7 +1,7 @@
-using SnackTech.Application.Common;
-using SnackTech.Application.DTOs.Pedido;
+using SnackTech.Domain.Common;
+using SnackTech.Domain.DTOs.Pedido;
 
-namespace SnackTech.Application.Interfaces
+namespace SnackTech.Domain.Ports.Driven
 {
     public interface IPedidoService
     {

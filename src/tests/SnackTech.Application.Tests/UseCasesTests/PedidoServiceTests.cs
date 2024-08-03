@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
 using Moq;
-using SnackTech.Application.DTOs.Pedido;
+using SnackTech.Domain.DTOs.Pedido;
 using SnackTech.Application.UseCases;
-using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {

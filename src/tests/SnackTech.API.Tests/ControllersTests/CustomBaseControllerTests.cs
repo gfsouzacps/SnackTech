@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.Common;
+using SnackTech.Domain.Common;
 
 namespace SnackTech.API.Tests.ControllersTests
 {

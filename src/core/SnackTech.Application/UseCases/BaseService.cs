@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using SnackTech.Application.Common;
+using SnackTech.Domain.Common;
 
 namespace SnackTech.Application.UseCases
 {

@@ -3,13 +3,10 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.Common;
-using SnackTech.Application.DTOs.Cliente;
-using SnackTech.Application.DTOs.Pedido;
-using SnackTech.Application.DTOs.Produto;
-using SnackTech.Application.Interfaces;
-using SnackTech.Application.UseCases;
-using Xunit.Abstractions;
+using SnackTech.Domain.Common;
+using SnackTech.Domain.DTOs.Cliente;
+using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.API.Tests.ControllersTests
 {

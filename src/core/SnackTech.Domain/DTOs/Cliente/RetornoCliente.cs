@@ -1,6 +1,6 @@
 using DomainModels = SnackTech.Domain.Models;
 
-namespace SnackTech.Application.DTOs.Cliente
+namespace SnackTech.Domain.DTOs.Cliente
 {
     public class RetornoCliente
     {

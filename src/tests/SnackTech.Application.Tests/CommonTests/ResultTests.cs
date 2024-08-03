@@ -1,6 +1,6 @@
-using SnackTech.Application.Common;
+using SnackTech.Domain.Common;
 
-namespace SnackTech.Application.Tests.CommonTests
+namespace SnackTech.Domain.Tests.CommonTests
 {
     public class ResultTests
     {

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SnackTech.Domain.Models;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
     {
         public void Configure(EntityTypeBuilder<Produto> builder)
