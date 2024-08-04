@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SnackTech.Adapter.DataBase.Context;
-using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {

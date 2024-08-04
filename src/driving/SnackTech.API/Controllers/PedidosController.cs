@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.DTOs.Pedido;
-using SnackTech.Application.Interfaces;
+using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.Ports.Driven;
 using System.Net.Mime;
 
 namespace SnackTech.API.Controllers

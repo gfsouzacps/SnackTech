@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
-using SnackTech.Application.Common;
-using SnackTech.Application.DTOs.Pedido;
-using SnackTech.Application.Interfaces;
-using SnackTech.Domain.Contracts;
+using SnackTech.Domain.Common;
+using SnackTech.Domain.DTOs.Pedido;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driven;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.Application.UseCases
 {

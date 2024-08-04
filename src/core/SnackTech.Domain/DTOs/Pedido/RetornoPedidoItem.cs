@@ -1,6 +1,6 @@
 using SnackTech.Domain.Models;
 
-namespace SnackTech.Application.DTOs.Pedido
+namespace SnackTech.Domain.DTOs.Pedido
 {
     public class RetornoPedidoItem
     {

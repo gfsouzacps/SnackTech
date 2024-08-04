@@ -1,11 +1,11 @@
 
-namespace SnackTech.Application.DTOs.Produto
+namespace SnackTech.Domain.DTOs.Produto
 {
-    public class NovoProduto
+    public class EdicaoProduto
     {
         public int Categoria {get; set;}
         public string Nome {get; set;} = string.Empty;
         public string Descricao {get; set;} = string.Empty;
-        public decimal Valor {get; set;}
+        public decimal Valor {get; set;}        
     }
 }

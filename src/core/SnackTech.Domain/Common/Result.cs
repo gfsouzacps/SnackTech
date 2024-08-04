@@ -1,4 +1,4 @@
-namespace SnackTech.Application.Common
+namespace SnackTech.Domain.Common
 {
     public class Result
     {

@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.Common;
-using SnackTech.Application.DTOs.Produto;
-using SnackTech.Application.Interfaces;
+using SnackTech.Domain.Common;
+using SnackTech.Domain.DTOs.Produto;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.API.Tests.ControllersTests
 {

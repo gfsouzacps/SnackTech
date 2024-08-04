@@ -7,7 +7,7 @@ namespace SnackTech.Domain.Models
     public class Pedido
     {
         private decimal _valor;
-        private readonly List<PedidoItem> _itens = new();
+        private readonly List<PedidoItem> _itens = [];
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
