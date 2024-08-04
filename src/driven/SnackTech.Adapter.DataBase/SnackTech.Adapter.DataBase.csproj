@@ -11,6 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\core\SnackTech.Domain\SnackTech.Domain.csproj" />
     <ProjectReference Include="..\..\core\SnackTech.Application\SnackTech.Application.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
