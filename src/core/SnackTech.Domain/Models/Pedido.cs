@@ -20,7 +20,7 @@ namespace SnackTech.Domain.Models
             get { return _valor; }
         }
 
-        private Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
+        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
         {
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 

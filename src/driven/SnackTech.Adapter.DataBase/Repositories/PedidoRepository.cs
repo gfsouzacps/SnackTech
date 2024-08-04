@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SnackTech.Adapter.DataBase.Context;
+using SnackTech.Adapter.DataBase.Entities;
+using SnackTech.Adapter.DataBase.Util;
 using SnackTech.Domain.Contracts;
-using SnackTech.Domain.Models;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
@@ -10,49 +11,87 @@ namespace SnackTech.Adapter.DataBase.Repositories
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
 
-        public async Task AtualizarPedidoAsync(Pedido pedidoAtualizado)
+        public async Task AtualizarPedidoAsync(Domain.Models.Pedido pedidoAtualizado)
         {
-            foreach (var item in pedidoAtualizado.Itens)
+            var pedidoEntity = Mapping.Mapper.Map<Pedido>(pedidoAtualizado);
+
+            if (await _repositoryDbContext.Pedidos.FindAsync(pedidoEntity.Id) is Pedido found)
             {
-                var entry = _repositoryDbContext.Entry(item);
-                if (entry.State == EntityState.Detached)
-                {
-                    entry.State = EntityState.Added;
-                }
+                _repositoryDbContext.Pedidos.Entry(found).State = EntityState.Detached;
+                _repositoryDbContext.Pedidos.Update(pedidoEntity);
+                await _repositoryDbContext.SaveChangesAsync();
             }
 
+            // // Carrega o pedido original do banco de dados
+            // var pedidoOriginal = await _repositoryDbContext.Pedidos
+            //     .Include(p => p.Itens)
+            //     .FirstOrDefaultAsync(p => p.Id == pedidoAtualizado.Id);
+
+            // if (pedidoOriginal == null)
+            // {
+            //     throw new Exception("O pedido informado não existe");
+            // }
+
+
+            //atualiza ou adiciona os itens
+            // foreach (var item in pedidoAtualizado.Itens)
+            // {
+            //     var entry = _repositoryDbContext.Entry(item);
+            //     if (entry.State == EntityState.Detached)
+            //     {
+            //         entry.State = EntityState.Added;
+            //     }
+            //     await _repositoryDbContext.SaveChangesAsync();
+            // }
+            
+            // await _repositoryDbContext.SaveChangesAsync();
+
+            // // Remove os itens que não estão mais no pedido
+            // var itensPresentesNoBd = _repositoryDbContext.PedidoItens
+            //     .Where(item => item.IdPedido == pedidoOriginal.Id)
+            //     .ToList();
+            // var itensRemover = itensPresentesNoBd.Where(item => !pedidoAtualizado.Itens.Any(p => p.Id == item.Id));
+            // _repositoryDbContext.PedidoItens.RemoveRange(itensRemover);
+
+            
+            // Salva as alterações no banco de dados
+            // await _repositoryDbContext.SaveChangesAsync();
+        }
+
+        public async Task InserirPedidoAsync(Domain.Models.Pedido novoPedido)
+        {
+            var pedidoEntity = Mapping.Mapper.Map<Pedido>(novoPedido);
+            _repositoryDbContext.Pedidos.Add(pedidoEntity);
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task InserirPedidoAsync(Pedido novoPedido)
+        public async Task<IEnumerable<Domain.Models.Pedido>> PesquisarPedidosParaPagamentoAsync()
         {
-            _repositoryDbContext.Pedidos.Add(novoPedido);
-            await _repositoryDbContext.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<Pedido>> PesquisarPedidosParaPagamentoAsync()
-        {
-            return await _repositoryDbContext.Pedidos
+            return (await _repositoryDbContext.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.Status == Domain.Enums.StatusPedido.AguardandoPagamento)
-                .ToListAsync();
+                .ToListAsync())
+                .Select(Mapping.Mapper.Map<Domain.Models.Pedido>);
         }
 
-        public async Task<IEnumerable<Pedido>> PesquisarPorClienteAsync(Guid identificacaoCliente)
+        public async Task<IEnumerable<Domain.Models.Pedido>> PesquisarPorClienteAsync(Guid identificacaoCliente)
         {
-            return await _repositoryDbContext.Pedidos
+            return (await _repositoryDbContext.Pedidos
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
-                .Where(p => p.IdCliente == identificacaoCliente)
-                .ToListAsync();
+                .Where(p => p.Cliente.Id == identificacaoCliente)
+                .ToListAsync())
+                .Select(Mapping.Mapper.Map<Domain.Models.Pedido>);
         }
 
-        public async Task<Pedido?> PesquisarPorIdentificacaoAsync(Guid identificacao)
+        public async Task<Domain.Models.Pedido?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
-            return await _repositoryDbContext.Pedidos
+            var pedido = await _repositoryDbContext.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .FirstOrDefaultAsync(p => p.Id.Equals(identificacao));
+
+            return Mapping.Mapper.Map<Domain.Models.Pedido>(pedido);
         }
     }
 }

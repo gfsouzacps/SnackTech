@@ -19,7 +19,7 @@ namespace SnackTech.Domain.Models
         public Guid IdPedido { get; private set; }
         public Pedido? Pedido { get; private set; }
 
-        private PedidoItem(Guid id, Guid idPedido, int sequencial, Guid idProduto, int quantidade, string observacao)
+        public PedidoItem(Guid id, Guid idPedido, int sequencial, Guid idProduto, int quantidade, string observacao)
         {
             CustomGuards.AgainstObjectNull(idPedido, nameof(idPedido));
             CustomGuards.AgainstObjectNull(idProduto, nameof(idProduto));

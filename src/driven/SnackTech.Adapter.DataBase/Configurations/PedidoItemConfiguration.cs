@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SnackTech.Domain.Models;
+using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
@@ -25,13 +25,8 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasMaxLength(500);
 
             builder.Property(p => p.Valor)
-                .HasField("_valor")
                 .IsRequired()
                 .HasColumnType("smallmoney");
-
-            builder.HasOne(item => item.Produto)
-                .WithMany()
-                .HasForeignKey(y => y.IdProduto);
         }
     }
 }

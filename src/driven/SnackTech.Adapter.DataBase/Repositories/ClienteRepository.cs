@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Context;
+using SnackTech.Adapter.DataBase.Entities;
+using SnackTech.Adapter.DataBase.Util;
 using SnackTech.Domain.Contracts;
-using SnackTech.Domain.Models;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
@@ -9,7 +10,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
 
-        public async Task InserirClienteAsync(Cliente novoCliente)
+        public async Task InserirClienteAsync(Domain.Models.Cliente novoCliente)
         {
             var clienteExistente = _repositoryDbContext.Clientes.FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
 
@@ -18,27 +19,33 @@ namespace SnackTech.Adapter.DataBase.Repositories
                 throw new Exception("Já existe cliente cadastrado com esse email ou CPF.");
             }
 
-            _repositoryDbContext.Clientes.Add(novoCliente);
+            var clienteAdd = Mapping.Mapper.Map<Cliente>(novoCliente);
+
+            _repositoryDbContext.Clientes.Add(clienteAdd);
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task<Cliente> PesquisarClientePadraoAsync()
+        public async Task<Domain.Models.Cliente> PesquisarClientePadraoAsync()
         {
             var cliente = await _repositoryDbContext.Clientes
-                .FirstOrDefaultAsync(c => c.Cpf == Cliente.CPF_CLIENTE_PADRAO);
+                .FirstOrDefaultAsync(c => c.Cpf == Domain.Models.Cliente.CPF_CLIENTE_PADRAO);
 
             if (cliente == null)
             {
                 throw new Exception("Cliente padrão não foi localizado no banco de dados.");
             }
 
-            return cliente;
+            var clienteRetorno = Mapping.Mapper.Map<Domain.Models.Cliente>(cliente);
+
+            return clienteRetorno;
         }
 
-        public async Task<Cliente?> PesquisarPorCpfAsync(string cpf)
+        public async Task<Domain.Models.Cliente?> PesquisarPorCpfAsync(string cpf)
         {
-            return await _repositoryDbContext.Clientes
+            var cliente = await _repositoryDbContext.Clientes
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
+
+            return Mapping.Mapper.Map<Domain.Models.Cliente>(cliente);
         }
     }
 }

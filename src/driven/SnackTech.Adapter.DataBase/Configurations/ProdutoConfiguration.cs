@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SnackTech.Domain.Models;
+using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
@@ -15,11 +15,11 @@ namespace SnackTech.Adapter.DataBase.Configurations
             builder.Property(p => p.Nome)
                 .HasColumnType("varchar")
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(255);
 
             builder.Property(p => p.Descricao)
                 .HasColumnType("varchar")
-                .HasMaxLength(255);
+                .HasMaxLength(1000);
 
             builder.Property(p => p.Valor)
                 .IsRequired()

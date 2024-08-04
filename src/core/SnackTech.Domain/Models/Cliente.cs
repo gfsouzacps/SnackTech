@@ -18,5 +18,13 @@ namespace SnackTech.Domain.Models
             Email = email;
             Cpf = cpf;
         }
+
+        public Cliente(Pessoa pessoa, string email, string cpf): base(pessoa.Id, pessoa.Nome){
+            EmailGuard.AgainstInvalidEmail(email, nameof(email));
+            CpfGuard.AgainstInvalidCpf(cpf, nameof(cpf));
+
+            Email = email;
+            Cpf = cpf;
+        }
     }
 }
