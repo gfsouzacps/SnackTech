@@ -14,33 +14,26 @@ namespace SnackTech.Adapter.DataBase.Repositories
         {
             var itensNoBanco = await _repositoryDbContext.PedidoItens
                 .Where(p => p.IdPedido == pedidoAtualizado.Id)
-                .ToListAsync();
+                .ToDictionaryAsync(p => p.Id, p => p);
 
             foreach (var itemAtualizar in pedidoAtualizado.Itens)
             {
-                var presenteNoBanco = itensNoBanco.Any(itemBanco => itemBanco.Sequencial == itemAtualizar.Sequencial);
-                var entry = _repositoryDbContext.Entry(itemAtualizar);
-                
-                if (presenteNoBanco && entry.State == EntityState.Detached)
+                if (itensNoBanco.TryGetValue(itemAtualizar.Id, out var itemBanco))
                 {
-                    itensNoBanco.Where(i => i.Sequencial == itemAtualizar.Sequencial).First().AtualizarDadosItem(itemAtualizar.Produto, itemAtualizar.Quantidade, itemAtualizar.Observacao);
+                    itemBanco.AtualizarDadosItem(itemAtualizar.Produto, itemAtualizar.Quantidade, itemAtualizar.Observacao);
                 }
-
-                if (!presenteNoBanco && entry.State == EntityState.Detached)
+                else
                 {
+                    //adiocionando itens novos dessa forma evitasse que o EF tente criar um novo produto a partir do produto presente no item
+                    var entry = _repositoryDbContext.Entry(itemAtualizar);
                     entry.State = EntityState.Added;
                 }
             }
 
             //removendo itens que foram removidos
-            foreach (var itemBanco in itensNoBanco)
-            {
-                if (!pedidoAtualizado.Itens.Any(i => i.Sequencial == itemBanco.Sequencial))
-                {
-                    _repositoryDbContext.Remove(itemBanco);
-                }
-            }
-            
+            var itensParaRemover = itensNoBanco.Where(i => !pedidoAtualizado.Itens.Any(p => p.Id == i.Key));
+            _repositoryDbContext.PedidoItens.RemoveRange(itensParaRemover.Select(i => i.Value));
+
             //atualizar colunas do pedido
             var entryPedido = _repositoryDbContext.Entry(pedidoAtualizado);
             entryPedido.State = EntityState.Modified;
