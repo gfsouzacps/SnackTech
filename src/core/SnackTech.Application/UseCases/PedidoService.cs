@@ -26,14 +26,12 @@ namespace SnackTech.Application.UseCases
                 
                 try
                 {
-                    await AdicionarOuAtualizarItensPedido(pedidoAtualizado, pedido);
+                    await AtualizarItensPedido(pedidoAtualizado, pedido);
                 }
                 catch (Exception ex)
                 {
                     return new Result(ex.ToString());
                 }
-
-                RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
 
                 await pedidoRepository.AtualizarPedidoAsync(pedido);
 
@@ -43,8 +41,10 @@ namespace SnackTech.Application.UseCases
             return await CommonExecution($"PedidoService.AtualizarPedido {AtualizarPedido}", processo);
         }
 
-        private async Task AdicionarOuAtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        private async Task AtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
         {
+            RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
+            
             foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
             {
                 var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
@@ -66,7 +66,8 @@ namespace SnackTech.Application.UseCases
 
         private static void RemoverItensAusentesNoPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
         {
-            var pedidosRemovidos = pedido.Itens.Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
+            var pedidosRemovidos = pedido.Itens
+                .Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
             foreach (var item in pedidosRemovidos)
             {
                 pedido.RemoverItemPorSequencial(item.Sequencial);
