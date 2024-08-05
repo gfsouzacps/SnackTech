@@ -25,6 +25,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<IEnumerable<Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
         {
             return await _repositoryDbContext.Produtos
+                    .AsNoTracking()
                     .Where(p => p.Categoria == categoria)
                     .ToListAsync();
         }
@@ -32,6 +33,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             return await _repositoryDbContext.Produtos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == identificacao);
         }
 

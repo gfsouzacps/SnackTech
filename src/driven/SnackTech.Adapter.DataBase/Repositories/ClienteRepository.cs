@@ -11,7 +11,8 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task InserirClienteAsync(Cliente novoCliente)
         {
-            var clienteExistente = _repositoryDbContext.Clientes.FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
+            var clienteExistente = _repositoryDbContext.Clientes
+                .FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
 
             if (clienteExistente != null)
             {
@@ -25,6 +26,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Cliente> PesquisarClientePadraoAsync()
         {
             var cliente = await _repositoryDbContext.Clientes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == Cliente.CPF_CLIENTE_PADRAO);
 
             if (cliente == null)
@@ -38,6 +40,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Cliente?> PesquisarPorCpfAsync(string cpf)
         {
             return await _repositoryDbContext.Clientes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
         }
     }
