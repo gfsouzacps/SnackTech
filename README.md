@@ -16,10 +16,10 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 
 ## Tecnologias Utilizadas
 
-- ![C#](https://raw.githubusercontent.com/github/explore/main/topics/csharp/csharp.png) **C#**: Linguagem de programação utilizada para desenvolver o projeto.
-- ![SQL Server](https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg) **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
-- ![Docker](https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png) **Docker**: Plataforma utilizada para contêinerizar a aplicação.
-- ![Swagger](https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWC-logo-clr.png) **Swagger**: Plataforma utilizada para documentação da API.
+- <img src="https://raw.githubusercontent.com/github/explore/main/topics/csharp/csharp.png" alt="C#" width="20"/> **C#**: Linguagem de programação utilizada para desenvolver o projeto.
+- <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="SQL Server" width="20"/> **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
+- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para contêinerizar a aplicação.
+- <img src="https://static1.smartbear.co/swagger/media/assets/swagger_fav.png" alt="Swagger" width="20"/> **Swagger**: Plataforma utilizada para documentação da API.
 
 ## Como Utilizar
 
