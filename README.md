@@ -30,7 +30,7 @@ Antes de rodar o projeto SnackTech, certifique-se de que você possui os seguint
 - **Docker**: O projeto é contêinerizado utilizando Docker. Instale o Docker Desktop para Windows ou Mac, ou configure o Docker Engine para Linux.
 - **Arquivo de Configuração do Banco de Dados**: Verifique o arquivo appsettings.json (ou outro arquivo de configuração utilizado) para garantir que a string de conexão com o banco de dados SQL Server está corretamente configurada.
 
-### Instalação
+### Preparando o ambiente
 
 Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 
@@ -38,13 +38,10 @@ Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 - Clone o repositório do projeto para sua máquina local usando o Git: git clone https://github.com/seu-usuario/SnackTech.git
 
 **2 - Configure o Banco de Dados** 
-- Configure o banco de dados SQL Server. Verifique o arquivo appsettings.json ou o arquivo de configuração correspondente e ajuste a string de conexão com as informações da sua instância SQL Server.
+- Configure o banco de dados SQL Server. Verifique o arquivo appsettings.json e ajuste a string de conexão com as informações da sua instância SQL Server.
 
-**3 - Configuração do Docker** 
-- Certifique-se de ter o Docker Desktop instalado e em execução. Através do prompt de comando, navegue até o projeto SnackTech.API e execute o seguinte comando: docker-compose up --build
-
-- **4 - Executar Migrations** 
-- Aplique as migrations ao banco de dados. Utilize o seguinte comando para executar as migrations: dotnet ef database update
+**3 - Inicialize o Conteiner Docker** 
+- Certifique-se de ter o Docker Desktop instalado e em execução. Através do prompt de comando, na raiz da pasta src, execute o seguinte comando: docker-compose up --build
 
 ### Uso
 
