@@ -1,4 +1,4 @@
-# SnackTech
+# SnackTech ![ ](LogoSnackTech.png)
 
 ## Descrição
 
