@@ -57,6 +57,12 @@ namespace SnackTech.Adapter.DataBase.Migrations
                         principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.UniqueConstraint(
+                        name: "Unique_Email",
+                        columns: x => x.Email);
+                    table.UniqueConstraint(
+                        name: "Unique_Cpf",
+                        columns: x => x.Cpf);
                 });
 
             migrationBuilder.CreateTable(
