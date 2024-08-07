@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using SnackTech.Adapter.DataBase.Repositories;
-using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Adapter.DataBase
 {

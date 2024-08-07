@@ -4,7 +4,7 @@ using SnackTech.Domain.DTOs.Produto;
 using SnackTech.Application.UseCases;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
-using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {

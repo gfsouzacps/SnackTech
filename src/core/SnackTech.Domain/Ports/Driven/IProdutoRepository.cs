@@ -1,7 +1,7 @@
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
 
-namespace SnackTech.Domain.Ports.Driving
+namespace SnackTech.Domain.Ports.Driven
 {
     public interface IProdutoRepository
     {
