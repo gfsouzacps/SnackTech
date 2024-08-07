@@ -20,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.EnableAnnotations();
     c.DescribeAllParametersInCamelCase();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SnackTech", Version = "v1" });
 });
