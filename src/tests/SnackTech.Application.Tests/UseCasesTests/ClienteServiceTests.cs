@@ -3,7 +3,7 @@ using Moq;
 using SnackTech.Application.UseCases;
 using SnackTech.Domain.DTOs.Cliente;
 using SnackTech.Domain.Models;
-using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {

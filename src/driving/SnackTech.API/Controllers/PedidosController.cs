@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.API.CustomResponses;
 using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.Ports.Driving;
 using SnackTech.Domain.Ports.Driven;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;

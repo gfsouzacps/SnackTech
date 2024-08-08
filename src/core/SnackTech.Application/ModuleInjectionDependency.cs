@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using SnackTech.Application.UseCases;
-using SnackTech.Domain.Ports.Driven;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.Application
 {

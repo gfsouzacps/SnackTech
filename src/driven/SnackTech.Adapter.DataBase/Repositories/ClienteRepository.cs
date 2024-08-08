@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Context;
 using SnackTech.Domain.Models;
-using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {

@@ -1,7 +1,7 @@
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Cliente;
 
-namespace SnackTech.Domain.Ports.Driven
+namespace SnackTech.Domain.Ports.Driving
 {
     public interface IClienteService
     {

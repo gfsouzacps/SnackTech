@@ -6,7 +6,7 @@ using SnackTech.API.CustomResponses;
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Cliente;
 using SnackTech.Domain.DTOs.Pedido;
-using SnackTech.Domain.Ports.Driven;
+using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.API.Tests.ControllersTests
 {
