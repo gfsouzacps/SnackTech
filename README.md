@@ -14,10 +14,10 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 
 ## Tecnologias Utilizadas
 
-- **C#**: Linguagem de programação utilizada para desenvolver o projeto.
-- **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
-- **Docker**: Plataforma utilizada para contêinerizar a aplicação.
-- **Swagger**: Plataforma utilizada para documentação da API.
+- <img src="https://raw.githubusercontent.com/github/explore/main/topics/csharp/csharp.png" alt="C#" width="20"/> **C#**: Linguagem de programação utilizada para desenvolver o projeto.
+- <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="SQL Server" width="20"/> **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
+- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para contêinerizar a aplicação.
+- <img src="https://static1.smartbear.co/swagger/media/assets/swagger_fav.png" alt="Swagger" width="20"/> **Swagger**: Plataforma utilizada para documentação da API.
 
 ## Como Utilizar
 
@@ -26,9 +26,8 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 Antes de rodar o projeto SnackTech, certifique-se de que você possui os seguintes pré-requisitos:
 
 - **.NET SDK**: O projeto foi desenvolvido com o .NET SDK. Instale a versão necessária para garantir a compatibilidade com o código.
-- **SQL Server**: O projeto utiliza o SQL Server como sistema de gerenciamento de banco de dados. Certifique-se de ter o SQL Server instalado e configurado, ou utilize uma instância SQL Server em contêiner.
-- **Docker**: O projeto é contêinerizado utilizando Docker. Instale o Docker Desktop para Windows ou Mac, ou configure o Docker Engine para Linux.
-- **Arquivo de Configuração do Banco de Dados**: Verifique o arquivo appsettings.json (ou outro arquivo de configuração utilizado) para garantir que a string de conexão com o banco de dados SQL Server está corretamente configurada.
+- **Docker**: O projeto utiliza Docker para contêinerizar a aplicação e o banco de dados. Instale o Docker Desktop para Windows ou Mac, ou configure o Docker Engine para Linux. O Docker Compose também é necessário para orquestrar os containers.
+- **SQL Server (Opcional)**: O projeto configura e gerencia uma instância do SQL Server dentro de um container Docker. Sendo assim, a instalação do SQL Server é opcional.
 
 ### Preparando o ambiente
 
@@ -37,11 +36,14 @@ Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 **1 - Clone o repositório** 
 - Clone o repositório do projeto para sua máquina local usando o Git: git clone https://github.com/seu-usuario/SnackTech.git
 
-**2 - Configure o Banco de Dados** 
-- Configure o banco de dados SQL Server. Verifique o arquivo appsettings.json e ajuste a string de conexão com as informações da sua instância SQL Server.
+**2 - Configure o ambiente Docker** 
+- Certifique-se de que o Docker Desktop (Windows ou Mac) ou o Docker Engine (Linux) esteja instalado e em execução.
 
-**3 - Inicialize o Conteiner Docker** 
-- Certifique-se de ter o Docker Desktop instalado e em execução. Através do prompt de comando, na raiz da pasta src, execute o seguinte comando: docker-compose up --build
+**3 - Inicialize os containers Docker**
+- Na raiz da pasta do projeto (dentro da pasta "src" onde está o arquivo docker-compose.yml), abra um prompt de comando e execute o seguinte comando para construir e iniciar os containers: docker-compose up --build. Esse comando configura e inicia a aplicação e o banco de dados SQL Server dentro de containers Docker.
+
+**4 - Verifique a execução**
+- A aplicação estará disponível nas portas configuradas no docker-compose.yml, e o banco de dados SQL Server estará disponível para conexões conforme definido na string de conexão do arquivo de configuração da aplicação.
 
 ### Uso
 
@@ -64,10 +66,18 @@ No Driven temos a camada de banco de dados:
 No Driving, temos a camada de API:
 - **SnackTech.API**: Este projeto é a interface do nosso sistema. Ele contém nossos Controllers, que recebem requisições do usuário e retornam respostas. Além disso, ele contém arquivos de configuração como o appsettings, Dockerfile e docker-compose.
 
-### Tests
+#### Tests
 Em tests, temos projetos voltados para as outras camadas, sendo os projetos:
 
 - **SnackTech.Adapter.Database.Tests**: Este projeto contém testes para a camada de banco de dados. Ele nos ajuda a garantir que nossas operações de banco de dados estão funcionando corretamente.
 - **SnackTech.API.Tests**: Este projeto contém testes para a camada de API. Ele nos ajuda a garantir que nossos endpoints estão retornando as respostas corretas.
 - **SnackTech.Application.Tests**: Este projeto contém testes para as UseCases. Ele nos ajuda a garantir que nossa lógica de negócios está funcionando corretamente.
 - **SnackTech.Domain.Tests**: Este projeto contém testes para a camada de domínio. Ele nos ajuda a garantir que nossas regras de negócios e lógica de domínio estão corretas.
+
+### Modificabilidade
+
+O projeto foi estruturado para facilitar a modificação e a expansão:
+
+- **Adicionar Novas Funcionalidades:** Novos casos de uso e funcionalidades podem ser adicionados na camada SnackTech.Application. Atualize também a camada SnackTech.API para expor novos endpoints, se necessário.
+- **Modificar Funcionalidades Existentes:** Alterações na lógica de negócios devem ser feitas na camada SnackTech.Application e SnackTech.Domain. As alterações na interação com o banco de dados são feitas na camada SnackTech.Adapter.Database.
+- **Manutenção:** A arquitetura modular permite que as alterações em uma parte do sistema (como o banco de dados ou a API) sejam feitas com impacto mínimo nas outras partes do sistema.
