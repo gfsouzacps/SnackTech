@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;
 using SnackTech.Domain.Ports.Driven;
@@ -23,6 +24,10 @@ namespace SnackTech.Application.UseCases
 
                 if (pedido is null)
                     return new Result($"Pedido com identificação {pedidoAtualizado.Identificacao} não encontrado.");
+
+                if (pedido.Status == StatusPedido.AguardandoPagamento){
+                    return new Result($"O pedido com identificação {pedidoAtualizado.Identificacao} não pode ser alterado pois está aguardando pagamento.");
+                }
                 
                 try
                 {
@@ -100,6 +105,9 @@ namespace SnackTech.Application.UseCases
 
                 if (cliente is null)
                     return new Result<RetornoPedido>($"Cliente com cpf {cpfCliente} não encontrado.", true);
+
+                if (cliente.Cpf == Cliente.CPF_CLIENTE_PADRAO)
+                    return new Result<RetornoPedido>($"Não é permitido consultar o último pedido do cliente padrão.", true);
 
                 IEnumerable<Pedido> pedidos = await pedidoRepository.PesquisarPorClienteAsync(cliente.Id);
                 var ultimoPedido = pedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
