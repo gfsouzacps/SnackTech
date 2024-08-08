@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SnackTech.Adapter.DataBase.Context;
-using System.Diagnostics.CodeAnalysis;
+using SnackTech.Domain.Models;
 
 #nullable disable
 
@@ -150,10 +150,10 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
+                            Id = Guid.Parse("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
                             Nome = "Cliente Padrão",
-                            Cpf = "12345678901",
-                            Email = "cliente.padrao@gmail.com"
+                            Cpf = Cliente.CPF_CLIENTE_PADRAO,
+                            Email = "cliente.padrao@padrao.com"
                         });
                 });
 

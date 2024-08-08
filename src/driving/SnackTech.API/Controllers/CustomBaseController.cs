@@ -10,43 +10,49 @@ namespace SnackTech.API.Controllers
     {
         private readonly ILogger logger = logger;
 
-        internal async Task<IActionResult> CommonExecution<T>(string nomeMetodo, Task<Result<T>> processo){
-            try{
+        internal async Task<IActionResult> CommonExecution<T>(string nomeMetodo, Task<Result<T>> processo)
+        {
+            try
+            {
                 var resultado = await processo;
-                
-                if(resultado.IsSuccess())
+
+                if (resultado.IsSuccess())
                     return Ok(resultado.Data);
 
-                if(resultado.HasException())
-                    return StatusCode(StatusCodes.Status500InternalServerError,new ErrorResponse(resultado.Message,new ExceptionResponse(resultado.Exception)));
+                if (resultado.HasException())
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(resultado.Message, new ExceptionResponse(resultado.Exception)));
 
-                var errorResponse = new ErrorResponse(resultado.Message,null);
+                var errorResponse = new ErrorResponse(resultado.Message, null);
                 return BadRequest(errorResponse);
             }
-            catch(Exception ex){
-                logger.LogError(ex,"{Metodo} - Exception - {Message}",nomeMetodo,ex.Message);
-                var retorno = new ErrorResponse(ex.Message,new ExceptionResponse(ex));
-                return StatusCode(StatusCodes.Status500InternalServerError,retorno);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "{Metodo} - Exception - {Message}", nomeMetodo, ex.Message);
+                var retorno = new ErrorResponse(ex.Message, new ExceptionResponse(ex));
+                return StatusCode(StatusCodes.Status500InternalServerError, retorno);
             }
         }
 
-        internal async Task<IActionResult> CommonExecution(string nomeMetodo, Task<Result> processo){
-            try{
+        internal async Task<IActionResult> CommonExecution(string nomeMetodo, Task<Result> processo)
+        {
+            try
+            {
                 var resultado = await processo;
-                
-                if(resultado.IsSuccess())
+
+                if (resultado.IsSuccess())
                     return Ok();
 
-                if(resultado.HasException())
-                    return StatusCode(StatusCodes.Status500InternalServerError,new ErrorResponse(resultado.Message,new ExceptionResponse(resultado.Exception)));
+                if (resultado.HasException())
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(resultado.Message, new ExceptionResponse(resultado.Exception)));
 
-                var errorResponse = new ErrorResponse(resultado.Message,null);
+                var errorResponse = new ErrorResponse(resultado.Message, null);
                 return BadRequest(errorResponse);
             }
-            catch(Exception ex){
-                logger.LogError(ex,"{Metodo} - Exception - {Message}",nomeMetodo,ex.Message);
-                var retorno = new ErrorResponse(ex.Message,new ExceptionResponse(ex));
-                return StatusCode(StatusCodes.Status500InternalServerError,retorno);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "{Metodo} - Exception - {Message}", nomeMetodo, ex.Message);
+                var retorno = new ErrorResponse(ex.Message, new ExceptionResponse(ex));
+                return StatusCode(StatusCodes.Status500InternalServerError, retorno);
             }
         }
     }

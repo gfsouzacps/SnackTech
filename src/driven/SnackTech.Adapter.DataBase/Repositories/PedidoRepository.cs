@@ -11,14 +11,31 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task AtualizarPedidoAsync(Pedido pedidoAtualizado)
         {
-            foreach (var item in pedidoAtualizado.Itens)
+            var itensNoBanco = await _repositoryDbContext.PedidoItens
+                .Where(p => p.IdPedido == pedidoAtualizado.Id)
+                .ToDictionaryAsync(p => p.Id, p => p);
+
+            foreach (var itemAtualizar in pedidoAtualizado.Itens)
             {
-                var entry = _repositoryDbContext.Entry(item);
-                if (entry.State == EntityState.Detached)
+                if (itensNoBanco.TryGetValue(itemAtualizar.Id, out var itemBanco))
                 {
+                    itemBanco.AtualizarDadosItem(itemAtualizar.Produto, itemAtualizar.Quantidade, itemAtualizar.Observacao);
+                }
+                else
+                {
+                    //adiocionando itens novos dessa forma evitasse que o EF tente criar um novo produto a partir do produto presente no item
+                    var entry = _repositoryDbContext.Entry(itemAtualizar);
                     entry.State = EntityState.Added;
                 }
             }
+
+            //removendo itens que foram removidos
+            var itensParaRemover = itensNoBanco.Where(i => !pedidoAtualizado.Itens.Any(p => p.Id == i.Key));
+            _repositoryDbContext.PedidoItens.RemoveRange(itensParaRemover.Select(i => i.Value));
+
+            //atualizar colunas do pedido
+            var entryPedido = _repositoryDbContext.Entry(pedidoAtualizado);
+            entryPedido.State = EntityState.Modified;
 
             await _repositoryDbContext.SaveChangesAsync();
         }
@@ -32,6 +49,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<IEnumerable<Pedido>> PesquisarPedidosParaPagamentoAsync()
         {
             return await _repositoryDbContext.Pedidos
+                .AsNoTracking()
                 .Include(p => p.Cliente)
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.Status == Domain.Enums.StatusPedido.AguardandoPagamento)
@@ -41,6 +59,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<IEnumerable<Pedido>> PesquisarPorClienteAsync(Guid identificacaoCliente)
         {
             return await _repositoryDbContext.Pedidos
+                .AsNoTracking()
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.IdCliente == identificacaoCliente)
                 .ToListAsync();
@@ -49,6 +68,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Pedido?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             return await _repositoryDbContext.Pedidos
+                .AsNoTracking()
                 .Include(p => p.Cliente)
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .FirstOrDefaultAsync(p => p.Id.Equals(identificacao));

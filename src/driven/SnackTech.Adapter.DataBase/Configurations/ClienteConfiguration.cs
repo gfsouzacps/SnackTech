@@ -22,12 +22,19 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .IsRequired()
                 .HasMaxLength(15);
 
+            builder
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            builder
+                .HasIndex(u => u.Cpf)
+                .IsUnique();
+
             builder.HasData(
                 new
                 {
                     Id = Guid.Parse("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
-                    Email = "cliente.padrao@gmail.com",
-                    Cpf = "67525226008",
+                    Email = "cliente.padrao@padrao.com",
+                    Cpf = Cliente.CPF_CLIENTE_PADRAO,
                     Nome = "Cliente Padrão"
                 });
         }

@@ -5,27 +5,33 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{1EDED837-E83D-49B5-A7DF-066A7105DF2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Application", "core\SnackTech.Application\SnackTech.Application.csproj", "{B3106F13-B500-437A-952E-E3981C24ED36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Application", "core\SnackTech.Application\SnackTech.Application.csproj", "{B3106F13-B500-437A-952E-E3981C24ED36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Domain", "core\SnackTech.Domain\SnackTech.Domain.csproj", "{19CB4B2C-4801-49F5-8272-4B24A8855E92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain", "core\SnackTech.Domain\SnackTech.Domain.csproj", "{19CB4B2C-4801-49F5-8272-4B24A8855E92}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driven", "driven", "{9BA84263-730B-4BE9-A122-9C4E5250E21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Adapter.DataBase", "driven\SnackTech.Adapter.DataBase\SnackTech.Adapter.DataBase.csproj", "{72F71E57-CC20-4E51-A245-9E290F254108}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Adapter.DataBase", "driven\SnackTech.Adapter.DataBase\SnackTech.Adapter.DataBase.csproj", "{72F71E57-CC20-4E51-A245-9E290F254108}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driving", "driving", "{A6C434E4-CFB7-48C8-8396-66886A1E7D6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.API", "driving\SnackTech.API\SnackTech.API.csproj", "{EA12B2DC-7676-406D-B258-79D588B89585}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.API", "driving\SnackTech.API\SnackTech.API.csproj", "{EA12B2DC-7676-406D-B258-79D588B89585}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{984A6F53-D819-461F-A5C6-20ABEB936F8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Adapter.Database.Tests", "tests\SnackTech.Adapter.Database.Tests\SnackTech.Adapter.Database.Tests.csproj", "{99148107-6ED8-4EC7-B100-C25C400CB46B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Adapter.Database.Tests", "tests\SnackTech.Adapter.Database.Tests\SnackTech.Adapter.Database.Tests.csproj", "{99148107-6ED8-4EC7-B100-C25C400CB46B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.API.Tests", "tests\SnackTech.API.Tests\SnackTech.API.Tests.csproj", "{FCE83E91-35D8-40D5-9B73-F9323145D71C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.API.Tests", "tests\SnackTech.API.Tests\SnackTech.API.Tests.csproj", "{FCE83E91-35D8-40D5-9B73-F9323145D71C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Application.Tests", "tests\SnackTech.Application.Tests\SnackTech.Application.Tests.csproj", "{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Application.Tests", "tests\SnackTech.Application.Tests\SnackTech.Application.Tests.csproj", "{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Domain.Tests", "tests\SnackTech.Domain.Tests\SnackTech.Domain.Tests.csproj", "{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain.Tests", "tests\SnackTech.Domain.Tests\SnackTech.Domain.Tests.csproj", "{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9748FD7-189E-4DC2-B216-36CD035B3929}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,9 +75,6 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B3106F13-B500-437A-952E-E3981C24ED36} = {1EDED837-E83D-49B5-A7DF-066A7105DF2F}
 		{19CB4B2C-4801-49F5-8272-4B24A8855E92} = {1EDED837-E83D-49B5-A7DF-066A7105DF2F}
@@ -81,5 +84,8 @@ Global
 		{FCE83E91-35D8-40D5-9B73-F9323145D71C} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}
 	EndGlobalSection
 EndGlobal

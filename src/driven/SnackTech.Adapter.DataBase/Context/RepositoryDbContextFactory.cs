@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace SnackTech.Adapter.DataBase.Context
@@ -20,7 +20,9 @@ namespace SnackTech.Adapter.DataBase.Context
                 .Build();
 
             var connString = configuration.GetConnectionString("DefaultConnection")
-                             ?? throw new InvalidOperationException("Connection string is not set in configuration."); var optionsBuilder = new DbContextOptionsBuilder<RepositoryDbContext>();
+                             ?? throw new InvalidOperationException("Connection string is not set in configuration.");
+
+            var optionsBuilder = new DbContextOptionsBuilder<RepositoryDbContext>();
             optionsBuilder.UseSqlServer(connString);
 
             return new RepositoryDbContext(optionsBuilder.Options);

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;
 using SnackTech.Domain.Ports.Driven;
@@ -23,17 +24,19 @@ namespace SnackTech.Application.UseCases
 
                 if (pedido is null)
                     return new Result($"Pedido com identificação {pedidoAtualizado.Identificacao} não encontrado.");
+
+                if (pedido.Status == StatusPedido.AguardandoPagamento){
+                    return new Result($"O pedido com identificação {pedidoAtualizado.Identificacao} não pode ser alterado pois está aguardando pagamento.");
+                }
                 
                 try
                 {
-                    await AdicionarOuAtualizarItensPedido(pedidoAtualizado, pedido);
+                    await AtualizarItensPedido(pedidoAtualizado, pedido);
                 }
                 catch (Exception ex)
                 {
                     return new Result(ex.ToString());
                 }
-
-                RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
 
                 await pedidoRepository.AtualizarPedidoAsync(pedido);
 
@@ -43,8 +46,10 @@ namespace SnackTech.Application.UseCases
             return await CommonExecution($"PedidoService.AtualizarPedido {AtualizarPedido}", processo);
         }
 
-        private async Task AdicionarOuAtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        private async Task AtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
         {
+            RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
+            
             foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
             {
                 var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
@@ -66,7 +71,8 @@ namespace SnackTech.Application.UseCases
 
         private static void RemoverItensAusentesNoPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
         {
-            var pedidosRemovidos = pedido.Itens.Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
+            var pedidosRemovidos = pedido.Itens
+                .Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
             foreach (var item in pedidosRemovidos)
             {
                 pedido.RemoverItemPorSequencial(item.Sequencial);
@@ -99,6 +105,9 @@ namespace SnackTech.Application.UseCases
 
                 if (cliente is null)
                     return new Result<RetornoPedido>($"Cliente com cpf {cpfCliente} não encontrado.", true);
+
+                if (cliente.Cpf == Cliente.CPF_CLIENTE_PADRAO)
+                    return new Result<RetornoPedido>($"Não é permitido consultar o último pedido do cliente padrão.", true);
 
                 IEnumerable<Pedido> pedidos = await pedidoRepository.PesquisarPorClienteAsync(cliente.Id);
                 var ultimoPedido = pedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
