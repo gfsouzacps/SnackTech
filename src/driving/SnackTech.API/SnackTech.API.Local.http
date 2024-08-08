@@ -1,0 +1,10 @@
+@api_hostAddress = http://localhost:5062
+
+GET {{api_hostAddress}}/
+Accept: application/json
+
+###
+
+GET {{api_hostAddress}}/api/health
+
+###
