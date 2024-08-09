@@ -1,6 +1,6 @@
 using SnackTech.Domain.Models;
 
-namespace SnackTech.Domain.Contracts
+namespace SnackTech.Domain.Ports.Driven
 {
     public interface IClienteRepository
     {

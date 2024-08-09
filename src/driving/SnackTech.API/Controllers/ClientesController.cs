@@ -1,8 +1,10 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.DTOs.Cliente;
-using SnackTech.Application.Interfaces;
+using SnackTech.Domain.DTOs.Cliente;
+using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SnackTech.API.Controllers
 {
@@ -17,6 +19,7 @@ namespace SnackTech.API.Controllers
         [ProducesResponseType<RetornoCliente>(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Cadastra um novo cliente no sistema")]
         public async Task<IActionResult> Post([FromBody] CadastroCliente cadastroCliente)
             => await CommonExecution("Clientes.Post",clienteService.Cadastrar(cadastroCliente));
 
@@ -25,6 +28,7 @@ namespace SnackTech.API.Controllers
         [ProducesResponseType<RetornoCliente>(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Retorna o cliente com o CPF informado")]
         public async Task<IActionResult> GetByCpf([FromRoute] string cpf)
             => await CommonExecution("Clientes.GetByCpf",clienteService.IdentificarPorCpf(cpf));
 
@@ -33,6 +37,7 @@ namespace SnackTech.API.Controllers
         [ProducesResponseType<RetornoCliente>(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Retorna o cliente padrao")]
         public async Task<IActionResult> GetDefaultClient()
             => await CommonExecution("Clientes.GetDefaultClient",clienteService.SelecionarClientePadrao());
     }

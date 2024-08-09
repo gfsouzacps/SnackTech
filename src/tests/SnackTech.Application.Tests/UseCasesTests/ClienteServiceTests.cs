@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
 using Moq;
-using SnackTech.Application.DTOs.Cliente;
 using SnackTech.Application.UseCases;
-using SnackTech.Domain.Contracts;
+using SnackTech.Domain.DTOs.Cliente;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {

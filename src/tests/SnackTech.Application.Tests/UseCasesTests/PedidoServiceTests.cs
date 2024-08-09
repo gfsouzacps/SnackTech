@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
 using Moq;
-using SnackTech.Application.DTOs.Pedido;
+using SnackTech.Domain.DTOs.Pedido;
 using SnackTech.Application.UseCases;
-using SnackTech.Domain.Contracts;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {
@@ -136,6 +136,21 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.False(resultado.IsSuccess());
             Assert.Null(resultado.Exception);
             Assert.Contains($"cpfCliente com valor {cpfCliente} não é um CPF válido.", resultado.Message);
+        }
+
+        [Fact]
+        public async Task BuscarUltimoPedidoClienteWithClientePadraoThrowsException()
+        {
+            var cliente = new Cliente("Cliente padrao", "email@gmail.com", Cliente.CPF_CLIENTE_PADRAO);
+
+            clienteRepository.Setup(c => c.PesquisarPorCpfAsync(cliente.Cpf))
+                            .ReturnsAsync(cliente);
+
+            var resultado = await pedidoService.BuscarUltimoPedidoCliente(Cliente.CPF_CLIENTE_PADRAO);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.Contains($"Não é permitido consultar o último pedido do cliente padrão.", resultado.Message);
         }
 
         [Fact]
@@ -516,5 +531,38 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.NotNull(resultado.Exception);
             Assert.Contains($"Erro inesperado", resultado.Message);
         }
+
+        [Fact]
+        public async Task AtualizarPedidoAguardandoPagamentoThrowsException()
+        {
+            var cliente = new Cliente("Nome completo", "email@gmail.com", "582.202.320-72");
+
+            var pedido = new Pedido(cliente);
+            pedido.FecharPedidoParaPagamento();
+
+            pedidoRepository.Setup(p => p.PesquisarPorIdentificacaoAsync(It.IsAny<Guid>()))
+                            .ReturnsAsync(pedido);
+
+            var pedidoItemAtualizado = new AtualizacaoPedidoItem
+            {
+                Sequencial = 2,
+                IdentificacaoProduto = Guid.NewGuid().ToString(),
+                Quantidade = 1,
+                Observacao = "",
+            };
+
+            var AtualizacaoPedido = new AtualizacaoPedido
+            {
+                Identificacao = pedido.Id.ToString(),
+                PedidoItens = new List<AtualizacaoPedidoItem> { pedidoItemAtualizado }
+            };
+
+            var resultado = await pedidoService.AtualizarPedido(AtualizacaoPedido);
+
+            Assert.False(resultado.IsSuccess());
+            Assert.Null(resultado.Exception);
+            Assert.Contains($"O pedido com identificação {pedido.Id.ToString()} não pode ser alterado pois está aguardando pagamento.", resultado.Message);
+        }
+
     }
 }

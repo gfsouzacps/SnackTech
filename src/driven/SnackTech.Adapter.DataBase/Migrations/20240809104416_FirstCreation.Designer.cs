@@ -12,7 +12,7 @@ using SnackTech.Adapter.DataBase.Context;
 namespace SnackTech.Adapter.DataBase.Migrations
 {
     [DbContext(typeof(RepositoryDbContext))]
-    [Migration("20240809102659_FirstCreation")]
+    [Migration("20240809104416_FirstCreation")]
     partial class FirstCreation
     {
         /// <inheritdoc />

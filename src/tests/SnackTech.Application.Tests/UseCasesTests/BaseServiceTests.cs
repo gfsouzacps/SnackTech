@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
-using SnackTech.Application.Common;
 using SnackTech.Application.UseCases;
+using SnackTech.Domain.Common;
 
 namespace SnackTech.Application.Tests.UseCasesTests
 {

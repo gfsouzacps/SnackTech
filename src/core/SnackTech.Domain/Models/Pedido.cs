@@ -7,7 +7,7 @@ namespace SnackTech.Domain.Models
     public class Pedido
     {
         private decimal _valor;
-        private readonly List<PedidoItem> _itens = new();
+        private readonly List<PedidoItem> _itens;
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
@@ -20,7 +20,7 @@ namespace SnackTech.Domain.Models
             get { return _valor; }
         }
 
-        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
+        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente, List<PedidoItem>? itens = null)
         {
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 
@@ -29,6 +29,7 @@ namespace SnackTech.Domain.Models
             Status = status;
             IdCliente = cliente.Id;
             Cliente = cliente;
+            _itens = itens ?? new List<PedidoItem>();
         }
 
         public Pedido(Cliente cliente)

@@ -82,7 +82,8 @@ public class MappingProfile : Profile
                         src.Id,
                         src.DataCriacao,
                         src.Status,
-                        context.Mapper.Map<Cliente, Domain.Models.Cliente>(src.Cliente)
+                        context.Mapper.Map<Cliente, Domain.Models.Cliente>(src.Cliente),
+                        context.Mapper.Map<IEnumerable<PedidoItem>, List<Domain.Models.PedidoItem>>(src.Itens)
                     );
                 });
 

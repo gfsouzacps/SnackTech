@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.API.CustomResponses;
-using SnackTech.Application.Common;
+using SnackTech.Domain.Common;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SnackTech.API.Tests")]

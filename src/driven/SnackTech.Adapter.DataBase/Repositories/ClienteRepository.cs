@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Context;
 using SnackTech.Adapter.DataBase.Entities;
 using SnackTech.Adapter.DataBase.Util;
-using SnackTech.Domain.Contracts;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
@@ -12,7 +12,8 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task InserirClienteAsync(Domain.Models.Cliente novoCliente)
         {
-            var clienteExistente = _repositoryDbContext.Clientes.FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
+            var clienteExistente = _repositoryDbContext.Clientes
+                .FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
 
             if (clienteExistente != null)
             {
@@ -28,6 +29,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Domain.Models.Cliente> PesquisarClientePadraoAsync()
         {
             var cliente = await _repositoryDbContext.Clientes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == Domain.Models.Cliente.CPF_CLIENTE_PADRAO);
 
             if (cliente == null)
@@ -43,6 +45,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Domain.Models.Cliente?> PesquisarPorCpfAsync(string cpf)
         {
             var cliente = await _repositoryDbContext.Clientes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
 
             return Mapping.Mapper.Map<Domain.Models.Cliente>(cliente);

@@ -1,7 +1,7 @@
-using SnackTech.Application.Common;
-using SnackTech.Application.DTOs.Produto;
+using SnackTech.Domain.Common;
+using SnackTech.Domain.DTOs.Produto;
 
-namespace SnackTech.Application.Interfaces
+namespace SnackTech.Domain.Ports.Driving
 {
     public interface IProdutoService
     {

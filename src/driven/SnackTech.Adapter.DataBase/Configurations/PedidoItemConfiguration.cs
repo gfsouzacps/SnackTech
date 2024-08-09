@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class PedidoItemConfiguration : IEntityTypeConfiguration<PedidoItem>
     {
         public void Configure(EntityTypeBuilder<PedidoItem> builder)

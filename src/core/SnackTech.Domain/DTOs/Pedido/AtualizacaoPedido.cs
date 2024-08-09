@@ -1,4 +1,4 @@
-namespace SnackTech.Application.DTOs.Pedido
+namespace SnackTech.Domain.DTOs.Pedido
 {
     public class AtualizacaoPedido
     {

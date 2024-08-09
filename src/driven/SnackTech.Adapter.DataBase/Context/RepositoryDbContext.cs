@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Context
 {
+    [ExcludeFromCodeCoverage]
     public class RepositoryDbContext(DbContextOptions options) : DbContext(options)
     {
         public DbSet<Cliente> Clientes { get; set; }
