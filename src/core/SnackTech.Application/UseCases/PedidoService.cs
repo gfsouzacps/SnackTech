@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.DTOs.Driving.Pedido;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;

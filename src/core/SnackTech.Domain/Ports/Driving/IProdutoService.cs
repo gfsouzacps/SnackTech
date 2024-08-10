@@ -1,5 +1,5 @@
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Produto;
+using SnackTech.Domain.DTOs.Driving.Produto;
 
 namespace SnackTech.Domain.Ports.Driving
 {

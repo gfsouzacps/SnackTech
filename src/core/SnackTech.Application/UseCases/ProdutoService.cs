@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Produto;
+using SnackTech.Domain.DTOs.Driving.Produto;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;
 using SnackTech.Domain.Ports.Driven;
