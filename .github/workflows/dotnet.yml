@@ -5,7 +5,7 @@ name: build and test
 
 on:
   push:
-    branches: [ "master", "development" ]
+    branches: [ "master", "development", "separar-db-entities" ]
   pull_request:
     branches: [ "master", "development" ]
 
