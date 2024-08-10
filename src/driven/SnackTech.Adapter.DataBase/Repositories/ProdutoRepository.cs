@@ -11,7 +11,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
 
-        public async Task AlterarProdutoAsync(Domain.Models.Produto produtoAlterado)
+        public async Task AlterarProdutoAsync(Domain.DTOs.Driven.ProdutoDto produtoAlterado)
         {
             var produtoEntity = Mapping.Mapper.Map<Produto>(produtoAlterado);
             
@@ -19,7 +19,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task InserirProdutoAsync(Domain.Models.Produto novoProduto)
+        public async Task InserirProdutoAsync(Domain.DTOs.Driven.ProdutoDto novoProduto)
         {
             var produtoEntity = Mapping.Mapper.Map<Produto>(novoProduto);
 
@@ -27,35 +27,34 @@ namespace SnackTech.Adapter.DataBase.Repositories
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Domain.Models.Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
+        public async Task<IEnumerable<Domain.DTOs.Driven.ProdutoDto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
         {
             var produtosBanco = await _repositoryDbContext.Produtos
                     .AsNoTracking()
                     .Where(p => p.Categoria == categoria)
                     .ToListAsync();
 
-            return produtosBanco.Select(Mapping.Mapper.Map<Domain.Models.Produto>);
+            return produtosBanco.Select(Mapping.Mapper.Map<Domain.DTOs.Driven.ProdutoDto>);
         }
 
-        public async Task<Domain.Models.Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
+        public async Task<Domain.DTOs.Driven.ProdutoDto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             var produto = await _repositoryDbContext.Produtos
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == identificacao);
 
-            return Mapping.Mapper.Map<Domain.Models.Produto>(produto);
+            return Mapping.Mapper.Map<Domain.DTOs.Driven.ProdutoDto>(produto);
         }
 
         public async Task<bool> RemoverProdutoPorIdentificacaoAsync(Guid identificacao)
         {
-            var produto = await PesquisarPorIdentificacaoAsync(identificacao);
+            var produto = await _repositoryDbContext.Produtos
+                .FirstOrDefaultAsync(p => p.Id == identificacao);
 
             if (produto is null)
                 return false;
 
-            var produtoEntity = Mapping.Mapper.Map<Produto>(produto);
-
-            _repositoryDbContext.Produtos.Remove(produtoEntity);
+            _repositoryDbContext.Produtos.Remove(produto);
             return await _repositoryDbContext.SaveChangesAsync() > 0;
         }
     }

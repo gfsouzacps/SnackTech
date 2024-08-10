@@ -10,7 +10,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
 
-        public async Task InserirClienteAsync(Domain.Models.Cliente novoCliente)
+        public async Task InserirClienteAsync(Domain.DTOs.Driven.ClienteDto novoCliente)
         {
             var clienteExistente = _repositoryDbContext.Clientes
                 .FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
@@ -26,7 +26,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task<Domain.Models.Cliente> PesquisarClientePadraoAsync()
+        public async Task<Domain.DTOs.Driven.ClienteDto> PesquisarClientePadraoAsync()
         {
             var cliente = await _repositoryDbContext.Clientes
                 .AsNoTracking()
@@ -37,18 +37,18 @@ namespace SnackTech.Adapter.DataBase.Repositories
                 throw new Exception("Cliente padrão não foi localizado no banco de dados.");
             }
 
-            var clienteRetorno = Mapping.Mapper.Map<Domain.Models.Cliente>(cliente);
+            var clienteRetorno = Mapping.Mapper.Map<Domain.DTOs.Driven.ClienteDto>(cliente);
 
             return clienteRetorno;
         }
 
-        public async Task<Domain.Models.Cliente?> PesquisarPorCpfAsync(string cpf)
+        public async Task<Domain.DTOs.Driven.ClienteDto?> PesquisarPorCpfAsync(string cpf)
         {
             var cliente = await _repositoryDbContext.Clientes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
 
-            return Mapping.Mapper.Map<Domain.Models.Cliente>(cliente);
+            return Mapping.Mapper.Map<Domain.DTOs.Driven.ClienteDto>(cliente);
         }
     }
 }

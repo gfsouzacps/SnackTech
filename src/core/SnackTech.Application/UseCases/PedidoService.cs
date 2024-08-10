@@ -20,15 +20,17 @@ namespace SnackTech.Application.UseCases
             async Task<Result> processo()
             {
                 var guid = CustomGuards.AgainstInvalidGuid(pedidoAtualizado.Identificacao, nameof(pedidoAtualizado.Identificacao));
-                var pedido = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
+                var pedidoDto = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
 
-                if (pedido is null)
+                if (pedidoDto is null)
                     return new Result($"Pedido com identificação {pedidoAtualizado.Identificacao} não encontrado.");
 
-                if (pedido.Status == StatusPedido.AguardandoPagamento){
+                if (pedidoDto.Status == StatusPedido.AguardandoPagamento){
                     return new Result($"O pedido com identificação {pedidoAtualizado.Identificacao} não pode ser alterado pois está aguardando pagamento.");
                 }
                 
+                var pedido = (Domain.DTOs.Driven.PedidoDto)pedidoDto;
+
                 try
                 {
                     await AtualizarItensPedido(pedidoAtualizado, pedido);
@@ -38,7 +40,7 @@ namespace SnackTech.Application.UseCases
                     return new Result(ex.ToString());
                 }
 
-                await pedidoRepository.AtualizarPedidoAsync(pedido);
+                await pedidoRepository.AtualizarPedidoAsync((Domain.DTOs.Driven.PedidoDto)pedido);
 
                 return new Result();
             }
@@ -46,7 +48,7 @@ namespace SnackTech.Application.UseCases
             return await CommonExecution($"PedidoService.AtualizarPedido {AtualizarPedido}", processo);
         }
 
-        private async Task AtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        private async Task AtualizarItensPedido(AtualizacaoPedido pedidoAtualizado, Pedido pedido)
         {
             RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
             
@@ -69,7 +71,7 @@ namespace SnackTech.Application.UseCases
             }
         }
 
-        private static void RemoverItensAusentesNoPedido(AtualizacaoPedido pedidoAtualizado, Pedido? pedido)
+        private static void RemoverItensAusentesNoPedido(AtualizacaoPedido pedidoAtualizado, Pedido pedido)
         {
             var pedidosRemovidos = pedido.Itens
                 .Where(itemBanco => !pedidoAtualizado.PedidoItens.Any(itemAtualizar => itemAtualizar.Sequencial == itemBanco.Sequencial)).ToList();
@@ -84,12 +86,12 @@ namespace SnackTech.Application.UseCases
             async Task<Result<RetornoPedido>> processo()
             {
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao, nameof(identificacao));
-                var pedido = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
+                var pedidoDto = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
 
-                if (pedido is null)
+                if (pedidoDto is null)
                     return new Result<RetornoPedido>($"Pedido com identificação {identificacao} não encontrado.", true);
 
-                var retorno = RetornoPedido.APartirDePedido(pedido);
+                var retorno = RetornoPedido.APartirDePedido((Pedido)pedidoDto);
                 return new Result<RetornoPedido>(retorno);
             }
             return await CommonExecution($"PedidoService.BuscarPorIdenticacao {identificacao}", processo);
@@ -101,21 +103,21 @@ namespace SnackTech.Application.UseCases
             {
                 CpfGuard.AgainstInvalidCpf(cpfCliente, nameof(cpfCliente));
 
-                var cliente = await clienteRepository.PesquisarPorCpfAsync(cpfCliente);
+                var clienteDto = await clienteRepository.PesquisarPorCpfAsync(cpfCliente);
 
-                if (cliente is null)
+                if (clienteDto is null)
                     return new Result<RetornoPedido>($"Cliente com cpf {cpfCliente} não encontrado.", true);
 
-                if (cliente.Cpf == Cliente.CPF_CLIENTE_PADRAO)
+                if (clienteDto.Cpf == Cliente.CPF_CLIENTE_PADRAO)
                     return new Result<RetornoPedido>($"Não é permitido consultar o último pedido do cliente padrão.", true);
 
-                IEnumerable<Pedido> pedidos = await pedidoRepository.PesquisarPorClienteAsync(cliente.Id);
+                var pedidos = await pedidoRepository.PesquisarPorClienteAsync(clienteDto.Id);
                 var ultimoPedido = pedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
 
                 if (ultimoPedido is null)
                     return new Result<RetornoPedido>($"Último Pedido do cliente com cpf {cpfCliente} não encontrado.", true);
 
-                var retorno = RetornoPedido.APartirDePedido(ultimoPedido);
+                var retorno = RetornoPedido.APartirDePedido((Pedido)ultimoPedido);
                 return new Result<RetornoPedido>(retorno);
             }
             return await CommonExecution($"PedidoService.BuscarUltimoPedidoCliente {cpfCliente}", processo);
@@ -127,17 +129,18 @@ namespace SnackTech.Application.UseCases
             {
 
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao, nameof(identificacao));
-                var pedido = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
+                var pedidoDto = await pedidoRepository.PesquisarPorIdentificacaoAsync(guid);
 
-                if (pedido is null)
+                if (pedidoDto is null)
                     return new Result($"Pedido com identificação {identificacao} não encontrado.");
 
-                if (pedido.Itens.Count == 0)
+                if (pedidoDto.Itens.Count() == 0)
                     return new Result($"Pedido com identificação {identificacao} não possui itens e não pode ser finalizado.");
 
+                var pedido = (Pedido)pedidoDto;
                 pedido.FecharPedidoParaPagamento();
 
-                await pedidoRepository.AtualizarPedidoAsync(pedido);
+                await pedidoRepository.AtualizarPedidoAsync((Domain.DTOs.Driven.PedidoDto)pedido);
 
                 return new Result();
             }
@@ -148,19 +151,19 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<Guid>> processo()
             {
-                Cliente? cliente;
+                Domain.DTOs.Driven.ClienteDto? clienteDto;
                 if (cpfCliente == null)
                 {
-                    cliente = await clienteRepository.PesquisarClientePadraoAsync();
+                    clienteDto = await clienteRepository.PesquisarClientePadraoAsync();
                 }
                 else
                 {
                     CpfGuard.AgainstInvalidCpf(cpfCliente, nameof(cpfCliente));
-                    cliente = await clienteRepository.PesquisarPorCpfAsync(cpfCliente);
+                    clienteDto = await clienteRepository.PesquisarPorCpfAsync(cpfCliente);
                 }
 
-                var novoPedido = new Pedido(cliente);
-                await pedidoRepository.InserirPedidoAsync(novoPedido);
+                var novoPedido = new Pedido((Cliente)clienteDto);
+                await pedidoRepository.InserirPedidoAsync((Domain.DTOs.Driven.PedidoDto)novoPedido);
 
                 return new Result<Guid>(novoPedido.Id);
             }
@@ -172,7 +175,7 @@ namespace SnackTech.Application.UseCases
             async Task<Result<IEnumerable<RetornoPedido>>> processo()
             {
                 var pedidos = await pedidoRepository.PesquisarPedidosParaPagamentoAsync();
-                var retorno = pedidos.Select(RetornoPedido.APartirDePedido);
+                var retorno = pedidos.Select(p => (Pedido)p).Select(RetornoPedido.APartirDePedido);
                 return new Result<IEnumerable<RetornoPedido>>(retorno);
             }
             return await CommonExecution($"PedidoService.ListarPedidosParaPagamento", processo);

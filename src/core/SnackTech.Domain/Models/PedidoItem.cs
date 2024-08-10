@@ -1,4 +1,5 @@
 
+using SnackTech.Domain.DTOs.Driven;
 using SnackTech.Domain.Guards;
 
 namespace SnackTech.Domain.Models
@@ -14,28 +15,26 @@ namespace SnackTech.Domain.Models
         public decimal Valor {
             get { return _valor; }
         }
-        public Guid IdProduto { get; private set; }
-        public Produto Produto { get; private set; } = null!;
-        public Guid IdPedido { get; private set; }
-        public Pedido? Pedido { get; private set; }
+        public Produto Produto { get; private set; }
+        public Pedido Pedido { get; private set; }
 
-        public PedidoItem(Guid id, Guid idPedido, int sequencial, Guid idProduto, int quantidade, string observacao)
+        public PedidoItem(Guid id, Pedido pedido, int sequencial, Produto produto, int quantidade, string observacao)
         {
-            CustomGuards.AgainstObjectNull(idPedido, nameof(idPedido));
-            CustomGuards.AgainstObjectNull(idProduto, nameof(idProduto));
+            CustomGuards.AgainstObjectNull(pedido, nameof(pedido));
+            CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
             CustomGuards.AgainstNegativeOrZeroValue(sequencial, nameof(sequencial));
 
             Id = id;
-            IdPedido = idPedido;
+            Pedido = pedido;
             Sequencial = sequencial;
-            IdProduto = idProduto;
+            Produto = produto;
             Quantidade = quantidade;
             Observacao = PreencherObservacao(observacao);
         }
 
-        public PedidoItem(Guid idPedido, int sequencial, Produto produto, int quantidade, string observacao)
-            :this(Guid.NewGuid(), idPedido, sequencial, produto.Id, quantidade, observacao)
+        public PedidoItem(Pedido pedido, int sequencial, Produto produto, int quantidade, string observacao)
+            :this(Guid.NewGuid(), pedido, sequencial, produto, quantidade, observacao)
         {
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
 
@@ -59,5 +58,24 @@ namespace SnackTech.Domain.Models
 
         private static string PreencherObservacao(string observacao)
             => observacao ?? string.Empty;
+
+        public static implicit operator PedidoItemDto(PedidoItem pedidoItem)
+        {
+            return new PedidoItemDto
+            {
+                Id = pedidoItem.Id,
+                Sequencial = pedidoItem.Sequencial,
+                Quantidade = pedidoItem.Quantidade,
+                Observacao = pedidoItem.Observacao,
+                Valor = pedidoItem.Valor,
+                Produto = (ProdutoDto)pedidoItem.Produto,
+                Pedido = (PedidoDto)pedidoItem.Pedido
+            };
+        }
+
+        public static implicit operator PedidoItem(PedidoItemDto pedidoItem)
+        {
+            return new PedidoItem(pedidoItem.Id, (Pedido)pedidoItem.Pedido, pedidoItem.Sequencial, (Produto)pedidoItem.Produto, pedidoItem.Quantidade, pedidoItem.Observacao);
+        }
     }
 }

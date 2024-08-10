@@ -26,5 +26,22 @@ namespace SnackTech.Domain.Models
             Email = email;
             Cpf = cpf;
         }
+
+        public static implicit operator DTOs.Driven.ClienteDto(Cliente cliente)
+        {
+            return new DTOs.Driven.ClienteDto
+            {
+                Id = cliente.Id,
+                Nome = cliente.Nome,
+                Email = cliente.Email,
+                Cpf = cliente.Cpf
+            };
+        }
+
+        public static implicit operator Cliente(DTOs.Driven.ClienteDto cliente)
+        {
+            var pessoa = new Pessoa(cliente.Id, cliente.Nome);
+            return new Cliente(pessoa, cliente.Email, cliente.Cpf);
+        }
     }
 }

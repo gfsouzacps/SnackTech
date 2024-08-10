@@ -10,7 +10,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
 
-        public async Task AtualizarPedidoAsync(Domain.Models.Pedido pedidoAtualizado)
+        public async Task AtualizarPedidoAsync(Domain.DTOs.Driven.PedidoDto pedidoAtualizado)
         {
             var itensNoBanco = await _repositoryDbContext.PedidoItens
                 .Where(p => p.Id == pedidoAtualizado.Id)
@@ -43,7 +43,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task InserirPedidoAsync(Domain.Models.Pedido novoPedido)
+        public async Task InserirPedidoAsync(Domain.DTOs.Driven.PedidoDto novoPedido)
         {
             var pedidoEntity = Mapping.Mapper.Map<Pedido>(novoPedido);
 
@@ -58,7 +58,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             await _repositoryDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Domain.Models.Pedido>> PesquisarPedidosParaPagamentoAsync()
+        public async Task<IEnumerable<Domain.DTOs.Driven.PedidoDto>> PesquisarPedidosParaPagamentoAsync()
         {
             return (await _repositoryDbContext.Pedidos
                 .AsNoTracking()
@@ -66,20 +66,20 @@ namespace SnackTech.Adapter.DataBase.Repositories
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.Status == Domain.Enums.StatusPedido.AguardandoPagamento)
                 .ToListAsync())
-                .Select(Mapping.Mapper.Map<Domain.Models.Pedido>);
+                .Select(Mapping.Mapper.Map<Domain.DTOs.Driven.PedidoDto>);
         }
 
-        public async Task<IEnumerable<Domain.Models.Pedido>> PesquisarPorClienteAsync(Guid identificacaoCliente)
+        public async Task<IEnumerable<Domain.DTOs.Driven.PedidoDto>> PesquisarPorClienteAsync(Guid identificacaoCliente)
         {
             return (await _repositoryDbContext.Pedidos
                 .AsNoTracking()
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.Cliente.Id == identificacaoCliente)
                 .ToListAsync())
-                .Select(Mapping.Mapper.Map<Domain.Models.Pedido>);
+                .Select(Mapping.Mapper.Map<Domain.DTOs.Driven.PedidoDto>);
         }
 
-        public async Task<Domain.Models.Pedido?> PesquisarPorIdentificacaoAsync(Guid identificacao)
+        public async Task<Domain.DTOs.Driven.PedidoDto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             var pedido = await _repositoryDbContext.Pedidos
                 .AsNoTracking()
@@ -90,7 +90,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
             if(pedido is null)
                 return null;
 
-            return Mapping.Mapper.Map<Domain.Models.Pedido>(pedido);
+            return Mapping.Mapper.Map<Domain.DTOs.Driven.PedidoDto>(pedido);
         }
     }
 }

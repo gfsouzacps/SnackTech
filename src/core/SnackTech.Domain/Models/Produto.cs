@@ -37,5 +37,22 @@ namespace SnackTech.Domain.Models
             Descricao = descricao;
             Valor = valor;
         }
+        
+        public static implicit operator DTOs.Driven.ProdutoDto(Produto produto)
+        {
+            return new DTOs.Driven.ProdutoDto
+            {
+                Id = produto.Id,
+                Categoria = produto.Categoria,
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Valor = produto.Valor
+            };
+        }
+
+        public static implicit operator Produto(DTOs.Driven.ProdutoDto produto)
+        {
+            return new Produto(produto.Id,produto.Categoria,produto.Nome,produto.Descricao,produto.Valor);
+        }
     }
 }

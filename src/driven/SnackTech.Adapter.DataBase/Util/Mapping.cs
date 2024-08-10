@@ -23,70 +23,31 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Produto, Domain.Models.Produto>()
-            .ConstructUsing((src, res) =>
-                {
-                    return new Domain.Models.Produto(
-                        src.Id,
-                        src.Categoria,
-                        src.Nome,
-                        src.Descricao,
-                        src.Valor
-                    );
-                });
+        CreateMap<Produto, Domain.DTOs.Driven.ProdutoDto>();
+        CreateMap<Domain.DTOs.Driven.ProdutoDto, Produto>();
 
-        CreateMap<Domain.Models.Produto, Produto>();
+        CreateMap<Cliente, Domain.DTOs.Driven.ClienteDto>();
+        CreateMap<Domain.DTOs.Driven.ClienteDto, Cliente>();
 
-        CreateMap<Pessoa, Domain.Models.Pessoa>()
-            .ConstructUsing((src, res) =>
-                {
-                    return new Domain.Models.Pessoa(
-                        src.Id,
-                        src.Nome
-                    );
-                });
+        CreateMap<PedidoItem, Domain.DTOs.Driven.PedidoItemDto>();
+        CreateMap<Domain.DTOs.Driven.PedidoItemDto, PedidoItem>();
 
-        CreateMap<Domain.Models.Pessoa, Pessoa>();
+        CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>();
+        CreateMap<Domain.DTOs.Driven.PedidoDto, Pedido>();
+        
 
-        CreateMap<Cliente, Domain.Models.Cliente>()
-            .ConstructUsing((src, res) =>
-                {
-                    return new Domain.Models.Cliente(
-                        new Domain.Models.Pessoa(src.Id, src.Nome),
-                        src.Email,
-                        src.Cpf
-                    );
-                });
+        // CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>()
+        //     .ConstructUsing((src, context) =>
+        //         {
+        //             return new Domain.DTOs.Driven.PedidoDto{
+        //                 Id = src.Id,
+        //                 DataCriacao = src.DataCriacao,
+        //                 Status = src.Status,
+        //                 Cliente = context.Mapper.Map<Cliente, Domain.DTOs.Driven.ClienteDto>(src.Cliente),
+        //                 Itens = context.Mapper.Map<IEnumerable<PedidoItem>, List<Domain.DTOs.Driven.PedidoItemDto>>(src.Itens)
+        //             };
+        //         });
 
-        CreateMap<Domain.Models.Cliente, Cliente>();
-
-        CreateMap<PedidoItem, Domain.Models.PedidoItem>()
-            .ConstructUsing((src, res) =>
-                {
-                    return new Domain.Models.PedidoItem(
-                        src.Id,
-                        src.Pedido.Id,
-                        src.Sequencial,
-                        src.Produto.Id,
-                        src.Quantidade,
-                        src.Observacao
-                    );
-                });
-
-        CreateMap<Domain.Models.PedidoItem, PedidoItem>();
-
-        CreateMap<Pedido, Domain.Models.Pedido>()
-            .ConstructUsing((src, context) =>
-                {
-                    return new Domain.Models.Pedido(
-                        src.Id,
-                        src.DataCriacao,
-                        src.Status,
-                        context.Mapper.Map<Cliente, Domain.Models.Cliente>(src.Cliente),
-                        context.Mapper.Map<IEnumerable<PedidoItem>, List<Domain.Models.PedidoItem>>(src.Itens)
-                    );
-                });
-
-        CreateMap<Domain.Models.Pedido, Pedido>();
+        // CreateMap<Domain.DTOs.Driven.PedidoDto, Pedido>();
     }
 }

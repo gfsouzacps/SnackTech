@@ -11,7 +11,6 @@ namespace SnackTech.Domain.Models
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
-        public Guid IdCliente { get; private set; }
         public Cliente Cliente { get; private set; }
         public IReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
         public StatusPedido Status { get; private set; }
@@ -27,7 +26,6 @@ namespace SnackTech.Domain.Models
             Id = id;
             DataCriacao = dataCriacao;
             Status = status;
-            IdCliente = cliente.Id;
             Cliente = cliente;
             _itens = itens ?? new List<PedidoItem>();
         }
@@ -36,21 +34,12 @@ namespace SnackTech.Domain.Models
             : this(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente)
         { }
 
-        /// <summary>
-        /// For EF
-        /// </summary>
-        public Pedido()
-        {
-            //TODO: Criei esse construtor vazio para usar no EF, mas creio que ele poderá ser reaproveitado para
-            //criação de pedidos de clientes anônimos.
-        }
-
         public void AdicionarItem(Produto produto, int quantidade, string observacao)
         {
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
             var novoSequencial = ProximoSequencial();
-            var pedidoItem = new PedidoItem(Id, novoSequencial, produto, quantidade, observacao);
+            var pedidoItem = new PedidoItem(this, novoSequencial, produto, quantidade, observacao);
             _itens.Add(pedidoItem);
 
             CalcularValorTotal();
@@ -105,6 +94,23 @@ namespace SnackTech.Domain.Models
             }
             int ultimoSequencial = _itens.Max(i => i.Sequencial);
             return ultimoSequencial + 1;
+        }
+
+        public static implicit operator DTOs.Driven.PedidoDto(Pedido pedido)
+        {
+            return new DTOs.Driven.PedidoDto
+            {
+                Id = pedido.Id,
+                DataCriacao = pedido.DataCriacao,
+                Status = pedido.Status,
+                Cliente = (DTOs.Driven.ClienteDto)pedido.Cliente,
+                Itens = pedido.Itens.Select(i => (DTOs.Driven.PedidoItemDto)i)
+            };
+        }
+
+        public static implicit operator Pedido(DTOs.Driven.PedidoDto pedido)
+        {
+            return new Pedido(pedido.Id, pedido.DataCriacao, pedido.Status, (Cliente)pedido.Cliente, pedido.Itens.Select(i => (PedidoItem)i).ToList());
         }
     }
 }
