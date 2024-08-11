@@ -13,21 +13,24 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task AtualizarPedidoAsync(Domain.DTOs.Driven.PedidoDto pedidoAtualizado)
         {
             var itensNoBanco = await _repositoryDbContext.PedidoItens
-                .Where(p => p.Id == pedidoAtualizado.Id)
+                .Where(p => p.Pedido.Id == pedidoAtualizado.Id)
                 .ToDictionaryAsync(p => p.Id, p => p);
 
             foreach (var itemAtualizar in pedidoAtualizado.Itens)
             {
                 var itemEntityAtualizar = Mapping.Mapper.Map<PedidoItem>(itemAtualizar);
-                if (!itensNoBanco.TryGetValue(itemEntityAtualizar.Id, out var itemBanco))
+                if (itensNoBanco.TryGetValue(itemEntityAtualizar.Id, out var itemBanco))
                 {
-                    
-                //     // itemBanco.AtualizarDadosItem(itemAtualizar.Produto, itemAtualizar.Quantidade, itemAtualizar.Observacao);
-                // }
-                // else
-                // {
+                    itemBanco.Quantidade = itemAtualizar.Quantidade;
+                    itemBanco.Valor = itemAtualizar.Valor;
+                    itemBanco.Observacao = itemAtualizar.Observacao;
+                    itemBanco.Produto = itemEntityAtualizar.Produto;
+                    itemBanco.Sequencial = itemAtualizar.Sequencial;
+                }
+                else
+                {
                     //adiocionando itens novos dessa forma evitasse que o EF tente criar um novo produto a partir do produto presente no item
-                    var entry = _repositoryDbContext.Entry(itemAtualizar);
+                    var entry = _repositoryDbContext.Entry(itemEntityAtualizar);
                     entry.State = EntityState.Added;
                 }
             }
@@ -37,8 +40,9 @@ namespace SnackTech.Adapter.DataBase.Repositories
             _repositoryDbContext.PedidoItens.RemoveRange(itensParaRemover.Select(i => i.Value));
 
             //atualizar colunas do pedido
-            var entryPedido = _repositoryDbContext.Entry(pedidoAtualizado);
-            entryPedido.State = EntityState.Modified;
+            var pedidoEntityAtualizar = Mapping.Mapper.Map<Pedido>(pedidoAtualizado);
+            _repositoryDbContext.Entry(pedidoEntityAtualizar).State = EntityState.Modified;
+            _repositoryDbContext.Entry(pedidoEntityAtualizar.Cliente).State = EntityState.Unchanged;
 
             await _repositoryDbContext.SaveChangesAsync();
         }
