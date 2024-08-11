@@ -12,7 +12,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
         public async Task InserirClienteAsync(Domain.DTOs.Driven.ClienteDto novoCliente)
         {
-            var clienteExistente = _repositoryDbContext.Clientes
+            var clienteExistente = await _repositoryDbContext.Clientes
                 .FirstOrDefaultAsync(clienteBd => clienteBd.Cpf == novoCliente.Cpf || clienteBd.Email == novoCliente.Email);
 
             if (clienteExistente != null)
