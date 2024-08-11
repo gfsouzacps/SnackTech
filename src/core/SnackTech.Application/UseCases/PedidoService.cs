@@ -52,23 +52,23 @@ namespace SnackTech.Application.UseCases
         {
             RemoverItensAusentesNoPedido(pedidoAtualizado, pedido);
             
-            foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
+            foreach (var itemAtualizacao in pedidoAtualizado.PedidoItens.OrderBy(i => i.Sequencial))
             {
-                var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
+                var guidProduto = CustomGuards.AgainstInvalidGuid(itemAtualizacao.IdentificacaoProduto, nameof(itemAtualizacao.IdentificacaoProduto));
                 var produtoDto = await produtoRepository.PesquisarPorIdentificacaoAsync(guidProduto);
                 
                 if (produtoDto is null)
-                    throw new Exception($"Produto com identificação {itemInclusao.IdentificacaoProduto} não encontrado.");
+                    throw new Exception($"Produto com identificação {itemAtualizacao.IdentificacaoProduto} não encontrado.");
 
                 var produto = (Produto)produtoDto;
 
-                if (pedido.Itens.Any(i => i.Sequencial == itemInclusao.Sequencial))
+                if (pedido.Itens.Any(i => i.Sequencial == itemAtualizacao.Sequencial))
                 {
-                    pedido.AtualizarItemPorSequencial(itemInclusao.Sequencial, produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                    pedido.AtualizarItemPorSequencial(itemAtualizacao.Sequencial, produto, itemAtualizacao.Quantidade, itemAtualizacao.Observacao);
                 }
                 else
                 {
-                    pedido.AdicionarItem(produto, itemInclusao.Quantidade, itemInclusao.Observacao);
+                    pedido.AdicionarItem(produto, itemAtualizacao.Quantidade, itemAtualizacao.Observacao);
                 }
             }
         }
