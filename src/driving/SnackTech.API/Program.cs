@@ -46,6 +46,7 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+app.UseCustomHealthChecks();
 app.UseAuthorization();
 app.MapControllers();
 
