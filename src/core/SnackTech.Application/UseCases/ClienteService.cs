@@ -16,6 +16,12 @@ namespace SnackTech.Application.UseCases
         {
             async Task<Result<RetornoCliente>> processo(){
                 var novoCliente = new Cliente(cadastroCliente.Nome,cadastroCliente.Email,cadastroCliente.CPF);
+                var clienteDto = await clienteRepository.PesquisarPorCpfAsync(novoCliente.Cpf);
+                
+                if(clienteDto is not null){
+                    return new Result<RetornoCliente>($"{novoCliente.Cpf} já foi cadastrado.",true);
+                }
+                
                 await clienteRepository.InserirClienteAsync((Domain.DTOs.Driven.ClienteDto)novoCliente);
                 var retorno = RetornoCliente.APartirDeCliente(novoCliente);
                 return new Result<RetornoCliente>(retorno);
@@ -39,12 +45,12 @@ namespace SnackTech.Application.UseCases
             return await CommonExecution($"ClienteService.IdentificarPorCpf - {cpf}",processo);
         }
 
-        public async Task<Result<Guid>> SelecionarClientePadrao()
+        public async Task<Result<RetornoCliente>> SelecionarClientePadrao()
         {
-            async Task<Result<Guid>> processo(){
+            async Task<Result<RetornoCliente>> processo(){
                 var clientePadrao = await clienteRepository.PesquisarClientePadraoAsync();
-                var retorno = clientePadrao.Id;
-                return new Result<Guid>(retorno);
+                var retorno = RetornoCliente.APartirDeCliente((Cliente)clientePadrao);
+                return new Result<RetornoCliente>(retorno);
             }
             return await CommonExecution("ClienteService.SelecionarClientePadrao",processo);
         }
