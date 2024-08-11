@@ -45,6 +45,9 @@ Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 **4 - Verifique a execução**
 - A aplicação estará disponível nas portas configuradas no docker-compose.yml, e o banco de dados SQL Server estará disponível para conexões conforme definido na string de conexão do arquivo de configuração da aplicação.
 
+**4 - Utilize a aplicação**
+- Para uma execução local a página do Swagger pode ser acessada no endereço "http://localhost:porta_configurada/swagger/index.html". Ou ainda, você usar o Postman e importar o arquivo [SnackTech.postman_collection.json](SnackTech.postman_collection.json), isso vai te dar acesso a exemplos de uso de todos os endpoints.
+
 ### Uso
 
 Este é um projeto desenvolvido em .NET, utilizando arquitetura Hexagonal. A aplicação é um monolito que se comunica com um banco de dados SQL Server. O projeto está configurado para ser executado em contêineres Docker, facilitando a implantação e escalabilidade.
