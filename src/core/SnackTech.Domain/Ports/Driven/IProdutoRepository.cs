@@ -1,14 +1,13 @@
 using SnackTech.Domain.Enums;
-using SnackTech.Domain.Models;
 
 namespace SnackTech.Domain.Ports.Driven
 {
     public interface IProdutoRepository
     {
-        Task<IEnumerable<Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria);
-        Task<Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao);
-        Task InserirProdutoAsync(Produto novoProduto);
-        Task AlterarProdutoAsync(Produto produtoAlterado);
+        Task<IEnumerable<DTOs.Driven.ProdutoDto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria);
+        Task<DTOs.Driven.ProdutoDto?> PesquisarPorIdentificacaoAsync(Guid identificacao);
+        Task InserirProdutoAsync(DTOs.Driven.ProdutoDto novoProduto);
+        Task AlterarProdutoAsync(DTOs.Driven.ProdutoDto produtoAlterado);
         Task<bool> RemoverProdutoPorIdentificacaoAsync(Guid identificacao);
     }
 }

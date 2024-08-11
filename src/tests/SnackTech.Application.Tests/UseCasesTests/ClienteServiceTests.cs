@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using SnackTech.Application.UseCases;
-using SnackTech.Domain.DTOs.Cliente;
+using SnackTech.Domain.DTOs.Driving.Cliente;
 using SnackTech.Domain.Models;
 using SnackTech.Domain.Ports.Driven;
 
@@ -28,7 +28,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             };
 
             clienteRepository
-                .Setup(s => s.InserirClienteAsync(It.IsAny<Cliente>()))
+                .Setup(s => s.InserirClienteAsync(It.IsAny<Domain.DTOs.Driven.ClienteDto>()))
                 .Returns(Task.FromResult(0));
 
             var resultado = await clienteService.Cadastrar(cadastroCliente);
@@ -72,7 +72,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             };
 
             clienteRepository
-                .Setup(c => c.InserirClienteAsync(It.IsAny<Cliente>()))
+                .Setup(c => c.InserirClienteAsync(It.IsAny<Domain.DTOs.Driven.ClienteDto>()))
                 .ThrowsAsync(new Exception("Erro inesperado"));
 
             var resultado = await clienteService.Cadastrar(cadastroCliente);
@@ -97,7 +97,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var retorno = new Cliente("Nome","email@gmail.com",cpf);
 
             clienteRepository.Setup(c => c.PesquisarPorCpfAsync(It.IsAny<string>()))
-                            .ReturnsAsync(retorno);
+                            .ReturnsAsync((Domain.DTOs.Driven.ClienteDto)retorno);
 
             var resultado = await clienteService.IdentificarPorCpf(cpf);
 
@@ -111,7 +111,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var cpf = "582.202.320-72";
 
             clienteRepository.Setup(c => c.PesquisarPorCpfAsync(It.IsAny<string>()))
-                            .ReturnsAsync(default(Cliente));
+                            .ReturnsAsync(default(Domain.DTOs.Driven.ClienteDto));
 
             var resultado = await clienteService.IdentificarPorCpf(cpf);
 
@@ -151,7 +151,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             var retorno = new Cliente("Usuario padrao","email@gmail.com",cpf);
 
             clienteRepository.Setup(c => c.PesquisarClientePadraoAsync())
-                            .ReturnsAsync(retorno);
+                            .ReturnsAsync((Domain.DTOs.Driven.ClienteDto)retorno);
 
             var resultado = await clienteService.SelecionarClientePadrao();
 

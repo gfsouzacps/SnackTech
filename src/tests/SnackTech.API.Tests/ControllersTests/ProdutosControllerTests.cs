@@ -4,7 +4,7 @@ using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Produto;
+using SnackTech.Domain.DTOs.Driving.Produto;
 using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.API.Tests.ControllersTests

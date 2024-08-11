@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SnackTech.Adapter.DataBase.Context;
-using SnackTech.Domain.Models;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace SnackTech.Adapter.DataBase.Migrations
 {
     [DbContext(typeof(RepositoryDbContext))]
-    [Migration("20240729114323_CreateClientePadrao")]
-    partial class CreateClientePadrao
+    [Migration("20240809104416_FirstCreation")]
+    partial class FirstCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,47 +26,44 @@ namespace SnackTech.Adapter.DataBase.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Pedido", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid>("IdCliente")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("smallmoney");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Pedido", (string)null);
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.PedidoItem", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.PedidoItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdPedido")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdProduto")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Observacao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar");
+
+                    b.Property<Guid>("PedidoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProdutoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
@@ -79,14 +76,14 @@ namespace SnackTech.Adapter.DataBase.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPedido");
+                    b.HasIndex("PedidoId");
 
-                    b.HasIndex("IdProduto");
+                    b.HasIndex("ProdutoId");
 
                     b.ToTable("PedidoItem", (string)null);
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Pessoa", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Pessoa", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +91,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .HasColumnType("varchar");
 
                     b.HasKey("Id");
@@ -104,7 +101,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Produto", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Produto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,12 +112,12 @@ namespace SnackTech.Adapter.DataBase.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(1000)
                         .HasColumnType("varchar");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .HasColumnType("varchar");
 
                     b.Property<decimal>("Valor")
@@ -131,9 +128,9 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     b.ToTable("Produto", (string)null);
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Cliente", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Cliente", b =>
                 {
-                    b.HasBaseType("SnackTech.Domain.Models.Pessoa");
+                    b.HasBaseType("SnackTech.Adapter.DataBase.Entities.Pessoa");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -142,43 +139,51 @@ namespace SnackTech.Adapter.DataBase.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .HasColumnType("varchar");
+
+                    b.HasIndex("Cpf")
+                        .IsUnique()
+                        .HasFilter("[Cpf] IS NOT NULL");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Cliente", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = Guid.Parse("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
+                            Id = new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
                             Nome = "Cliente Padrão",
-                            Cpf = Cliente.CPF_CLIENTE_PADRAO,
+                            Cpf = "00000000191",
                             Email = "cliente.padrao@padrao.com"
                         });
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Pedido", b =>
                 {
-                    b.HasOne("SnackTech.Domain.Models.Cliente", "Cliente")
+                    b.HasOne("SnackTech.Adapter.DataBase.Entities.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.PedidoItem", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.PedidoItem", b =>
                 {
-                    b.HasOne("SnackTech.Domain.Models.Pedido", "Pedido")
+                    b.HasOne("SnackTech.Adapter.DataBase.Entities.Pedido", "Pedido")
                         .WithMany("Itens")
-                        .HasForeignKey("IdPedido")
+                        .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SnackTech.Domain.Models.Produto", "Produto")
+                    b.HasOne("SnackTech.Adapter.DataBase.Entities.Produto", "Produto")
                         .WithMany()
-                        .HasForeignKey("IdProduto")
+                        .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -187,16 +192,16 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     b.Navigation("Produto");
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Cliente", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Cliente", b =>
                 {
-                    b.HasOne("SnackTech.Domain.Models.Pessoa", null)
+                    b.HasOne("SnackTech.Adapter.DataBase.Entities.Pessoa", null)
                         .WithOne()
-                        .HasForeignKey("SnackTech.Domain.Models.Cliente", "Id")
+                        .HasForeignKey("SnackTech.Adapter.DataBase.Entities.Cliente", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SnackTech.Domain.Models.Pedido", b =>
+            modelBuilder.Entity("SnackTech.Adapter.DataBase.Entities.Pedido", b =>
                 {
                     b.Navigation("Itens");
                 });
