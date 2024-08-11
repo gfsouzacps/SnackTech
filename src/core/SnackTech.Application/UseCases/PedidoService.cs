@@ -164,6 +164,9 @@ namespace SnackTech.Application.UseCases
                     clienteDto = await clienteRepository.PesquisarPorCpfAsync(cpfCliente);
                 }
 
+                if(clienteDto is null)
+                    return new Result<Guid>($"Cliente com cpf {cpfCliente} não encontrado.", true);
+
                 var novoPedido = new Pedido((Cliente)clienteDto);
                 await pedidoRepository.InserirPedidoAsync((Domain.DTOs.Driven.PedidoDto)novoPedido);
 
