@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using SnackTech.Domain.Models;
+using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Context
 {

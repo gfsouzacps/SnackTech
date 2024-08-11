@@ -18,7 +18,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,8 +31,8 @@ namespace SnackTech.Adapter.DataBase.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Categoria = table.Column<int>(type: "int", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Descricao = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false),
                     Valor = table.Column<decimal>(type: "smallmoney", nullable: false)
                 },
                 constraints: table =>
@@ -45,7 +45,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Cpf = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
@@ -57,12 +57,6 @@ namespace SnackTech.Adapter.DataBase.Migrations
                         principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.UniqueConstraint(
-                        name: "Unique_Email",
-                        columns: x => x.Email);
-                    table.UniqueConstraint(
-                        name: "Unique_Cpf",
-                        columns: x => x.Cpf);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,8 +66,7 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime", nullable: false),
                     ClienteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Valor = table.Column<decimal>(type: "smallmoney", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,25 +88,49 @@ namespace SnackTech.Adapter.DataBase.Migrations
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     Observacao = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
                     Valor = table.Column<decimal>(type: "smallmoney", nullable: false),
-                    IdProduto = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdPedido = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProdutoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PedidoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PedidoItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PedidoItem_Pedido_IdPedido",
-                        column: x => x.IdPedido,
+                        name: "FK_PedidoItem_Pedido_PedidoId",
+                        column: x => x.PedidoId,
                         principalTable: "Pedido",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PedidoItem_Produto_IdProduto",
-                        column: x => x.IdProduto,
+                        name: "FK_PedidoItem_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
                         principalTable: "Produto",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Pessoa",
+                columns: new[] { "Id", "Nome" },
+                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), "Cliente Padrão" });
+
+            migrationBuilder.InsertData(
+                table: "Cliente",
+                columns: new[] { "Id", "Cpf", "Email" },
+                values: new object[] { new Guid("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"), "00000000191", "cliente.padrao@padrao.com" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cliente_Cpf",
+                table: "Cliente",
+                column: "Cpf",
+                unique: true,
+                filter: "[Cpf] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cliente_Email",
+                table: "Cliente",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pedido_ClienteId",
@@ -121,14 +138,14 @@ namespace SnackTech.Adapter.DataBase.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoItem_IdPedido",
+                name: "IX_PedidoItem_PedidoId",
                 table: "PedidoItem",
-                column: "IdPedido");
+                column: "PedidoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoItem_IdProduto",
+                name: "IX_PedidoItem_ProdutoId",
                 table: "PedidoItem",
-                column: "IdProduto");
+                column: "ProdutoId");
         }
 
         /// <inheritdoc />

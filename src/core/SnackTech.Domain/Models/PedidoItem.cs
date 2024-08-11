@@ -7,41 +7,41 @@ namespace SnackTech.Domain.Models
     {
         private decimal _valor;
 
-        public Guid Id {get; private set;}        
-        public int Sequencial {get; private set;}
-        public int Quantidade {get; private set;}
-        public string Observacao {get; private set;}
+        public Guid Id {get; internal set;}        
+        public int Sequencial {get; internal set;}
+        public int Quantidade {get; internal set;}
+        public string Observacao {get; internal set;}
         public decimal Valor {
             get { return _valor; }
         }
-        public Guid IdProduto { get; private set; }
-        public Produto Produto { get; private set; } = null!;
-        public Guid IdPedido { get; private set; }
-        public Pedido? Pedido { get; private set; }
+        public Produto Produto { get; internal set; }
+        public Pedido Pedido { get; internal set; }
 
-        private PedidoItem(Guid id, Guid idPedido, int sequencial, Guid idProduto, int quantidade, string observacao)
+        public PedidoItem(Guid id, Pedido pedido, int sequencial, Produto produto, int quantidade, string observacao)
         {
-            CustomGuards.AgainstObjectNull(idPedido, nameof(idPedido));
-            CustomGuards.AgainstObjectNull(idProduto, nameof(idProduto));
+            CustomGuards.AgainstObjectNull(pedido, nameof(pedido));
+            CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
             CustomGuards.AgainstNegativeOrZeroValue(sequencial, nameof(sequencial));
 
             Id = id;
-            IdPedido = idPedido;
+            Pedido = pedido;
             Sequencial = sequencial;
-            IdProduto = idProduto;
+            Produto = produto;
             Quantidade = quantidade;
             Observacao = PreencherObservacao(observacao);
         }
 
-        public PedidoItem(Guid idPedido, int sequencial, Produto produto, int quantidade, string observacao)
-            :this(Guid.NewGuid(), idPedido, sequencial, produto.Id, quantidade, observacao)
+        public PedidoItem(Pedido pedido, int sequencial, Produto produto, int quantidade, string observacao)
+            :this(Guid.NewGuid(), pedido, sequencial, produto, quantidade, observacao)
         {
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
 
             Produto = produto;
             CalcularValor();
         }
+
+        internal PedidoItem() { }
 
         public void AtualizarDadosItem(Produto produto, int quantidade, string observacao){
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
@@ -52,12 +52,39 @@ namespace SnackTech.Domain.Models
             Observacao = PreencherObservacao(observacao);
         }
 
-        private void CalcularValor()
+        internal void CalcularValor()
         {
             _valor = Quantidade * Produto.Valor;
         }
 
         private static string PreencherObservacao(string observacao)
             => observacao ?? string.Empty;
+
+        public static implicit operator DTOs.Driven.PedidoItemDto(PedidoItem pedidoItem)
+        {
+            return new DTOs.Driven.PedidoItemDto
+            {
+                Id = pedidoItem.Id,
+                Sequencial = pedidoItem.Sequencial,
+                Quantidade = pedidoItem.Quantidade,
+                Observacao = pedidoItem.Observacao,
+                Valor = pedidoItem.Valor,
+                Produto = (DTOs.Driven.ProdutoDto)pedidoItem.Produto,
+                Pedido = (DTOs.Driven.PedidoDto)pedidoItem.Pedido
+            };
+        }
+
+        public static implicit operator PedidoItem(DTOs.Driven.PedidoItemDto pedidoItemDto)
+        {
+            return new PedidoItem {
+                Id = pedidoItemDto.Id,
+                Sequencial = pedidoItemDto.Sequencial,
+                Quantidade = pedidoItemDto.Quantidade,
+                Observacao = pedidoItemDto.Observacao,
+                _valor = pedidoItemDto.Valor,
+                Produto = (Produto)pedidoItemDto.Produto,
+                Pedido = (Pedido)pedidoItemDto.Pedido
+            };
+        }
     }
 }

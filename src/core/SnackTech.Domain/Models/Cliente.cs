@@ -18,5 +18,33 @@ namespace SnackTech.Domain.Models
             Email = email;
             Cpf = cpf;
         }
+
+        public Cliente(Pessoa pessoa, string email, string cpf): base(pessoa.Id, pessoa.Nome){
+            EmailGuard.AgainstInvalidEmail(email, nameof(email));
+            CpfGuard.AgainstInvalidCpf(cpf, nameof(cpf));
+
+            Email = email;
+            Cpf = cpf;
+        }
+
+        private Cliente() { }
+
+        public static implicit operator DTOs.Driven.ClienteDto(Cliente cliente)
+        {
+            return new DTOs.Driven.ClienteDto
+            {
+                Id = cliente.Id,
+                Nome = cliente.Nome,
+                Email = cliente.Email,
+                Cpf = cliente.Cpf
+            };
+        }
+
+        public static implicit operator Cliente(DTOs.Driven.ClienteDto clienteDto)
+        {
+            return new Cliente {
+                Id = clienteDto.Id, Nome = clienteDto.Nome, Email = clienteDto.Email, Cpf = clienteDto.Cpf
+            };
+        }
     }
 }

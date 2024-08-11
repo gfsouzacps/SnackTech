@@ -11,7 +11,6 @@ namespace SnackTech.Domain.Models
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
-        public Guid IdCliente { get; private set; }
         public Cliente Cliente { get; private set; }
         public IReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
         public StatusPedido Status { get; private set; }
@@ -20,14 +19,13 @@ namespace SnackTech.Domain.Models
             get { return _valor; }
         }
 
-        private Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
+        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
         {
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 
             Id = id;
             DataCriacao = dataCriacao;
             Status = status;
-            IdCliente = cliente.Id;
             Cliente = cliente;
         }
 
@@ -35,21 +33,14 @@ namespace SnackTech.Domain.Models
             : this(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente)
         { }
 
-        /// <summary>
-        /// For EF
-        /// </summary>
-        public Pedido()
-        {
-            //TODO: Criei esse construtor vazio para usar no EF, mas creio que ele poderá ser reaproveitado para
-            //criação de pedidos de clientes anônimos.
-        }
+        protected Pedido() { }
 
         public void AdicionarItem(Produto produto, int quantidade, string observacao)
         {
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
             var novoSequencial = ProximoSequencial();
-            var pedidoItem = new PedidoItem(Id, novoSequencial, produto, quantidade, observacao);
+            var pedidoItem = new PedidoItem(this, novoSequencial, produto, quantidade, observacao);
             _itens.Add(pedidoItem);
 
             CalcularValorTotal();
@@ -104,6 +95,63 @@ namespace SnackTech.Domain.Models
             }
             int ultimoSequencial = _itens.Max(i => i.Sequencial);
             return ultimoSequencial + 1;
+        }
+
+        public static implicit operator DTOs.Driven.PedidoDto(Pedido pedido)
+        {
+            var pedidoDto = new DTOs.Driven.PedidoDto
+            {
+                Id = pedido.Id,
+                DataCriacao = pedido.DataCriacao,
+                Status = pedido.Status,
+                Cliente = (DTOs.Driven.ClienteDto)pedido.Cliente,
+            };
+
+            var pedidosItems = pedido.Itens.Select(i => 
+                new DTOs.Driven.PedidoItemDto{
+                    Id = i.Id,
+                    Sequencial = i.Sequencial,
+                    Observacao = i.Observacao,
+                    Quantidade = i.Quantidade,
+                    Valor = i.Valor,
+                    Produto = (DTOs.Driven.ProdutoDto)i.Produto,
+                    Pedido = pedidoDto
+                }
+            ).ToList();
+
+            pedidoDto.Itens = pedidosItems;
+            
+            return pedidoDto;
+        }
+
+        public static implicit operator Pedido(DTOs.Driven.PedidoDto pedidoDto)
+        {
+            var pedidoModel = new Pedido {
+                Id = pedidoDto.Id,
+                DataCriacao = pedidoDto.DataCriacao,
+                Status = pedidoDto.Status,
+                Cliente = (Cliente)pedidoDto.Cliente
+            };
+            
+            List<PedidoItem> itensPedido = pedidoDto.Itens.Select(i => {
+                var item = new PedidoItem(){
+                    Id = i.Id,
+                    Sequencial = i.Sequencial,
+                    Observacao = i.Observacao,
+                    Quantidade = i.Quantidade,
+                    Produto = (Produto)i.Produto,
+                    Pedido = pedidoModel
+                };
+                item.CalcularValor();
+
+                return item;
+            }).ToList();
+            
+            if(itensPedido.Count > 0) pedidoModel._itens.AddRange(itensPedido);
+            
+            pedidoModel.CalcularValorTotal();
+
+            return pedidoModel;
         }
     }
 }

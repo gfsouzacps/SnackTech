@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SnackTech.Domain.Models;
+using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
@@ -22,21 +22,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 .HasColumnType("int")
                 .IsRequired();
 
-            builder.Property(p => p.Valor)
-                .HasField("_valor")
-                .IsRequired()
-                .HasColumnType("smallmoney");
-
-            builder.HasOne(p => p.Cliente)
-                .WithMany()
-                .HasForeignKey(p => p.IdCliente);
-
-            builder.HasMany(p => p.Itens)
-                .WithOne(i => i.Pedido)
-                .HasForeignKey(i => i.IdPedido);
-
-            builder.Navigation(nameof(Pedido.Itens))
-                .HasField("_itens");
+            builder.Navigation(nameof(Pedido.Itens));
         }
     }
 }
