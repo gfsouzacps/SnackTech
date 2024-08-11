@@ -109,6 +109,7 @@ namespace SnackTech.Domain.Models
 
             var pedidosItems = pedido.Itens.Select(i => 
                 new DTOs.Driven.PedidoItemDto{
+                    Id = i.Id,
                     Sequencial = i.Sequencial,
                     Observacao = i.Observacao,
                     Quantidade = i.Quantidade,
@@ -134,6 +135,7 @@ namespace SnackTech.Domain.Models
             
             List<PedidoItem> itensPedido = pedidoDto.Itens.Select(i => {
                 var item = new PedidoItem(){
+                    Id = i.Id,
                     Sequencial = i.Sequencial,
                     Observacao = i.Observacao,
                     Quantidade = i.Quantidade,
@@ -141,7 +143,7 @@ namespace SnackTech.Domain.Models
                     Pedido = pedidoModel
                 };
                 item.CalcularValor();
-                
+
                 return item;
             }).ToList();
             
