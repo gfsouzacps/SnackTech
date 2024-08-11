@@ -7,7 +7,7 @@ namespace SnackTech.Domain.Models
     public class Pedido
     {
         private decimal _valor;
-        private readonly List<PedidoItem> _itens;
+        private readonly List<PedidoItem> _itens = new();
 
         public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
@@ -19,7 +19,7 @@ namespace SnackTech.Domain.Models
             get { return _valor; }
         }
 
-        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente, List<PedidoItem>? itens = null)
+        public Pedido(Guid id, DateTime dataCriacao, StatusPedido status, Cliente cliente)
         {
             CustomGuards.AgainstObjectNull(cliente, nameof(cliente));
 
@@ -27,12 +27,13 @@ namespace SnackTech.Domain.Models
             DataCriacao = dataCriacao;
             Status = status;
             Cliente = cliente;
-            _itens = itens ?? new List<PedidoItem>();
         }
 
         public Pedido(Cliente cliente)
             : this(Guid.NewGuid(), DateTime.Now, StatusPedido.Iniciado, cliente)
         { }
+
+        protected Pedido() { }
 
         public void AdicionarItem(Produto produto, int quantidade, string observacao)
         {
@@ -98,19 +99,57 @@ namespace SnackTech.Domain.Models
 
         public static implicit operator DTOs.Driven.PedidoDto(Pedido pedido)
         {
-            return new DTOs.Driven.PedidoDto
+            var pedidoDto = new DTOs.Driven.PedidoDto
             {
                 Id = pedido.Id,
                 DataCriacao = pedido.DataCriacao,
                 Status = pedido.Status,
                 Cliente = (DTOs.Driven.ClienteDto)pedido.Cliente,
-                Itens = pedido.Itens.Select(i => (DTOs.Driven.PedidoItemDto)i)
             };
+
+            var pedidosItems = pedido.Itens.Select(i => 
+                new DTOs.Driven.PedidoItemDto{
+                    Sequencial = i.Sequencial,
+                    Observacao = i.Observacao,
+                    Quantidade = i.Quantidade,
+                    Valor = i.Valor,
+                    Produto = (DTOs.Driven.ProdutoDto)i.Produto,
+                    Pedido = pedidoDto
+                }
+            ).ToList();
+
+            pedidoDto.Itens = pedidosItems;
+            
+            return pedidoDto;
         }
 
-        public static implicit operator Pedido(DTOs.Driven.PedidoDto pedido)
+        public static implicit operator Pedido(DTOs.Driven.PedidoDto pedidoDto)
         {
-            return new Pedido(pedido.Id, pedido.DataCriacao, pedido.Status, (Cliente)pedido.Cliente, pedido.Itens.Select(i => (PedidoItem)i).ToList());
+            var pedidoModel = new Pedido {
+                Id = pedidoDto.Id,
+                DataCriacao = pedidoDto.DataCriacao,
+                Status = pedidoDto.Status,
+                Cliente = (Cliente)pedidoDto.Cliente
+            };
+            
+            List<PedidoItem> itensPedido = pedidoDto.Itens.Select(i => {
+                var item = new PedidoItem(){
+                    Sequencial = i.Sequencial,
+                    Observacao = i.Observacao,
+                    Quantidade = i.Quantidade,
+                    Produto = (Produto)i.Produto,
+                    Pedido = pedidoModel
+                };
+                item.CalcularValor();
+                
+                return item;
+            }).ToList();
+            
+            if(itensPedido.Count > 0) pedidoModel._itens.AddRange(itensPedido);
+            
+            pedidoModel.CalcularValorTotal();
+
+            return pedidoModel;
         }
     }
 }

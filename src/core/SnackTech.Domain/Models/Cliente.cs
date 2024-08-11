@@ -27,6 +27,8 @@ namespace SnackTech.Domain.Models
             Cpf = cpf;
         }
 
+        private Cliente() { }
+
         public static implicit operator DTOs.Driven.ClienteDto(Cliente cliente)
         {
             return new DTOs.Driven.ClienteDto
@@ -38,10 +40,11 @@ namespace SnackTech.Domain.Models
             };
         }
 
-        public static implicit operator Cliente(DTOs.Driven.ClienteDto cliente)
+        public static implicit operator Cliente(DTOs.Driven.ClienteDto clienteDto)
         {
-            var pessoa = new Pessoa(cliente.Id, cliente.Nome);
-            return new Cliente(pessoa, cliente.Email, cliente.Cpf);
+            return new Cliente {
+                Id = clienteDto.Id, Nome = clienteDto.Nome, Email = clienteDto.Email, Cpf = clienteDto.Cpf
+            };
         }
     }
 }

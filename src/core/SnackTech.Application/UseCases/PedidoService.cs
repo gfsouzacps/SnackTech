@@ -29,7 +29,7 @@ namespace SnackTech.Application.UseCases
                     return new Result($"O pedido com identificação {pedidoAtualizado.Identificacao} não pode ser alterado pois está aguardando pagamento.");
                 }
                 
-                var pedido = (Domain.DTOs.Driven.PedidoDto)pedidoDto;
+                var pedido = (Pedido)pedidoDto;
 
                 try
                 {
@@ -55,10 +55,12 @@ namespace SnackTech.Application.UseCases
             foreach (var itemInclusao in pedidoAtualizado.PedidoItens)
             {
                 var guidProduto = CustomGuards.AgainstInvalidGuid(itemInclusao.IdentificacaoProduto, nameof(itemInclusao.IdentificacaoProduto));
-                var produto = await produtoRepository.PesquisarPorIdentificacaoAsync(guidProduto);
+                var produtoDto = await produtoRepository.PesquisarPorIdentificacaoAsync(guidProduto);
                 
-                if (produto is null)
+                if (produtoDto is null)
                     throw new Exception($"Produto com identificação {itemInclusao.IdentificacaoProduto} não encontrado.");
+
+                var produto = (Produto)produtoDto;
 
                 if (pedido.Itens.Any(i => i.Sequencial == itemInclusao.Sequencial))
                 {

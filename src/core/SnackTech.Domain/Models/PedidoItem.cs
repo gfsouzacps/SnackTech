@@ -1,5 +1,4 @@
 
-using SnackTech.Domain.DTOs.Driven;
 using SnackTech.Domain.Guards;
 
 namespace SnackTech.Domain.Models
@@ -8,15 +7,15 @@ namespace SnackTech.Domain.Models
     {
         private decimal _valor;
 
-        public Guid Id {get; private set;}        
-        public int Sequencial {get; private set;}
-        public int Quantidade {get; private set;}
-        public string Observacao {get; private set;}
+        public Guid Id {get; internal set;}        
+        public int Sequencial {get; internal set;}
+        public int Quantidade {get; internal set;}
+        public string Observacao {get; internal set;}
         public decimal Valor {
             get { return _valor; }
         }
-        public Produto Produto { get; private set; }
-        public Pedido Pedido { get; private set; }
+        public Produto Produto { get; internal set; }
+        public Pedido Pedido { get; internal set; }
 
         public PedidoItem(Guid id, Pedido pedido, int sequencial, Produto produto, int quantidade, string observacao)
         {
@@ -42,6 +41,8 @@ namespace SnackTech.Domain.Models
             CalcularValor();
         }
 
+        internal PedidoItem() { }
+
         public void AtualizarDadosItem(Produto produto, int quantidade, string observacao){
             CustomGuards.AgainstObjectNull(produto, nameof(produto));
             CustomGuards.AgainstNegativeOrZeroValue(quantidade, nameof(quantidade));
@@ -51,7 +52,7 @@ namespace SnackTech.Domain.Models
             Observacao = PreencherObservacao(observacao);
         }
 
-        private void CalcularValor()
+        internal void CalcularValor()
         {
             _valor = Quantidade * Produto.Valor;
         }
@@ -59,23 +60,31 @@ namespace SnackTech.Domain.Models
         private static string PreencherObservacao(string observacao)
             => observacao ?? string.Empty;
 
-        public static implicit operator PedidoItemDto(PedidoItem pedidoItem)
+        public static implicit operator DTOs.Driven.PedidoItemDto(PedidoItem pedidoItem)
         {
-            return new PedidoItemDto
+            return new DTOs.Driven.PedidoItemDto
             {
                 Id = pedidoItem.Id,
                 Sequencial = pedidoItem.Sequencial,
                 Quantidade = pedidoItem.Quantidade,
                 Observacao = pedidoItem.Observacao,
                 Valor = pedidoItem.Valor,
-                Produto = (ProdutoDto)pedidoItem.Produto,
-                Pedido = (PedidoDto)pedidoItem.Pedido
+                Produto = (DTOs.Driven.ProdutoDto)pedidoItem.Produto,
+                Pedido = (DTOs.Driven.PedidoDto)pedidoItem.Pedido
             };
         }
 
-        public static implicit operator PedidoItem(PedidoItemDto pedidoItem)
+        public static implicit operator PedidoItem(DTOs.Driven.PedidoItemDto pedidoItemDto)
         {
-            return new PedidoItem(pedidoItem.Id, (Pedido)pedidoItem.Pedido, pedidoItem.Sequencial, (Produto)pedidoItem.Produto, pedidoItem.Quantidade, pedidoItem.Observacao);
+            return new PedidoItem {
+                Id = pedidoItemDto.Id,
+                Sequencial = pedidoItemDto.Sequencial,
+                Quantidade = pedidoItemDto.Quantidade,
+                Observacao = pedidoItemDto.Observacao,
+                _valor = pedidoItemDto.Valor,
+                Produto = (Produto)pedidoItemDto.Produto,
+                Pedido = (Pedido)pedidoItemDto.Pedido
+            };
         }
     }
 }
