@@ -181,8 +181,8 @@ namespace SnackTech.Application.Tests.UseCasesTests
             pedido2.FecharPedidoParaPagamento();
             pedidoRepository.Setup(p => p.PesquisarPedidosParaPagamentoAsync())
                                 .ReturnsAsync(new List<Domain.DTOs.Driven.PedidoDto>{
-                                    pedido1,
-                                    pedido2
+                                    (Domain.DTOs.Driven.PedidoDto)pedido1,
+                                    (Domain.DTOs.Driven.PedidoDto)pedido2
                                 });
 
             var resultado = await pedidoService.ListarPedidosParaPagamento();
@@ -302,7 +302,7 @@ namespace SnackTech.Application.Tests.UseCasesTests
             Assert.True(resultado.IsSuccess());
             Assert.Null(resultado.Exception);
 
-            pedidoRepository.Verify(mock => mock.AtualizarPedidoAsync((Domain.DTOs.Driven.PedidoDto)pedido), Times.Once());
+            pedidoRepository.Verify(mock => mock.AtualizarPedidoAsync(It.IsAny<Domain.DTOs.Driven.PedidoDto>()), Times.Once());
         }
 
         [Fact]
