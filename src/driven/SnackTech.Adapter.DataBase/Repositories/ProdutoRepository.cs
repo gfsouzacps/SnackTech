@@ -54,6 +54,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
             if (produto is null)
                 return false;
 
+            var existeItemAssociado = await _repositoryDbContext.PedidoItens
+                .AnyAsync(p => p.Produto.Id == identificacao);
+            
+            if (existeItemAssociado)
+                throw new Exception("Não foi possível remover o produto. Existem itens de pedidos associados a este produto.");
+
             _repositoryDbContext.Produtos.Remove(produto);
             return await _repositoryDbContext.SaveChangesAsync() > 0;
         }
