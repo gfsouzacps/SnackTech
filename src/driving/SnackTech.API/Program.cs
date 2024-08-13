@@ -4,11 +4,11 @@ using SnackTech.Adapter.DataBase;
 using SnackTech.Adapter.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddAdapterDatabaseRepositories();
 builder.Services.AddApplicationServices();
 
@@ -23,6 +23,9 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
     c.DescribeAllParametersInCamelCase();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SnackTech", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<RepositoryDbContext>(options =>
@@ -46,7 +49,16 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+app.UseCustomHealthChecks();
 app.UseAuthorization();
+
+// Redirecionamento da URL raiz para /swagger
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/swagger");
+    return Task.CompletedTask;
+});
+
 app.MapControllers();
 
 app.Run();

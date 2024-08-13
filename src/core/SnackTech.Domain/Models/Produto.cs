@@ -23,6 +23,8 @@ namespace SnackTech.Domain.Models
             Id = id;
         }
 
+        protected Produto() { }
+
         public void AtualizarDadosProduto(CategoriaProduto categoria, string nome, string descricao, decimal valor){
             PreencherDados(categoria,nome,descricao,valor);
         }
@@ -36,6 +38,29 @@ namespace SnackTech.Domain.Models
             Nome = nome;
             Descricao = descricao;
             Valor = valor;
+        }
+        
+        public static implicit operator DTOs.Driven.ProdutoDto(Produto produto)
+        {
+            return new DTOs.Driven.ProdutoDto
+            {
+                Id = produto.Id,
+                Categoria = produto.Categoria,
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Valor = produto.Valor
+            };
+        }
+
+        public static implicit operator Produto(DTOs.Driven.ProdutoDto produtoDto)
+        {
+            return new Produto {
+                Id = produtoDto.Id,
+                Categoria = produtoDto.Categoria,
+                Nome = produtoDto.Nome,
+                Descricao = produtoDto.Descricao,
+                Valor = produtoDto.Valor
+            };
         }
     }
 }

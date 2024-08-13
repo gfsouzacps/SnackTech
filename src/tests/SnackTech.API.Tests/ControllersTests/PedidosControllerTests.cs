@@ -4,8 +4,8 @@ using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Cliente;
-using SnackTech.Domain.DTOs.Pedido;
+using SnackTech.Domain.DTOs.Driving.Cliente;
+using SnackTech.Domain.DTOs.Driving.Pedido;
 using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.API.Tests.ControllersTests
@@ -26,7 +26,10 @@ namespace SnackTech.API.Tests.ControllersTests
             pedidoService.Setup(c => c.IniciarPedido(It.IsAny<string>()))
                             .ReturnsAsync(new Result<Guid>(Guid.NewGuid()));
 
-            var resultado = await pedidosController.IniciarPedido("1");
+            var iniciarPedido = new IniciarPedido{
+                Cpf = "1"
+            };
+            var resultado = await pedidosController.IniciarPedido(iniciarPedido);
 
             Assert.IsType<OkObjectResult>(resultado);
         }
@@ -37,7 +40,10 @@ namespace SnackTech.API.Tests.ControllersTests
             pedidoService.Setup(c => c.IniciarPedido(It.IsAny<string>()))
                             .ReturnsAsync(new Result<Guid>("Erro de lógica", true));
 
-            var resultado = await pedidosController.IniciarPedido("1");
+            var iniciarPedido = new IniciarPedido{
+                Cpf = "1"
+            };
+            var resultado = await pedidosController.IniciarPedido(iniciarPedido);
 
             var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
@@ -51,8 +57,11 @@ namespace SnackTech.API.Tests.ControllersTests
             var cadastroCliente = new CadastroCliente();
             pedidoService.Setup(c => c.IniciarPedido(It.IsAny<string>()))
                             .ThrowsAsync(new Exception("Erro inesperado"));
-
-            var resultado = await pedidosController.IniciarPedido("1");
+            
+            var iniciarPedido = new IniciarPedido{
+                Cpf = "1"
+            };
+            var resultado = await pedidosController.IniciarPedido(iniciarPedido);
             var objectResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
 

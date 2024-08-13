@@ -4,8 +4,8 @@ namespace SnackTech.Domain.Models
 {
     public class Pessoa
     {
-        public Guid Id {get; private set;}
-        public string Nome {get; private set;}
+        public Guid Id {get; protected set;}
+        public string Nome {get; protected set;}
 
         public Pessoa(Guid id, string nome){
             CustomGuards.AgainstStringNullOrWhiteSpace(nome, nameof(nome));
@@ -13,5 +13,7 @@ namespace SnackTech.Domain.Models
             Id = id;
             Nome = nome;
         }
+
+        protected Pessoa() { }
     }
 }

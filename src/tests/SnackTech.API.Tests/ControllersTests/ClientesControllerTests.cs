@@ -4,7 +4,7 @@ using Moq;
 using SnackTech.API.Controllers;
 using SnackTech.API.CustomResponses;
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Cliente;
+using SnackTech.Domain.DTOs.Driving.Cliente;
 using SnackTech.Domain.Ports.Driving;
 
 namespace SnackTech.API.Tests.ControllersTests
@@ -102,8 +102,9 @@ namespace SnackTech.API.Tests.ControllersTests
 
         [Fact]
         public async Task GetDefaultClientWithSuccess(){
+            var retornoCliente = new RetornoCliente{};
             clienteService.Setup(c => c.SelecionarClientePadrao())
-                            .ReturnsAsync(new Result<Guid>(Guid.NewGuid()));
+                            .ReturnsAsync(new Result<RetornoCliente>(retornoCliente));
 
             var resultado = await clientesController.GetDefaultClient();
 
@@ -112,8 +113,9 @@ namespace SnackTech.API.Tests.ControllersTests
 
         [Fact]
         public async Task GetDefaultClientWithBadRequest(){
+
             clienteService.Setup(c => c.SelecionarClientePadrao())
-                            .ReturnsAsync(new Result<Guid>("Erro de lógica",true));
+                            .ReturnsAsync(new Result<RetornoCliente>("Erro de lógica",true));
 
             var resultado = await clientesController.GetDefaultClient();
 

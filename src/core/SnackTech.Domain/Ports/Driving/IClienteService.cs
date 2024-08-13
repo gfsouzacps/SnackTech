@@ -1,5 +1,5 @@
 using SnackTech.Domain.Common;
-using SnackTech.Domain.DTOs.Cliente;
+using SnackTech.Domain.DTOs.Driving.Cliente;
 
 namespace SnackTech.Domain.Ports.Driving
 {
@@ -7,6 +7,6 @@ namespace SnackTech.Domain.Ports.Driving
     {
         Task<Result<RetornoCliente>> Cadastrar(CadastroCliente cadastroCliente);
         Task<Result<RetornoCliente>> IdentificarPorCpf(string cpf);
-        Task<Result<Guid>> SelecionarClientePadrao();
+        Task<Result<RetornoCliente>> SelecionarClientePadrao();
     }
 }

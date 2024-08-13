@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "c327dc29-9d20-4847-936e-71d2acb8de4e",
+		"name": "SnackTech",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13472077"
+	},
+	"item": [
+		{
+			"name": "Pedido",
+			"item": [
+				{
+					"name": "Pedido - Iniciar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"08742938473\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"identificacao\": \"8668f733-ab3d-4fb4-b644-d5aab840d5fe\",\r\n  \"pedidoItens\": [\r\n    // {\r\n    //   \"sequencial\": 3,\r\n    //   \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n    //   \"quantidade\": 3,\r\n    //   \"observacao\": \"descrição 3\"\r\n    // },\r\n    {\r\n      \"sequencial\": 2,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 2\"\r\n    },\r\n    {\r\n      \"sequencial\": 1,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 1\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Finalizar para pagamento",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/finalizar-para-pagamento/8668f733-ab3d-4fb4-b644-d5aab840d5fe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"finalizar-para-pagamento",
+								"8668f733-ab3d-4fb4-b644-d5aab840d5fe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Pesquisar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/8668f733-ab3d-4fb4-b644-d5aab840d5fe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"8668f733-ab3d-4fb4-b644-d5aab840d5fe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Ultimo Pedido Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/ultimo-pedido-cliente/08742938473",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"ultimo-pedido-cliente",
+								"08742938473"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Aguardando Pagamento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/aguardando-pagamento",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"aguardando-pagamento"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produto",
+			"item": [
+				{
+					"name": "Produto - Criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 2\",\r\n//   \"descricao\": \"vvvvvv\",\r\n//   \"valor\": 3\r\n// }\r\n\r\n{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 1\",\r\n  \"descricao\": \"aaaa\",\r\n  \"valor\": 32\r\n}\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Produtos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produto - Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 2 - Editado\",\r\n  \"descricao\": \"vvvvvv\",\r\n  \"valor\": 10\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Produtos/3f30c44a-e76a-47e7-8253-487cd9eaa4b6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Produtos",
+								"3f30c44a-e76a-47e7-8253-487cd9eaa4b6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produto - Remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 2 - Editado\",\r\n  \"descricao\": \"vvvvvv\",\r\n  \"valor\": 10\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Produtos/f9e66763-345b-49a8-9582-8dcbece7a27e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Produtos",
+								"f9e66763-345b-49a8-9582-8dcbece7a27e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produto - Listar por categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Produtos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Produtos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Cliente - Criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Teste usuario\",\r\n  \"email\": \"adriano@aaaaa.com\",\r\n  \"cpf\": \"08742938473\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cliente - Pesquisar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Clientes/00000000191",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Clientes",
+								"00000000191"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cliente - Pesquisar Cliente Padrao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Clientes/cliente-padrao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Clientes",
+								"cliente-padrao"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

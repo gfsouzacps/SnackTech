@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SnackTech.Domain.Models;
+using SnackTech.Adapter.DataBase.Entities;
 
 namespace SnackTech.Adapter.DataBase.Configurations
 {
@@ -15,7 +15,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
             builder.Property(c => c.Email)
                 .HasColumnType("varchar")
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(255);
 
             builder.Property(c => c.Cpf)
                 .HasColumnType("varchar")
@@ -34,7 +34,7 @@ namespace SnackTech.Adapter.DataBase.Configurations
                 {
                     Id = Guid.Parse("6ee54a46-007f-4e4c-9fe8-1a13eadf7fd1"),
                     Email = "cliente.padrao@padrao.com",
-                    Cpf = Cliente.CPF_CLIENTE_PADRAO,
+                    Cpf = Domain.Models.Cliente.CPF_CLIENTE_PADRAO,
                     Nome = "Cliente Padrão"
                 });
         }
