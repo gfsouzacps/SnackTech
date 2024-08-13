@@ -3,6 +3,7 @@ using SnackTech.Adapter.DataBase.Context;
 using SnackTech.Adapter.DataBase.Entities;
 using SnackTech.Adapter.DataBase.Util;
 using SnackTech.Domain.Enums;
+using SnackTech.Domain.Exceptions.Driven;
 using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Adapter.DataBase.Repositories
@@ -22,6 +23,11 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task InserirProdutoAsync(Domain.DTOs.Driven.ProdutoDto novoProduto)
         {
             var produtoEntity = Mapping.Mapper.Map<Produto>(novoProduto);
+
+            bool existe = await _repositoryDbContext.Produtos
+                .AnyAsync(p => p.Categoria == novoProduto.Categoria && p.Nome == novoProduto.Nome);
+            if (existe)
+                throw new ProdutoRepositoryException("Já existe um produto com o mesmo nome e categoria no sistema.");
 
             _repositoryDbContext.Add(produtoEntity);
             await _repositoryDbContext.SaveChangesAsync();
@@ -53,6 +59,12 @@ namespace SnackTech.Adapter.DataBase.Repositories
 
             if (produto is null)
                 return false;
+
+            var existeItemAssociado = await _repositoryDbContext.PedidoItens
+                .AnyAsync(p => p.Produto.Id == identificacao);
+            
+            if (existeItemAssociado)
+                throw new ProdutoRepositoryException("Não foi possível remover o produto. Existem itens de pedidos associados a este produto.");
 
             _repositoryDbContext.Produtos.Remove(produto);
             return await _repositoryDbContext.SaveChangesAsync() > 0;
