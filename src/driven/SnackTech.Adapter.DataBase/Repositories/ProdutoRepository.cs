@@ -24,6 +24,11 @@ namespace SnackTech.Adapter.DataBase.Repositories
         {
             var produtoEntity = Mapping.Mapper.Map<Produto>(novoProduto);
 
+            bool existe = await _repositoryDbContext.Produtos
+                .AnyAsync(p => p.Categoria == novoProduto.Categoria && p.Nome == novoProduto.Nome);
+            if (existe)
+                throw new ProdutoRepositoryException("Já existe um produto com o mesmo nome e categoria no sistema.");
+
             _repositoryDbContext.Add(produtoEntity);
             await _repositoryDbContext.SaveChangesAsync();
         }

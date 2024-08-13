@@ -46,8 +46,17 @@ namespace SnackTech.Application.UseCases
             async Task<Result<Guid>> processo(){
                 var categoriaProduto = CustomGuards.AgainstInvalidCategoriaProduto(novoProduto.Categoria,nameof(novoProduto.Categoria));
                 var produto = new Produto(categoriaProduto,novoProduto.Nome,novoProduto.Descricao,novoProduto.Valor);
-                await produtoRepository.InserirProdutoAsync((Domain.DTOs.Driven.ProdutoDto)produto);
-                return new Result<Guid>(produto.Id);
+                
+                try{
+                    await produtoRepository.InserirProdutoAsync((Domain.DTOs.Driven.ProdutoDto)produto);
+                    return new Result<Guid>(produto.Id);
+                }
+                catch(ProdutoRepositoryException e){
+                    return new Result<Guid>(e.Message,true);
+                }
+                catch(Exception e){
+                    return new Result<Guid>(e);
+                }
             }
             return await CommonExecution($"ProdutoService.CriarNovoProduto",processo);
         }
