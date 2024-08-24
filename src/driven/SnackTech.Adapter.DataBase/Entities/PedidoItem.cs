@@ -6,10 +6,10 @@ namespace SnackTech.Adapter.DataBase.Entities
         public Guid Id {get; set;}        
         public int Sequencial {get; set;}   
         public int Quantidade {get; set;}   
-        public string Observacao {get; set;} 
+        public string Observacao {get; set;} = string.Empty;
         public decimal Valor {get; set;}  
-        public Produto Produto {get; set;}
-        public Pedido Pedido {get; set;}   
+        public Produto Produto {get; set;} = new();
+        public Pedido Pedido {get; set;} = new();
 
     }
 }

@@ -8,7 +8,7 @@ public class PedidoItemDto
     public int Quantidade {get; set;}   
     public string Observacao {get; set;} = string.Empty; 
     public decimal Valor {get; set;}  
-    public ProdutoDto Produto {get; set;}
-    public PedidoDto Pedido {get; set;}   
+    public ProdutoDto Produto {get; set;} = new();
+    public PedidoDto Pedido {get; set;} = new();
 
 }

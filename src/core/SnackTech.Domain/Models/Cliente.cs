@@ -6,8 +6,8 @@ namespace SnackTech.Domain.Models
     {
         public const string CPF_CLIENTE_PADRAO = "00000000191";
 
-        public string Email { get; private set; }
-        public string Cpf { get; private set; }
+        public string Email { get; private set; } = string.Empty;
+        public string Cpf { get; private set; } = string.Empty;
 
         public Cliente(string nome, string email, string cpf)
             : base(Guid.NewGuid(), nome)

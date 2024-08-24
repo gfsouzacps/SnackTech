@@ -8,8 +8,8 @@ public class PedidoDto
 
     public Guid Id { get; set; }
     public DateTime DataCriacao { get; set; }
-    public ClienteDto Cliente { get; set; }
+    public ClienteDto Cliente { get; set; } = new();
     public StatusPedido Status { get; set; }        
-    public List<PedidoItemDto> Itens { get; set; }
+    public List<PedidoItemDto> Itens { get; set; } = new();
 }
 
