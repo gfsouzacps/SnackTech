@@ -1,20 +1,20 @@
 # Use uma imagem base do .NET SDK
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 
 # Define o diretório de trabalho no contêiner
 WORKDIR /src
 
 # Copie os arquivos .csproj para o contêiner
-COPY driving/SnackTech.API/SnackTech.API.csproj driving/SnackTech.API/
 COPY core/SnackTech.Domain/SnackTech.Domain.csproj core/SnackTech.Domain/
 COPY core/SnackTech.Application/SnackTech.Application.csproj core/SnackTech.Application/
 COPY driven/SnackTech.Adapter.DataBase/SnackTech.Adapter.DataBase.csproj driven/SnackTech.Adapter.DataBase/
+COPY driving/SnackTech.API/SnackTech.API.csproj driving/SnackTech.API/
 
 # Restaure as dependências
 RUN dotnet restore driving/SnackTech.API/SnackTech.API.csproj
 
 # Copie todos os arquivos restantes
-COPY . .
+COPY . ./
 
 # Compile o projeto
 RUN dotnet build driving/SnackTech.API/SnackTech.API.csproj -c Release -o /app/build
@@ -23,10 +23,10 @@ RUN dotnet build driving/SnackTech.API/SnackTech.API.csproj -c Release -o /app/b
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
 # Define o diretório de trabalho no contêiner
-WORKDIR /app
+WORKDIR /src
 
 # Copie a build da etapa anterior
-COPY --from=build /app/build .
+COPY --from=build-env /app/build .
 
 # Exponha a porta da API
 EXPOSE 8080

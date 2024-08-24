@@ -27,14 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Application.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain.Tests", "tests\SnackTech.Domain.Tests\SnackTech.Domain.Tests.csproj", "{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9748FD7-189E-4DC2-B216-36CD035B3929}"
-	ProjectSection(SolutionItems) = preProject
-		Dockerfile = Dockerfile
-		..\.dockerignore = ..\.dockerignore
-		..\.gitignore = ..\.gitignore
-		..\docker-compose.yml = ..\docker-compose.yml
-		..\README.md = ..\README.md
-	EndProjectSection
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{546A4477-2526-43E2-8499-4AFD6DC35CF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +67,10 @@ Global
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
