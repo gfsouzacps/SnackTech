@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\"08742938473\"\r\n\r\n",
+							"raw": "{\r\n    \"cpf\": \"08742938473\"\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,7 +24,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Pedidos/iniciar",
+							"raw": "http://localhost:8080/api/Pedidos",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -32,8 +32,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"Pedidos",
-								"iniciar"
+								"Pedidos"
 							]
 						}
 					},
@@ -42,11 +41,11 @@
 				{
 					"name": "Pedido - Atualizar",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"identificacao\": \"69330ac4-76a2-4f1b-9c42-654de40003f9\",\r\n  \"pedidoItens\": [\r\n    {\r\n      \"sequencial\": 3,\r\n      \"identificacaoProduto\": \"AC64CB5B-B7EF-4021-90AB-6C5216B6EBDE\",\r\n      \"quantidade\": 3,\r\n      \"observacao\": \"cccccccccccc\"\r\n    },\r\n    {\r\n      \"sequencial\": 2,\r\n      \"identificacaoProduto\": \"AC64CB5B-B7EF-4021-90AB-6C5216B6EBDE\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"abbbaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\r\n    },\r\n    {\r\n      \"sequencial\": 1,\r\n      \"identificacaoProduto\": \"AC64CB5B-B7EF-4021-90AB-6C5216B6EBDE\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"aaaaaaaaaaaaaa\"\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"identificacao\": \"8668f733-ab3d-4fb4-b644-d5aab840d5fe\",\r\n  \"pedidoItens\": [\r\n    // {\r\n    //   \"sequencial\": 3,\r\n    //   \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n    //   \"quantidade\": 3,\r\n    //   \"observacao\": \"descrição 3\"\r\n    // },\r\n    {\r\n      \"sequencial\": 2,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 2\"\r\n    },\r\n    {\r\n      \"sequencial\": 1,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 1\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,7 +53,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Pedidos/atualizar",
+							"raw": "http://localhost:8080/api/Pedidos",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -62,8 +61,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"Pedidos",
-								"atualizar"
+								"Pedidos"
 							]
 						}
 					},
@@ -72,11 +70,11 @@
 				{
 					"name": "Pedido - Finalizar para pagamento",
 					"request": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\"69330ac4-76a2-4f1b-9c42-654de40003f9\"",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,7 +82,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Pedidos/finalizar-para-pagamento",
+							"raw": "http://localhost:8080/api/Pedidos/finalizar-para-pagamento/8668f733-ab3d-4fb4-b644-d5aab840d5fe",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -93,7 +91,8 @@
 							"path": [
 								"api",
 								"Pedidos",
-								"finalizar-para-pagamento"
+								"finalizar-para-pagamento",
+								"8668f733-ab3d-4fb4-b644-d5aab840d5fe"
 							]
 						}
 					},
@@ -105,7 +104,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/Pedidos/69330ac4-76a2-4f1b-9c42-654de40003f9",
+							"raw": "http://localhost:8080/api/Pedidos/8668f733-ab3d-4fb4-b644-d5aab840d5fe",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -114,7 +113,7 @@
 							"path": [
 								"api",
 								"Pedidos",
-								"69330ac4-76a2-4f1b-9c42-654de40003f9"
+								"8668f733-ab3d-4fb4-b644-d5aab840d5fe"
 							]
 						}
 					},
@@ -212,7 +211,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Produtos/c84c027a-a7d1-4212-bf5e-c97f1c9c2972",
+							"raw": "http://localhost:8080/api/Produtos/3f30c44a-e76a-47e7-8253-487cd9eaa4b6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -221,7 +220,7 @@
 							"path": [
 								"api",
 								"Produtos",
-								"c84c027a-a7d1-4212-bf5e-c97f1c9c2972"
+								"3f30c44a-e76a-47e7-8253-487cd9eaa4b6"
 							]
 						}
 					},
@@ -242,7 +241,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Produtos/c84c027a-a7d1-4212-bf5e-c97f1c9c2972",
+							"raw": "http://localhost:8080/api/Produtos/f9e66763-345b-49a8-9582-8dcbece7a27e",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -251,7 +250,7 @@
 							"path": [
 								"api",
 								"Produtos",
-								"c84c027a-a7d1-4212-bf5e-c97f1c9c2972"
+								"f9e66763-345b-49a8-9582-8dcbece7a27e"
 							]
 						}
 					},

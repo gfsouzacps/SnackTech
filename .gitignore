@@ -369,3 +369,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Rider directories
+.idea/
+.idea_modules/
+
+# Rider project files
+*.sln.iml
