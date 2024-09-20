@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain.Tests", "t
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{546A4477-2526-43E2-8499-4AFD6DC35CF3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{11FAF236-6419-409A-AB3C-2B87C08A85AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Common", "common\SnackTech.Common\SnackTech.Common.csproj", "{182F015F-99B5-4593-A692-47968C09C0ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,10 @@ Global
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +92,7 @@ Global
 		{FCE83E91-35D8-40D5-9B73-F9323145D71C} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
+		{182F015F-99B5-4593-A692-47968C09C0ED} = {11FAF236-6419-409A-AB3C-2B87C08A85AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}

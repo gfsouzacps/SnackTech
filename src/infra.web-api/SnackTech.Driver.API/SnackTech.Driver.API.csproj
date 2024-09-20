@@ -30,5 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="../../infra.persistence/SnackTech.Driver.DataBase/SnackTech.Driver.DataBase.csproj" />
     <ProjectReference Include="..\..\core\SnackTech.Application\SnackTech.Application.csproj" />
+    <ProjectReference Include="..\..\common\SnackTech.Common\SnackTech.Common.csproj" />
   </ItemGroup>
 </Project>
