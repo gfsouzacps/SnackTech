@@ -7,17 +7,17 @@ WORKDIR /src
 # Copie os arquivos .csproj para o contêiner
 COPY core/SnackTech.Domain/SnackTech.Domain.csproj core/SnackTech.Domain/
 COPY core/SnackTech.Application/SnackTech.Application.csproj core/SnackTech.Application/
-COPY driven/SnackTech.Driver.DataBase/SnackTech.Driver.DataBase.csproj driven/SnackTech.Driver.DataBase/
-COPY driving/SnackTech.Driver.API/SnackTech.Driver.API.csproj driving/SnackTech.Driver.API/
+COPY infra.persistence/SnackTech.Driver.DataBase/SnackTech.Driver.DataBase.csproj infra.persistence/SnackTech.Driver.DataBase/
+COPY infra.web-api/SnackTech.Driver.API/SnackTech.Driver.API.csproj infra.web-api/SnackTech.Driver.API/
 
 # Restaure as dependências
-RUN dotnet restore driving/SnackTech.Driver.API/SnackTech.Driver.API.csproj
+RUN dotnet restore infra.web-api/SnackTech.Driver.API/SnackTech.Driver.API.csproj
 
 # Copie todos os arquivos restantes
 COPY . ./
 
 # Compile o projeto
-RUN dotnet build driving/SnackTech.Driver.API/SnackTech.Driver.API.csproj -c Release -o /app/build
+RUN dotnet build infra.web-api/SnackTech.Driver.API/SnackTech.Driver.API.csproj -c Release -o /app/build
 
 # Use a imagem de runtime do .NET
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime

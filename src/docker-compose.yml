@@ -27,7 +27,7 @@ services:
     container_name: snack-tech-web-api
     build:
       context: .
-      dockerfile: driving/SnackTech.Driver.API/Dockerfile
+      dockerfile: infra.web-api/SnackTech.Driver.API/Dockerfile
     image: snack-tech-api:alpha
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
