@@ -1,4 +1,4 @@
-using DomainModels = SnackTech.Domain.Models;
+using DomainModels = SnackTech.Domain.Entities;
 
 namespace SnackTech.Domain.DTOs.Driving.Pedido
 {

@@ -1,4 +1,4 @@
-using SnackTech.Domain.Models;
+using SnackTech.Domain.Entities;
 
 namespace SnackTech.Domain.DTOs.Driving.Pedido
 {

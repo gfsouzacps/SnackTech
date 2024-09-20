@@ -3,7 +3,7 @@ using Moq;
 using SnackTech.Domain.DTOs.Driving.Pedido;
 using SnackTech.Application.UseCases;
 using SnackTech.Domain.Enums;
-using SnackTech.Domain.Models;
+using SnackTech.Domain.Entities;
 using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Application.Tests.UseCasesTests

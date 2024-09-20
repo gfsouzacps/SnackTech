@@ -1,7 +1,7 @@
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
 
-namespace SnackTech.Domain.Models
+namespace SnackTech.Domain.Entities
 {
     public class Produto
     {

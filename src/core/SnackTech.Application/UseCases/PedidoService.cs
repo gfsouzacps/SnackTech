@@ -3,7 +3,7 @@ using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Driving.Pedido;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
-using SnackTech.Domain.Models;
+using SnackTech.Domain.Entities;
 using SnackTech.Domain.Ports.Driven;
 using SnackTech.Domain.Ports.Driving;
 

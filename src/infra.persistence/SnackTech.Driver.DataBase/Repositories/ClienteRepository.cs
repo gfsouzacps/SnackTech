@@ -30,7 +30,7 @@ namespace SnackTech.Driver.DataBase.Repositories
         {
             var cliente = await _repositoryDbContext.Clientes
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Cpf == Domain.Models.Cliente.CPF_CLIENTE_PADRAO);
+                .FirstOrDefaultAsync(c => c.Cpf == Domain.Entities.Cliente.CPF_CLIENTE_PADRAO);
 
             if (cliente == null)
             {

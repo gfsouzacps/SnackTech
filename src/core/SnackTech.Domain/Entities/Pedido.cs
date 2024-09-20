@@ -2,7 +2,7 @@ using SnackTech.Domain.Enums;
 using SnackTech.Domain.Guards;
 using System.Collections.ObjectModel;
 
-namespace SnackTech.Domain.Models
+namespace SnackTech.Domain.Entities
 {
     public class Pedido
     {
