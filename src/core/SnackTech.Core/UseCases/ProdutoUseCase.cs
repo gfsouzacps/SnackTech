@@ -5,9 +5,9 @@ using SnackTech.Core.Gateways;
 
 namespace SnackTech.Core.UseCases
 {
-    public static class ProdutoUseCase
+    internal static class ProdutoUseCase
     {
-        public static async Task<ResultadoOperacao<Produto>> CriarNovoProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao<Produto>> CriarNovoProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
             try{
                 //garantir que não existe produto com mesmo nome já cadastrado
                 var produto = await produtoGateway.ProcurarProdutoPorNome(produtoDto.Nome);
@@ -32,7 +32,7 @@ namespace SnackTech.Core.UseCases
             }
         }
 
-        public static async Task<ResultadoOperacao> EditarProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao> EditarProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
             try{
                 //chamar gateway que fala com a fonte de dados para resgatar entidade produto
                 var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(produtoDto.Id);
@@ -53,7 +53,7 @@ namespace SnackTech.Core.UseCases
             }
         }
 
-        public static async Task<ResultadoOperacao> RemoverProduto(Guid identificacao, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao> RemoverProduto(Guid identificacao, ProdutoGateway produtoGateway){
             try{
                 //chamar gateway que fala com a fonte de dados para resgatar entidade produto
                 var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(identificacao);
@@ -71,7 +71,7 @@ namespace SnackTech.Core.UseCases
             }
         }
 
-        public static async Task<ResultadoOperacao<IEnumerable<Produto>>> BuscarProdutoPorCategoria(int categoriaProduto, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao<IEnumerable<Produto>>> BuscarProdutoPorCategoria(int categoriaProduto, ProdutoGateway produtoGateway){
             try{
                 var categoriaValida = new CategoriaProdutoValido(categoriaProduto);
                 var listaProdutos = await produtoGateway.ProcurarProdutosPorCategoria(categoriaValida);
@@ -85,7 +85,7 @@ namespace SnackTech.Core.UseCases
             }
         }
 
-        public static async Task<ResultadoOperacao<Produto>> BuscarProdutoPorIdentificacao(Guid identificacao, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao<Produto>> BuscarProdutoPorIdentificacao(Guid identificacao, ProdutoGateway produtoGateway){
             try{
                 var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(identificacao);
 

@@ -5,15 +5,15 @@ namespace SnackTech.Core.Domain.Entities
 {
     //primary constructor. Feature do C#12. 
     //Explicita os valores obrigatórios na definição da classe
-    public class Produto(Guid id, CategoriaProdutoValido categoriaProduto, StringNaoVaziaOuComEspacos nome, StringNaoVazia descricao, DecimalPositivo valor)
+    internal class Produto(Guid id, CategoriaProdutoValido categoriaProduto, StringNaoVaziaOuComEspacos nome, StringNaoVazia descricao, DecimalPositivo valor)
     {
-        public Guid Id { get; private set; } = id;
-        public CategoriaProdutoValido Categoria { get; private set; } = categoriaProduto;
-        public StringNaoVaziaOuComEspacos Nome { get; private set; } = nome;
-        public StringNaoVazia Descricao { get; private set; } = descricao;
-        public DecimalPositivo Valor { get; private set; } = valor;
+        internal Guid Id { get; private set; } = id;
+        internal CategoriaProdutoValido Categoria { get; private set; } = categoriaProduto;
+        internal StringNaoVaziaOuComEspacos Nome { get; private set; } = nome;
+        internal StringNaoVazia Descricao { get; private set; } = descricao;
+        internal DecimalPositivo Valor { get; private set; } = valor;
 
-        public void AlterarDados(ProdutoDto produtoDto){
+        internal void AlterarDados(ProdutoDto produtoDto){
             Categoria = produtoDto.Categoria;
             Nome = produtoDto.Nome;
             Descricao = produtoDto.Descricao;

@@ -1,10 +1,10 @@
 namespace SnackTech.Core.Domain.Types
 {
-    public struct DecimalPositivo
+    internal struct DecimalPositivo
     {
         private decimal valor;
 
-        public decimal Valor{
+        internal decimal Valor{
             readonly get {return valor;}
             set{
                 ValidarValor(value);
@@ -12,7 +12,7 @@ namespace SnackTech.Core.Domain.Types
             }
         }
 
-        public DecimalPositivo(decimal valor){
+        internal DecimalPositivo(decimal valor){
             Valor = valor;
         }
 

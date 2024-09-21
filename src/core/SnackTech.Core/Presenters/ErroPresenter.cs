@@ -3,14 +3,14 @@ using SnackTech.Core.Common.Dto;
 
 namespace SnackTech.Core.Presenters
 {
-    public static class ErroPresenter
+    internal static class ErroPresenter
     {
-        public static string ApresentarErroDeClienteComoJson(string mensagem){
+        internal static string ApresentarErroDeClienteComoJson(string mensagem){
             var objetoRetorno = new MensagemDto(mensagem);
             return JsonConvert.SerializeObject(objetoRetorno);
         }
 
-        public static string ApresentarErroInternoComoJson(string mensagem,Exception excecao){
+        internal static string ApresentarErroInternoComoJson(string mensagem,Exception excecao){
             var excecaoRetorno = new ExcecaoRetorno(excecao);
             var excecaoInterna = new ErroInternoDto(mensagem,excecaoRetorno);
             return JsonConvert.SerializeObject(excecaoInterna);

@@ -1,10 +1,10 @@
 namespace SnackTech.Core.Domain.Types
 {
-    public class StringNaoVaziaOuComEspacos
+    internal class StringNaoVaziaOuComEspacos
     {
         private string valor = default!;
 
-        public string Valor {
+        internal string Valor {
             get {return valor;}
             set{
                 ValidarValorString(value);
@@ -12,7 +12,7 @@ namespace SnackTech.Core.Domain.Types
             }
         }
 
-        public StringNaoVaziaOuComEspacos(string value){
+        internal StringNaoVaziaOuComEspacos(string value){
             Valor = value;
         }
 

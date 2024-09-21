@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types
 {
-    public struct CategoriaProdutoValido
+    internal struct CategoriaProdutoValido
     {
         private int valor;
         private readonly Dictionary<int,string> ValoresValidos = new()
@@ -11,12 +11,12 @@ namespace SnackTech.Core.Domain.Types
             {4,"Sobremesa"},
         };
 
-        public CategoriaProdutoValido(int valor)
+        internal CategoriaProdutoValido(int valor)
         {
             Valor = valor;
         }
 
-        public int Valor{
+        internal int Valor{
             readonly get {return valor;}
             set{
                 ValidarValor(value);
