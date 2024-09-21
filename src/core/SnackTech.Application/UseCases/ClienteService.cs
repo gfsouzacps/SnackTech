@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Driving.Cliente;
 using SnackTech.Domain.Guards;
-using SnackTech.Domain.Models;
+using SnackTech.Domain.Entities;
 using SnackTech.Domain.Ports.Driven;
 using SnackTech.Domain.Ports.Driving;
 

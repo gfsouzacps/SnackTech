@@ -9,25 +9,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Application", "co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain", "core\SnackTech.Domain\SnackTech.Domain.csproj", "{19CB4B2C-4801-49F5-8272-4B24A8855E92}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driven", "driven", "{9BA84263-730B-4BE9-A122-9C4E5250E21B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra.persistence", "infra.persistence", "{9BA84263-730B-4BE9-A122-9C4E5250E21B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Adapter.DataBase", "driven\SnackTech.Adapter.DataBase\SnackTech.Adapter.DataBase.csproj", "{72F71E57-CC20-4E51-A245-9E290F254108}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Driver.DataBase", "infra.persistence\SnackTech.Driver.DataBase\SnackTech.Driver.DataBase.csproj", "{72F71E57-CC20-4E51-A245-9E290F254108}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driving", "driving", "{A6C434E4-CFB7-48C8-8396-66886A1E7D6D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra.web-api", "infra.web-api", "{A6C434E4-CFB7-48C8-8396-66886A1E7D6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.API", "driving\SnackTech.API\SnackTech.API.csproj", "{EA12B2DC-7676-406D-B258-79D588B89585}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Driver.API", "infra.web-api\SnackTech.Driver.API\SnackTech.Driver.API.csproj", "{EA12B2DC-7676-406D-B258-79D588B89585}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{984A6F53-D819-461F-A5C6-20ABEB936F8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Adapter.Database.Tests", "tests\SnackTech.Adapter.Database.Tests\SnackTech.Adapter.Database.Tests.csproj", "{99148107-6ED8-4EC7-B100-C25C400CB46B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Driver.Database.Tests", "tests\SnackTech.Driver.DataBase.Tests\SnackTech.Driver.Database.Tests.csproj", "{99148107-6ED8-4EC7-B100-C25C400CB46B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.API.Tests", "tests\SnackTech.API.Tests\SnackTech.API.Tests.csproj", "{FCE83E91-35D8-40D5-9B73-F9323145D71C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Driver.API.Tests", "tests\SnackTech.Driver.API.Tests\SnackTech.Driver.API.Tests.csproj", "{FCE83E91-35D8-40D5-9B73-F9323145D71C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Application.Tests", "tests\SnackTech.Application.Tests\SnackTech.Application.Tests.csproj", "{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnackTech.Domain.Tests", "tests\SnackTech.Domain.Tests\SnackTech.Domain.Tests.csproj", "{9DFA9058-6056-4B09-9EAE-B56C4F5CD792}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{546A4477-2526-43E2-8499-4AFD6DC35CF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{11FAF236-6419-409A-AB3C-2B87C08A85AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Common", "common\SnackTech.Common\SnackTech.Common.csproj", "{182F015F-99B5-4593-A692-47968C09C0ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,10 @@ Global
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{546A4477-2526-43E2-8499-4AFD6DC35CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +92,7 @@ Global
 		{FCE83E91-35D8-40D5-9B73-F9323145D71C} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
+		{182F015F-99B5-4593-A692-47968C09C0ED} = {11FAF236-6419-409A-AB3C-2B87C08A85AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}

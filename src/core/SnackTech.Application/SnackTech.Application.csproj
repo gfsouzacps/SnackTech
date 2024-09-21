@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnackTech.Domain\SnackTech.Domain.csproj" />
+    <ProjectReference Include="..\..\common\SnackTech.Common\SnackTech.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

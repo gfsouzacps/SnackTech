@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snacktech-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: snacktech
+  template:
+    metadata:
+      labels:
+        app: snacktech
+    spec:
+      containers:
+        - name: snacktech
+          image: gfsouzacps/snack-tech-api:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
