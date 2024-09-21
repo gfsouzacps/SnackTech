@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{11FAF2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Common", "common\SnackTech.Common\SnackTech.Common.csproj", "{182F015F-99B5-4593-A692-47968C09C0ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Core", "core\SnackTech.Core\SnackTech.Core.csproj", "{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{182F015F-99B5-4593-A692-47968C09C0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{182F015F-99B5-4593-A692-47968C09C0ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{F75A3FD9-A2B6-4CCB-8F39-D8B10BEE3989} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{182F015F-99B5-4593-A692-47968C09C0ED} = {11FAF236-6419-409A-AB3C-2B87C08A85AF}
+		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D} = {1EDED837-E83D-49B5-A7DF-066A7105DF2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}
