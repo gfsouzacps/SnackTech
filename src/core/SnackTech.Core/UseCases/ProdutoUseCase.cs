@@ -1,4 +1,4 @@
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Dto;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;
 using SnackTech.Core.Gateways;
@@ -7,7 +7,15 @@ namespace SnackTech.Core.UseCases
 {
     internal static class ProdutoUseCase
     {
-        internal static async Task<ResultadoOperacao<Produto>> CriarNovoProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
+        internal static Produto MontarNovoProduto(ProdutoSemIdDto produtoDto){
+            return new Produto(Guid.NewGuid(),
+                               produtoDto.Categoria,
+                               produtoDto.Nome,
+                               produtoDto.Descricao,
+                               produtoDto.Valor);
+        }
+
+        internal static async Task<ResultadoOperacao<Produto>> CriarNovoProduto(ProdutoSemIdDto produtoDto, ProdutoGateway produtoGateway){
             try{
                 //garantir que não existe produto com mesmo nome já cadastrado
                 var produto = await produtoGateway.ProcurarProdutoPorNome(produtoDto.Nome);
@@ -16,16 +24,13 @@ namespace SnackTech.Core.UseCases
                     return new ResultadoOperacao<Produto>($"Produto {produtoDto.Nome} já cadastrado.", true);
                 }
 
+                var entidade = MontarNovoProduto(produtoDto);
+                
                 //chamar gateway que fala com a fonte de dados para cadastrar produto
-                var entidade = new Produto(produtoDto.Id,
-                                           produtoDto.Categoria,
-                                           produtoDto.Nome,
-                                           produtoDto.Descricao,
-                                           produtoDto.Valor);
-
-                var novoProduto = await produtoGateway.CadastrarNovoProduto(entidade);
+                await produtoGateway.CadastrarNovoProduto(entidade);
+                
                 //retorna entidade
-                return new ResultadoOperacao<Produto>(novoProduto);
+                return new ResultadoOperacao<Produto>(entidade);
             }
             catch(Exception ex){
                 return new ResultadoOperacao<Produto>(ex);
@@ -62,7 +67,7 @@ namespace SnackTech.Core.UseCases
                     return new ResultadoOperacao($"Produto {identificacao} não encontrado. Remoção não executada!");
                 }
                 //se existe repassar para gateway para que remova o produto
-                await produtoGateway.RemoverProduto(identificacao);
+                await produtoGateway.RemoverProduto(produto);
                 //retorna sucesso da execucao
                 return new ResultadoOperacao();
             }

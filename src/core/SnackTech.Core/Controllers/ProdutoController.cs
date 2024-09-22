@@ -1,26 +1,19 @@
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Interface;
+using SnackTech.Common.Dto;
 using SnackTech.Core.Gateways;
 using SnackTech.Core.Presenters;
 using SnackTech.Core.UseCases;
 
 namespace SnackTech.Core.Controllers
 {
-    public static class ProdutoController
+    public class ProdutoController(IProdutoDataSource ProdudoDataSource)
     {
         //TODO:Passar a referencia de fonte de dados ao Gateway
-        public static async Task<string> CadastrarNovoProduto(ProdutoSemIdDto produtoSemIdDto){
+        public async Task<string> CadastrarNovoProduto(ProdutoSemIdDto produtoSemIdDto){
             
-            var gateway = new ProdutoGateway();
-            
-            var produtoDto = new ProdutoDto{ 
-                Id = Guid.NewGuid(),
-                Categoria = produtoSemIdDto.Categoria,
-                Descricao = produtoSemIdDto.Descricao,
-                Nome = produtoSemIdDto.Nome,
-                Valor = produtoSemIdDto.Valor
-            };
+            var gateway = new ProdutoGateway(ProdudoDataSource);
 
-            var novoProduto = await ProdutoUseCase.CriarNovoProduto(produtoDto,gateway);
+            var novoProduto = await ProdutoUseCase.CriarNovoProduto(produtoSemIdDto, gateway);
             
             if(novoProduto.TeveSucesso()){
                 return ProdutoPresenter.ApresentarProdutoComoJson(novoProduto.Dados);
@@ -33,8 +26,8 @@ namespace SnackTech.Core.Controllers
             return ErroPresenter.ApresentarErroDeClienteComoJson(novoProduto.Mensagem);
         } 
 
-        public static async Task<string> EditarProduto(ProdutoDto produtoParaAlterar){
-            var gateway = new ProdutoGateway();
+        public async Task<string> EditarProduto(ProdutoDto produtoParaAlterar){
+            var gateway = new ProdutoGateway(ProdudoDataSource);
 
             var produtoAlterado = await ProdutoUseCase.EditarProduto(produtoParaAlterar,gateway);
 
@@ -49,8 +42,8 @@ namespace SnackTech.Core.Controllers
             return ErroPresenter.ApresentarErroDeClienteComoJson(produtoAlterado.Mensagem);
         }    
 
-        public static async Task<string> RemoverProduto(Guid id){
-            var gateway = new ProdutoGateway();
+        public async Task<string> RemoverProduto(Guid id){
+            var gateway = new ProdutoGateway(ProdudoDataSource);
 
             var remocaoProduto = await ProdutoUseCase.RemoverProduto(id,gateway);
 
@@ -65,8 +58,8 @@ namespace SnackTech.Core.Controllers
             return ErroPresenter.ApresentarErroDeClienteComoJson(remocaoProduto.Mensagem);
         }  
 
-        public static async Task<string> BuscarProdutosPorCategoria(int categoriaId){
-            var gateway = new ProdutoGateway();
+        public async Task<string> BuscarProdutosPorCategoria(int categoriaId){
+            var gateway = new ProdutoGateway(ProdudoDataSource);
 
             var produtos = await ProdutoUseCase.BuscarProdutoPorCategoria(categoriaId,gateway);
 

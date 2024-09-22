@@ -1,4 +1,4 @@
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Dto;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities
@@ -13,11 +13,14 @@ namespace SnackTech.Core.Domain.Entities
         internal StringNaoVazia Descricao { get; private set; } = descricao;
         internal DecimalPositivo Valor { get; private set; } = valor;
 
+        public Produto(ProdutoDto produtoDto) : this (produtoDto.Id,produtoDto.Categoria,produtoDto.Nome,produtoDto.Descricao,produtoDto.Valor){}
+        
         internal void AlterarDados(ProdutoDto produtoDto){
             Categoria = produtoDto.Categoria;
             Nome = produtoDto.Nome;
             Descricao = produtoDto.Descricao;
             Valor = produtoDto.Valor;
         }
+
     }
 }
