@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using SnackTech.Driver.API.CustomResponses;
 using SnackTech.Domain.DTOs.Driving.Produto;
-using SnackTech.Domain.Ports.Driving;
-using SnackTech.Domain.Ports.Driven;
 using Swashbuckle.AspNetCore.Annotations;
+using SnackTech.Common.Dto;
+using SnackTech.Common.Interfaces.Controllers;
+
 
 namespace SnackTech.Driver.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProdutosController(ILogger<ProdutosController> logger, IProdutoService produtoService) : CustomBaseController(logger)
+    public class ProdutosController(ILogger<ProdutosController> logger, IProdutoController produtoController) : CustomBaseController(logger)
     {
-        private readonly IProdutoService produtoService = produtoService;
-
+        
         /// <summary>
         /// Cadastra um novo produto no sistema.
         /// </summary>
@@ -25,8 +25,8 @@ namespace SnackTech.Driver.API.Controllers
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(Summary = "Cadastra um novo produto no sistema")]
-        public async Task<IActionResult> Post([FromBody] NovoProduto novoProduto)
-            => await CommonExecution("Produtos.Post", produtoService.CriarNovoProduto(novoProduto));
+        public async Task<IActionResult> Post([FromBody] ProdutoSemIdDto novoProduto)
+            => await ExecucaoPadrao("Produtos.Post", produtoController.CadastrarNovoProduto(novoProduto));
 
         /// <summary>
         /// Edita um produto existente no sistema.
@@ -41,8 +41,8 @@ namespace SnackTech.Driver.API.Controllers
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
         [Route("{identificacao:guid}")]
         [SwaggerOperation(Summary = "Edita um produto existente no sistema")]
-        public async Task<IActionResult> Put([FromRoute] Guid identificacao, [FromBody] EdicaoProduto produtoEditado)
-            => await CommonExecution("Produtos.Put", produtoService.EditarProduto(identificacao, produtoEditado));
+        public async Task<IActionResult> Put([FromRoute] Guid identificacao, [FromBody] ProdutoSemIdDto produtoEditado)
+            => await ExecucaoPadrao("Produtos.Put", produtoController.EditarProduto(identificacao, produtoEditado));
 
         /// <summary>
         /// Remove um produto existente no sistema.
@@ -55,8 +55,8 @@ namespace SnackTech.Driver.API.Controllers
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
         [Route("{identificacao:guid}")]
         [SwaggerOperation(Summary = "Remove um produto existente no sistema")]
-        public async Task<IActionResult> Delete([FromRoute] string identificacao)
-            => await CommonExecution("Produtos.Delete", produtoService.RemoverProduto(identificacao));
+        public async Task<IActionResult> Delete([FromRoute] Guid identificacao)
+            => await ExecucaoPadrao("Produtos.Delete", produtoController.RemoverProduto(identificacao));
 
         /// <summary>
         /// Retorna todos os produtos de uma categoria informada.
@@ -70,6 +70,6 @@ namespace SnackTech.Driver.API.Controllers
         [Route("{categoriaId:int}")]
         [SwaggerOperation(Summary = "Retorna todos os produtos de uma categoria informada. Categorias cadastradas: 1. Lanche, 2. Acompanhamento, 3. Bebida, 4. Sobremesa")]
         public async Task<IActionResult> GetByCategory(int categoriaId)
-            => await CommonExecution("Produtos.GetPorCategoria", produtoService.BuscarPorCategoria(categoriaId));
+            => await ExecucaoPadrao("Produtos.GetPorCategoria", produtoController.BuscarProdutosPorCategoria(categoriaId));
     }
 }

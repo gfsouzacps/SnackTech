@@ -1,60 +1,71 @@
+
 using Microsoft.EntityFrameworkCore;
+using SnackTech.Common.CustomExceptions;
+using SnackTech.Common.Dto;
+using SnackTech.Common.Interfaces;
 using SnackTech.Driver.DataBase.Context;
 using SnackTech.Driver.DataBase.Entities;
 using SnackTech.Driver.DataBase.Util;
-using SnackTech.Domain.Enums;
-using SnackTech.Domain.Exceptions.Driven;
-using SnackTech.Domain.Ports.Driven;
 
-namespace SnackTech.Driver.DataBase.Repositories
+namespace SnackTech.Driver.DataBase.DataSources
 {
-    public class ProdutoRepository(RepositoryDbContext repositoryDbContext) : IProdutoRepository
+    public class ProdutoDataSource(RepositoryDbContext repositoryDbContext) : IProdutoDataSource
     {
         private readonly RepositoryDbContext _repositoryDbContext = repositoryDbContext;
-
-        public async Task AlterarProdutoAsync(Domain.DTOs.Driven.ProdutoDto produtoAlterado)
+        public async Task<bool> AlterarProdutoAsync(ProdutoDto produtoAlterado)
         {
             var produtoEntity = Mapping.Mapper.Map<Produto>(produtoAlterado);
             
             _repositoryDbContext.Entry(produtoEntity).State = EntityState.Modified;
             await _repositoryDbContext.SaveChangesAsync();
+            return true;
         }
 
-        public async Task InserirProdutoAsync(Domain.DTOs.Driven.ProdutoDto novoProduto)
+        public async Task<bool> InserirProdutoAsync(ProdutoDto produtoNovo)
         {
-            var produtoEntity = Mapping.Mapper.Map<Produto>(novoProduto);
+           var produtoEntity = Mapping.Mapper.Map<Produto>(produtoNovo);
 
             bool existe = await _repositoryDbContext.Produtos
-                .AnyAsync(p => p.Categoria == novoProduto.Categoria && p.Nome == novoProduto.Nome);
+                .AnyAsync(p => (int)p.Categoria == produtoNovo.Categoria && p.Nome == produtoNovo.Nome);
             if (existe)
                 throw new ProdutoRepositoryException("Já existe um produto com o mesmo nome e categoria no sistema.");
 
             _repositoryDbContext.Add(produtoEntity);
             await _repositoryDbContext.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<IEnumerable<Domain.DTOs.Driven.ProdutoDto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
+        public async Task<IEnumerable<ProdutoDto>> PesquisarPorCategoriaIdAsync(int categoriaId)
         {
-            var produtosBanco = await _repositoryDbContext.Produtos
+             var produtosBanco = await _repositoryDbContext.Produtos
                     .AsNoTracking()
-                    .Where(p => p.Categoria == categoria)
+                    .Where(p => (int)p.Categoria == categoriaId)
                     .ToListAsync();
 
-            return produtosBanco.Select(Mapping.Mapper.Map<Domain.DTOs.Driven.ProdutoDto>);
+            return produtosBanco.Select(Mapping.Mapper.Map<ProdutoDto>);
         }
 
-        public async Task<Domain.DTOs.Driven.ProdutoDto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
+        public async Task<ProdutoDto> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             var produto = await _repositoryDbContext.Produtos
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == identificacao);
 
-            return Mapping.Mapper.Map<Domain.DTOs.Driven.ProdutoDto>(produto);
+            return Mapping.Mapper.Map<ProdutoDto>(produto);
+        }
+
+        public async Task<ProdutoDto> PesquisarPorNomeAsync(string nome)
+        {
+            var produtoBanco = await _repositoryDbContext.Produtos
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.Nome == nome);
+
+            return Mapping.Mapper.Map<ProdutoDto>(produtoBanco);
         }
 
         public async Task<bool> RemoverProdutoPorIdentificacaoAsync(Guid identificacao)
         {
-            var produto = await _repositoryDbContext.Produtos
+           var produto = await _repositoryDbContext.Produtos
                 .FirstOrDefaultAsync(p => p.Id == identificacao);
 
             if (produto is null)

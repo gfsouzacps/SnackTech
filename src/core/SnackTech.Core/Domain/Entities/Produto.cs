@@ -13,7 +13,7 @@ namespace SnackTech.Core.Domain.Entities
         internal StringNaoVazia Descricao { get; private set; } = descricao;
         internal DecimalPositivo Valor { get; private set; } = valor;
 
-        internal void AlterarDados(ProdutoDto produtoDto){
+        internal void AlterarDados(ProdutoSemIdDto produtoDto){
             Categoria = produtoDto.Categoria;
             Nome = produtoDto.Nome;
             Descricao = produtoDto.Descricao;

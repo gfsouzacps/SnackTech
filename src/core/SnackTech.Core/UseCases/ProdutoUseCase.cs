@@ -36,15 +36,16 @@ namespace SnackTech.Core.UseCases
             }
         }
 
-        internal static async Task<ResultadoOperacao<ProdutoDto>> EditarProduto(ProdutoDto produtoDto, ProdutoGateway produtoGateway){
+        internal static async Task<ResultadoOperacao<ProdutoDto>> EditarProduto(Guid identificacao, ProdutoSemIdDto produtoDto, ProdutoGateway produtoGateway){
             try{
                 //chamar gateway que fala com a fonte de dados para resgatar entidade produto
-                var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(produtoDto.Id);
+                var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(identificacao);
 
                 //se não existir retornar que não pode atualizar produto que não existe
                 if(produto == null){
-                    return GeralPresenter.ApresentarResultadoErroLogico<ProdutoDto>($"Produto {produtoDto.Id} - {produtoDto.Nome} não encontrado. Atualização não executada!");
+                    return GeralPresenter.ApresentarResultadoErroLogico<ProdutoDto>($"Produto {identificacao} - {produtoDto.Nome} não encontrado. Atualização não executada!");
                 }
+                
                 //se existe alterar entidade, repassar para gateway
                 produto.AlterarDados(produtoDto);
                                            

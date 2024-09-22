@@ -16,10 +16,10 @@ namespace SnackTech.Core.Controllers
            return novoProduto;
         } 
 
-        public async Task<ResultadoOperacao<ProdutoDto>> EditarProduto(ProdutoDto produtoParaAlterar){
+        public async Task<ResultadoOperacao<ProdutoDto>> EditarProduto(Guid identificacao, ProdutoSemIdDto produtoParaAlterar){
             var gateway = new ProdutoGateway(produtoDataSource);
 
-            var produtoAlterado = await ProdutoUseCase.EditarProduto(produtoParaAlterar,gateway);
+            var produtoAlterado = await ProdutoUseCase.EditarProduto(identificacao,produtoParaAlterar,gateway);
 
             return produtoAlterado;
         }    
