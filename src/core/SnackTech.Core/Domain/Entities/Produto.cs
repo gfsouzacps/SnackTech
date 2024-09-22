@@ -3,8 +3,6 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities
 {
-    //primary constructor. Feature do C#12. 
-    //Explicita os valores obrigatórios na definição da classe
     internal class Produto(Guid id, CategoriaProdutoValido categoriaProduto, StringNaoVaziaOuComEspacos nome, StringNaoVazia descricao, DecimalPositivo valor)
     {
         internal Guid Id { get; private set; } = id;
