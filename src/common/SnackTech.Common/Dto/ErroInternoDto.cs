@@ -1,4 +1,4 @@
-namespace SnackTech.Core.Common.Dto
+namespace SnackTech.Common.Dto
 {
 
     public record ErroInternoDto (string Message, ExcecaoRetorno? Exception);

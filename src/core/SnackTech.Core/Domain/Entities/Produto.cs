@@ -1,4 +1,4 @@
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Dto;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities

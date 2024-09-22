@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Dto;
 
 namespace SnackTech.Core.Presenters
 {

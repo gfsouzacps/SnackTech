@@ -1,4 +1,4 @@
-using SnackTech.Core.Common.Dto;
+using SnackTech.Common.Dto;
 using SnackTech.Core.Gateways;
 using SnackTech.Core.Presenters;
 using SnackTech.Core.UseCases;
