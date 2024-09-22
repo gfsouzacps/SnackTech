@@ -19,5 +19,27 @@ namespace SnackTech.Core.Domain.Entities
             Descricao = produtoDto.Descricao;
             Valor = produtoDto.Valor;
         }
+
+        public Produto(ProdutoDto produtoDto)
+            :this(produtoDto.Id,
+                    produtoDto.Categoria,
+                    produtoDto.Nome,
+                    produtoDto.Descricao,
+                    produtoDto.Valor)
+        {}
+
+        public static implicit operator Produto(ProdutoDto produtoDto){
+            return new Produto(produtoDto);
+        }
+
+        public static implicit operator ProdutoDto(Produto produto){
+            return new ProdutoDto{
+                Id = produto.Id,
+                Categoria = produto.Categoria,
+                Descricao = produto.Descricao,
+                Nome = produto.Nome,
+                Valor = produto.Valor
+            };
+        }
     }
 }

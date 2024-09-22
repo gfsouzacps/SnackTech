@@ -20,6 +20,10 @@ namespace SnackTech.Core.Domain.Types
             return new StringNaoVazia(value);
         }
 
+        public static implicit operator string(StringNaoVazia valor){
+            return valor.ToString();
+        }
+
         public override string ToString()
             => Valor;
 
