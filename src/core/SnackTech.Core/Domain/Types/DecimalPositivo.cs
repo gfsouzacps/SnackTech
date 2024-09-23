@@ -20,6 +20,10 @@ namespace SnackTech.Core.Domain.Types
             return new DecimalPositivo(valor);
         }
 
+        public static implicit operator decimal(DecimalPositivo valor){
+            return valor.Valor;
+        }
+
         public override readonly string ToString()
         {
             return Valor.ToString();

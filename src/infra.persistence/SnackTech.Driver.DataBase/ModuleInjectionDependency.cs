@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using SnackTech.Driver.DataBase.Repositories;
 using SnackTech.Domain.Ports.Driven;
+using SnackTech.Common.Interfaces;
+using SnackTech.Driver.DataBase.DataSources;
 
 namespace SnackTech.Driver.DataBase
 {
@@ -12,7 +14,8 @@ namespace SnackTech.Driver.DataBase
             
             services.AddTransient<IClienteRepository, ClienteRepository>();
             services.AddTransient<IPedidoRepository, PedidoRepository>();
-            services.AddTransient<IProdutoRepository, ProdutoRepository>();
+
+            services.AddTransient<IProdutoDataSource, ProdutoDataSource>();
             
             return services;
         }

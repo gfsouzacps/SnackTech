@@ -28,6 +28,10 @@ namespace SnackTech.Core.Domain.Types
             return new CategoriaProdutoValido(value);
         }
 
+        public static implicit operator int(CategoriaProdutoValido valor){
+            return valor.Valor;
+        }
+
         public override readonly string ToString()
             => Valor.ToString();
 
