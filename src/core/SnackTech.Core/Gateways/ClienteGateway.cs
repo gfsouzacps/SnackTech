@@ -6,7 +6,7 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Gateways;
 
-public class ClienteGateway(IClienteDataSource dataSource)
+internal class ClienteGateway(IClienteDataSource dataSource)
 {
     internal async Task<bool> CadastrarNovoCliente(Cliente entidade)
     {

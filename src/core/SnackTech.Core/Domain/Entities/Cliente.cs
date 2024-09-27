@@ -8,11 +8,11 @@ namespace SnackTech.Core.Domain.Entities;
 internal class Cliente(Guid id, StringNaoVaziaOuComEspacos nome, EmailValido email, CpfValido cpf)
 {
     //Esse número de CPF é válido segundo o algoritmo de validação
-    public const string CPF_CLIENTE_PADRAO = "00000000191";
-    public Guid Id { get; protected set; } = id;
-    public StringNaoVaziaOuComEspacos Nome { get; protected set; } = nome;
-    public EmailValido Email { get; private set; } = email;
-    public CpfValido Cpf { get; private set; } = cpf;
+    internal const string CPF_CLIENTE_PADRAO = "00000000191";
+    internal Guid Id { get; protected set; } = id;
+    internal StringNaoVaziaOuComEspacos Nome { get; protected set; } = nome;
+    internal EmailValido Email { get; private set; } = email;
+    internal CpfValido Cpf { get; private set; } = cpf;
 
     public Cliente(ClienteDto clienteDto) : this(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf) { }
 
