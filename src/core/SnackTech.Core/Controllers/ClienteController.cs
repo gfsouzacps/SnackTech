@@ -8,7 +8,7 @@ namespace SnackTech.Core.Controllers;
 
 public class ClienteController(IClienteDataSource clienteDataSource)
 {
-    public async Task<ResultadoOperacao<ClienteDto>> CadastrarNovoProduto(ClienteSemIdDto clienteSemIdDto)
+    public async Task<ResultadoOperacao<ClienteDto>> CadastrarNovoCliente(ClienteSemIdDto clienteSemIdDto)
     {
         var gateway = new ClienteGateway(clienteDataSource);
 
@@ -16,4 +16,21 @@ public class ClienteController(IClienteDataSource clienteDataSource)
 
         return novoCliente;
     }
-}
+
+    public async Task<ResultadoOperacao<ClienteDto>> IdentificarPorCpf(string cpf)
+    {
+        var gateway = new ClienteGateway(clienteDataSource);
+
+        var cliente = await ClienteUseCase.PesquisarPorCpf(cpf, gateway);
+
+        return cliente;
+    }
+
+    public async Task<ResultadoOperacao<ClienteDto>> SelecionarClientePadrao()
+    {
+        var gateway = new ClienteGateway(clienteDataSource);
+
+        var cliente = await ClienteUseCase.SelecionarClientePadrao(gateway);
+
+        return cliente;
+    }

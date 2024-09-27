@@ -1,24 +1,53 @@
 using System;
+using SnackTech.Common.Dto;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Gateways;
 
-public class ClienteGateway(IClienteDataSource clienteDataSource)
+public class ClienteGateway(IClienteDataSource dataSource)
 {
     internal async Task<bool> CadastrarNovoCliente(Cliente entidade)
     {
-        throw new NotImplementedException();
+        ClienteDto dto = entidade;
+
+        return await dataSource.InserirClienteAsync(dto);
     }
 
     internal async Task<Cliente?> ProcurarClientePorCpf(CpfValido cpf)
     {
-        throw new NotImplementedException();
+        var clienteDto = await dataSource.PesquisarPorCpfAsync(cpf);
+
+        if (clienteDto == null)
+        {
+            return null;
+        }
+
+        return new Cliente(clienteDto);
     }
 
     internal async Task<Cliente?> ProcurarClientePorEmail(EmailValido emailCliente)
     {
-        throw new NotImplementedException();
+        var clienteDto = await dataSource.PesquisarPorCpfAsync(emailCliente);
+
+        if (clienteDto == null)
+        {
+            return null;
+        }
+
+        return new Cliente(clienteDto);
+    }
+
+    internal async Task<Cliente?> ProcurarClientePorIdentificacao(Guid identificacao)
+    {
+        var clienteDto = await dataSource.PesquisarPorIdAsync(identificacao);
+
+        if (clienteDto == null)
+        {
+            return null;
+        }
+
+        return new Cliente(clienteDto);
     }
 }
