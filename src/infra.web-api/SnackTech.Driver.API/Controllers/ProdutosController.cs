@@ -4,7 +4,7 @@ using SnackTech.Driver.API.CustomResponses;
 using SnackTech.Domain.DTOs.Driving.Produto;
 using Swashbuckle.AspNetCore.Annotations;
 using SnackTech.Common.Dto;
-using SnackTech.Common.Interfaces.Controllers;
+using SnackTech.Core.Interfaces;
 
 
 namespace SnackTech.Driver.API.Controllers

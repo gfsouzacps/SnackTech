@@ -1,12 +1,12 @@
-using System;
 using SnackTech.Common.Dto;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Gateways;
+using SnackTech.Core.Interfaces;
 using SnackTech.Core.UseCases;
 
 namespace SnackTech.Core.Controllers;
 
-public class ClienteController(IClienteDataSource clienteDataSource)
+public class ClienteController(IClienteDataSource clienteDataSource) : IClienteController
 {
     public async Task<ResultadoOperacao<ClienteDto>> CadastrarNovoCliente(ClienteSemIdDto clienteSemIdDto)
     {
@@ -34,3 +34,4 @@ public class ClienteController(IClienteDataSource clienteDataSource)
 
         return cliente;
     }
+}
