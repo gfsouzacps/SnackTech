@@ -1,4 +1,9 @@
 using System;
+using SnackTech.Common.Dto;
+using SnackTech.Core.Domain.Entities;
+using SnackTech.Core.Domain.Types;
+using SnackTech.Core.Gateways;
+using SnackTech.Core.Presenters;
 
 namespace SnackTech.Core.UseCases;
 
@@ -8,27 +13,24 @@ internal static class PedidoUseCase
     {
         try
         {
-            var cpfValido = new CpfValido(cpfCliente);
-            ResultadoOperacao<ClienteDto> clienteResultado;
-
-            if (cpfCliente == null)
-            {
-                clienteResultado = await ClienteUseCase.SelecionarClientePadrao(clienteGateway);
-            }
-            else
-            {
-                clienteResultado = await ClienteUseCase.PesquisarPorCpf(cpfCliente, clienteGateway)
-            }
+            var clienteResultado = await (cpfCliente is null
+                ? ClienteUseCase.SelecionarClientePadrao(clienteGateway)
+                : ClienteUseCase.PesquisarPorCpf(cpfCliente, clienteGateway));
 
             if (!clienteResultado.Sucesso)
             {
                 return GeralPresenter.ApresentarResultadoErroLogico<Guid>(clienteResultado.Mensagem);
             }
 
-            var clienteDto = clienteResultado.RecuperarDados();
+            var cliente = (Cliente)clienteResultado.RecuperarDados();
+            var entidade = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedidoValido.Iniciado, cliente);
 
-            var novoPedido = new Pedido((Cliente)clienteDto);
+            var foiCadastrado = await pedidoGateway.CadastrarNovoPedido(entidade);
+            var retorno = foiCadastrado ?
+                                PedidoPresenter.ApresentarResultadoPedidoIniciado(entidade) :
+                                GeralPresenter.ApresentarResultadoErroLogico<Guid>($"Não foi possível iniciar o pedido para o cliente com CPF{cpfCliente}.");
 
+            return retorno;
         }
         catch (Exception ex)
         {

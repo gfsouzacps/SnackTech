@@ -2,52 +2,63 @@ using System.Net.Mail;
 
 namespace SnackTech.Core.Domain.Types;
 
-internal class EmailValido
+internal struct EmailValido
 {
     private string enderecoEmail;
 
-    internal string Valor {
-        get { return enderecoEmail; }
-        set{
+    internal string Valor
+    {
+        readonly get { return enderecoEmail; }
+        set
+        {
             ValidarValor(value);
             enderecoEmail = value;
         }
     }
 
-    internal EmailValido(string email){
+    internal EmailValido(string email)
+    {
         enderecoEmail = email;
     }
 
-    public static implicit operator EmailValido(string email){
+    public static implicit operator EmailValido(string email)
+    {
         return new EmailValido(email);
     }
 
-    public static implicit operator string(EmailValido email){
+    public static implicit operator string(EmailValido email)
+    {
         return email.Valor;
     }
 
-    public override string ToString()
+    public override readonly string ToString()
     {
         return enderecoEmail.ToString();
     }
 
-    private static void ValidarValor(string emailValue){
-        if(string.IsNullOrWhiteSpace(emailValue)){
+    private static void ValidarValor(string emailValue)
+    {
+        if (string.IsNullOrWhiteSpace(emailValue))
+        {
             throw new ArgumentException("O valor atribuído não pode ser nulo, vazio ou somente com espaços");
         }
 
-        if(!IsValidEmail(emailValue)){
+        if (!IsValidEmail(emailValue))
+        {
             throw new ArgumentException($"O valor {emailValue} não é um e-mail válido.");
         }
     }
 
-    private static bool IsValidEmail(string email){
-        try{
+    private static bool IsValidEmail(string email)
+    {
+        try
+        {
             var mailAddress = new MailAddress(email);
             return mailAddress != null;
         }
-        catch(FormatException){
+        catch (FormatException)
+        {
             return false;
         }
-    }   
+    }
 }
