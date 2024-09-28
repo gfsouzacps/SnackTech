@@ -1,4 +1,3 @@
-using System;
 using SnackTech.Common.Dto;
 using SnackTech.Core.Domain.Entities;
 
@@ -6,11 +5,11 @@ namespace SnackTech.Core.Presenters;
 
 internal class PedidoPresenter
 {
-    internal static ResultadoOperacao<PedidoDto> ApresentarResultadoPedido(Pedido pedido)
+    internal static ResultadoOperacao<PedidoRetornoDto> ApresentarResultadoPedido(Pedido pedido)
     {
-        var pedidoDto = (PedidoDto)pedido;
+        var pedidoDto = (PedidoRetornoDto)pedido;
 
-        return new ResultadoOperacao<PedidoDto>(pedidoDto);
+        return new ResultadoOperacao<PedidoRetornoDto>(pedidoDto);
     }
 
 
@@ -21,11 +20,11 @@ internal class PedidoPresenter
         return new ResultadoOperacao<Guid>(guidPedido);
     }
 
-    internal static ResultadoOperacao<List<PedidoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
+    internal static ResultadoOperacao<List<PedidoRetornoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
     {
-        var pedidosDto = pedidos.Select(p => (PedidoDto)p).ToList();
+        var pedidosDto = pedidos.Select(p => (PedidoRetornoDto)p).ToList();
 
-        return new ResultadoOperacao<List<PedidoDto>>(pedidosDto);
+        return new ResultadoOperacao<List<PedidoRetornoDto>>(pedidosDto);
     }
 
     internal static ResultadoOperacao ApresentarResultadoOk()

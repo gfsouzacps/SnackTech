@@ -19,7 +19,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return identificacaoPedido;
     }
 
-    public async Task<ResultadoOperacao<PedidoDto>> BuscarPorIdenticacao(string identificacao)
+    public async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarPorIdenticacao(string identificacao)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
         var pedido = await PedidoUseCase.BuscarPorIdenticacao(identificacao, pedidoGateway);
@@ -27,7 +27,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return pedido;
     }
 
-    public async Task<ResultadoOperacao<PedidoDto>> BuscarUltimoPedidoCliente(string cpf)
+    public async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpf)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
         var clienteGateway = new ClienteGateway(clienteDataSource);
@@ -37,7 +37,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return pedido;
     }
 
-    public async Task<ResultadoOperacao<List<PedidoDto>>> ListarPedidosParaPagamento()
+    public async Task<ResultadoOperacao<List<PedidoRetornoDto>>> ListarPedidosParaPagamento()
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
 
@@ -55,7 +55,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return resultado;
     }
 
-    public async Task<ResultadoOperacao> AtualizarPedido(PedidoDto pedidoAtualizado)
+    public async Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarPedido(PedidoAtualizacaoDto pedidoAtualizado)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
         var produtoGateway = new ProdutoGateway(produtoDataSource);

@@ -1,4 +1,3 @@
-using System;
 using SnackTech.Common.Dto;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Domain.Entities;
@@ -10,7 +9,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 {
     internal async Task<bool> CadastrarNovoPedido(Pedido entidade)
     {
-        var pedidoDto = (PedidoDto)entidade;
+        var pedidoDto = (PedidoRetornoDto)entidade;
 
         return await dataSource.InserirPedidoAsync(pedidoDto);
     }
@@ -42,8 +41,15 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 
     internal async Task<bool> AtualizarPedido(Pedido pedido)
     {
-        var pedidoDto = (PedidoDto)pedido;
+        var pedidoDto = (PedidoRetornoDto)pedido;
 
         return await dataSource.AtualizarPedidoAsync(pedidoDto);
+    }
+
+    internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)
+    {
+        var pedidoDto = (PedidoRetornoDto)pedido;
+
+        return await dataSource.AtualizarItensDoPedidoAsync(pedidoDto);
     }
 }

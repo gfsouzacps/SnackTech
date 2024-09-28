@@ -1,8 +1,6 @@
-using System;
-
 namespace SnackTech.Common.Dto;
 
-public class PedidoItemDto
+public class PedidoItemRetornoDto
 {
     public Guid Id { get; set; }
     public int Quantidade { get; set; }

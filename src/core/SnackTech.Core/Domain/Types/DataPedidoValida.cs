@@ -1,5 +1,3 @@
-using System;
-
 namespace SnackTech.Core.Domain.Types;
 
 internal struct DataPedidoValida

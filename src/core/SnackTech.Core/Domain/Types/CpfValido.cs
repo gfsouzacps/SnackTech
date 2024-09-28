@@ -1,4 +1,3 @@
-using System;
 using SnackTech.Core.Domain.Util;
 
 namespace SnackTech.Core.Domain.Types;
