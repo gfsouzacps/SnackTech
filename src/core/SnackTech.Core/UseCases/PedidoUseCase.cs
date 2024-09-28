@@ -127,4 +127,30 @@ internal static class PedidoUseCase
             return GeralPresenter.ApresentarResultadoErroInterno(ex);
         }
     }
+
+    internal static async Task<ResultadoOperacao> AtualizarItensPedido(PedidoDto pedidoAtualizado, PedidoGateway pedidoGateway, ProdutoGateway produtoGateway)
+    {
+        try
+        {
+            var pedidoResultado = await BuscarPorIdenticacao(pedidoAtualizado.Id.ToString(), pedidoGateway);
+            if (!pedidoResultado.Sucesso)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico(pedidoResultado.Mensagem);
+            }
+
+            var pedido = (Pedido)pedidoResultado.RecuperarDados();
+
+            pedido.gat
+
+            var retorno = foiAtualizado ?
+                                PedidoPresenter.ApresentarResultadoOk() :
+                                GeralPresenter.ApresentarResultadoErroLogico($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}.") :
+
+            return retorno;
+        }
+        catch (Exception ex)
+        {
+            return GeralPresenter.ApresentarResultadoErroInterno(ex);
+        }
+    }
 }

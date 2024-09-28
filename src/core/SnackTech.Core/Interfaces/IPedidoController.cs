@@ -9,4 +9,5 @@ public interface IPedidoController
     Task<ResultadoOperacao<PedidoDto>> BuscarUltimoPedidoCliente(string cpfCliente);
     Task<ResultadoOperacao<List<PedidoDto>>> ListarPedidosParaPagamento();
     Task<ResultadoOperacao> FinalizarPedidoParaPagamento(string identificacao);
+    Task<ResultadoOperacao> AtualizarPedido(PedidoDto pedidoAtualizado);
 }

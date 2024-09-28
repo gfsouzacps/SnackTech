@@ -1,4 +1,5 @@
 using SnackTech.Common.Dto;
+using SnackTech.Common.Interfaces;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Gateways;
 using SnackTech.Core.Interfaces;
@@ -6,7 +7,7 @@ using SnackTech.Core.UseCases;
 
 namespace SnackTech.Core.Controllers;
 
-public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSource clienteDataSource) : IPedidoController
+public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSource clienteDataSource, IProdutoDataSource produtoDataSource) : IPedidoController
 {
     public async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente)
     {
@@ -50,6 +51,16 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
 
         var resultado = await PedidoUseCase.FinalizarPedidoParaPagamento(identificacao, pedidoGateway);
+
+        return resultado;
+    }
+
+    public async Task<ResultadoOperacao> AtualizarPedido(PedidoDto pedidoAtualizado)
+    {
+        var pedidoGateway = new PedidoGateway(pedidoDataSource);
+        var produtoGateway = new ProdutoGateway(produtoDataSource);
+
+        var resultado = await PedidoUseCase.AtualizarItensPedido(pedidoAtualizado, pedidoGateway, produtoGateway);
 
         return resultado;
     }
