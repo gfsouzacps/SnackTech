@@ -39,7 +39,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
         return new Cliente(clienteDto);
     }
 
-    internal async Task<Cliente?> ProcurarClientePorIdentificacao(Guid identificacao)
+    internal async Task<Cliente?> ProcurarClientePorIdentificacao(GuidValido identificacao)
     {
         var clienteDto = await dataSource.PesquisarPorIdAsync(identificacao);
 

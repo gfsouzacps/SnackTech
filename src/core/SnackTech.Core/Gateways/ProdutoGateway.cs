@@ -17,7 +17,7 @@ namespace SnackTech.Core.Gateways
             return new Produto(produtoDto);
         }     
 
-        internal async Task<Produto?> ProcurarProdutoPorIdentificacao(Guid id){
+        internal async Task<Produto?> ProcurarProdutoPorIdentificacao(GuidValido id){
             var produtoDto = await dataSource.PesquisarPorIdentificacaoAsync(id);
 
             if(produtoDto == null){
@@ -39,7 +39,7 @@ namespace SnackTech.Core.Gateways
             return await dataSource.AlterarProdutoAsync(dto);
         }
 
-        internal async Task<bool> RemoverProduto(Guid id){
+        internal async Task<bool> RemoverProduto(GuidValido id){
             return await dataSource.RemoverProdutoPorIdentificacaoAsync(id);
         }
 

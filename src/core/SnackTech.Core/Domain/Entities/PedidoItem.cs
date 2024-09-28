@@ -4,9 +4,9 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
 
-internal class PedidoItem(Guid id, Produto produto, InteiroPositivo quantidade, DecimalPositivo valor, string observacao)
+internal class PedidoItem(GuidValido id, Produto produto, InteiroPositivo quantidade, DecimalPositivo valor, string observacao)
 {
-    internal Guid Id { get; private set; } = id;
+    internal GuidValido Id { get; private set; } = id;
     internal InteiroPositivo Quantidade { get; private set; } = quantidade;
     internal string Observacao { get; private set; } = observacao;
     internal DecimalPositivo Valor { get; private set; } = valor;

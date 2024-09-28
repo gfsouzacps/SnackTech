@@ -4,15 +4,15 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
 
-internal class Pedido(Guid id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente)
+internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente)
 {
-    internal Guid Id { get; private set; }
+    internal GuidValido Id { get; private set; }
     internal DataPedidoValida DataCriacao { get; private set; }
     internal Cliente Cliente { get; private set; }
     internal StatusPedidoValido Status { get; private set; }
     internal List<PedidoItem> Itens { get; private set; } = new();
 
-    public Pedido(Guid id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente, List<PedidoItem> itens)
+    public Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente, List<PedidoItem> itens)
         : this(id, dataCriacao, status, cliente)
     {
         Itens = itens;
@@ -38,5 +38,13 @@ internal class Pedido(Guid id, DataPedidoValida dataCriacao, StatusPedidoValido 
             Cliente = (ClienteDto)pedido.Cliente,
             Itens = pedido.Itens.Select(item => (PedidoItemDto)item).ToList()
         };
+    }
+
+    internal void FecharPedidoParaPagamento()
+    {
+        if (Itens.Count == 0)
+            throw new Exception("O pedido deve ter pelo menos um item para ser finalizado para pagamento.");
+
+        Status = StatusPedido.AguardandoPagamento;
     }
 }
