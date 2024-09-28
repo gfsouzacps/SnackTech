@@ -6,11 +6,11 @@ namespace SnackTech.Core.Domain.Entities;
 
 internal class PedidoItem(Guid id, Produto produto, InteiroPositivo quantidade, DecimalPositivo valor, string observacao)
 {
-    internal Guid Id { get; private set; }
-    internal InteiroPositivo Quantidade { get; private set; }
-    internal string Observacao { get; private set; }
-    internal DecimalPositivo Valor { get; private set; }
-    internal Produto Produto { get; private set; }
+    internal Guid Id { get; private set; } = id;
+    internal InteiroPositivo Quantidade { get; private set; } = quantidade;
+    internal string Observacao { get; private set; } = observacao;
+    internal DecimalPositivo Valor { get; private set; } = valor;
+    internal Produto Produto { get; private set; } = produto;
 
     public PedidoItem(PedidoItemDto pedidoItemDto) : this(pedidoItemDto.Id, pedidoItemDto.Produto, pedidoItemDto.Quantidade, pedidoItemDto.Valor, pedidoItemDto.Observacao) { }
 

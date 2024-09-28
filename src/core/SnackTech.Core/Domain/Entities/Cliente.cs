@@ -9,8 +9,8 @@ internal class Cliente(Guid id, StringNaoVaziaOuComEspacos nome, EmailValido ema
 {
     //Esse número de CPF é válido segundo o algoritmo de validação
     internal const string CPF_CLIENTE_PADRAO = "00000000191";
-    internal Guid Id { get; protected set; } = id;
-    internal StringNaoVaziaOuComEspacos Nome { get; protected set; } = nome;
+    internal Guid Id { get; private set; } = id;
+    internal StringNaoVaziaOuComEspacos Nome { get; private set; } = nome;
     internal EmailValido Email { get; private set; } = email;
     internal CpfValido Cpf { get; private set; } = cpf;
 

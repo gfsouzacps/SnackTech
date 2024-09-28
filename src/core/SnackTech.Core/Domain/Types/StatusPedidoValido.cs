@@ -24,7 +24,7 @@ internal struct StatusPedidoValido
 
     internal int Valor
     {
-        get { return valor; }
+        readonly get { return valor; }
         set
         {
             ValidarValor(value);
