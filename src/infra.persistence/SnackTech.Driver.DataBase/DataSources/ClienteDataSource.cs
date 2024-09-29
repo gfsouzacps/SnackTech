@@ -19,7 +19,7 @@ public class ClienteDataSource(RepositoryDbContext repositoryDbContext) : IClien
             .AnyAsync(c => c.Cpf == clienteNovo.Cpf && c.Email == clienteNovo.Email);
 
         if (existe)
-            throw new ProdutoRepositoryException("Já existe um cliente com o mesmo cpf e email no sistema.");
+            throw new ClienteRepositoryException("Já existe um cliente com o mesmo cpf e email no sistema.");
 
         repositoryDbContext.Add(clienteEntity);
         var result = await repositoryDbContext.SaveChangesAsync();
