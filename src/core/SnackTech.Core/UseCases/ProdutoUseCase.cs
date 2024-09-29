@@ -13,7 +13,7 @@ namespace SnackTech.Core.UseCases
                 //garantir que não existe produto com mesmo nome já cadastrado
                 var produto = await produtoGateway.ProcurarProdutoPorNome(produtoDto.Nome);
 
-                if(produto == null){
+                if(produto != null){
                     return GeralPresenter.ApresentarResultadoErroLogico<ProdutoDto>($"Produto {produtoDto.Nome} já cadastrado.");
                 }
 

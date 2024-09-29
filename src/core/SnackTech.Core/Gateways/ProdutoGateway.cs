@@ -67,7 +67,7 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
             Id = produto.Id,
             Categoria = produto.Categoria.Valor,
             Nome = produto.Nome.Valor,
-            Descricao = produto.Descricao.Valor,
+            Descricao = produto.Descricao,
             Valor = produto.Valor.Valor
         };
     }
