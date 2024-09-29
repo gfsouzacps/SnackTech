@@ -47,7 +47,7 @@ namespace SnackTech.Core.UseCases
                 }
                 
                 //se existe alterar entidade, repassar para gateway
-                produto.AlterarDados(produtoDto);
+                produto.Atualizar(produtoDto.Categoria, produtoDto.Nome, produtoDto.Descricao, produtoDto.Valor);
                                            
                 await produtoGateway.AtualizarProduto(produto);
                 //retorna operacao com sucesso

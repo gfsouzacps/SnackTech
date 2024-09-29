@@ -9,7 +9,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
 {
     internal async Task<bool> CadastrarNovoCliente(Cliente entidade)
     {
-        ClienteDto dto = entidade;
+        ClienteDto dto = ConverterParaDto(entidade);
 
         return await dataSource.InserirClienteAsync(dto);
     }
@@ -23,7 +23,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return new Cliente(clienteDto);
+        return converterParaEntidade(clienteDto);
     }
 
     internal async Task<Cliente?> ProcurarClientePorEmail(EmailValido emailCliente)
@@ -35,7 +35,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return new Cliente(clienteDto);
+        return converterParaEntidade(clienteDto);
     }
 
     internal async Task<Cliente?> ProcurarClientePorIdentificacao(GuidValido identificacao)
@@ -47,6 +47,22 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return new Cliente(clienteDto);
+        return converterParaEntidade(clienteDto);
+    }
+
+    internal static ClienteDto ConverterParaDto(Cliente cliente)
+    {
+        return new ClienteDto
+        {
+            Id = cliente.Id,
+            Nome = cliente.Nome.Valor,
+            Email = cliente.Email.Valor,
+            Cpf = cliente.Cpf.Valor
+        };
+    }
+
+    internal static Cliente converterParaEntidade(ClienteDto clienteDto)
+    {
+        return new Cliente(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf);
     }
 }

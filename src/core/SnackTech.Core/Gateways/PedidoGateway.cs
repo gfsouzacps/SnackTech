@@ -9,7 +9,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 {
     internal async Task<bool> CadastrarNovoPedido(Pedido entidade)
     {
-        var pedidoDto = (PedidoDto)entidade;
+        var pedidoDto = ConverterParaDto(entidade);
 
         return await dataSource.InserirPedidoAsync(pedidoDto);
     }
@@ -21,7 +21,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         if (pedidoDto is null)
             return null;
 
-        return (Pedido)pedidoDto;
+        return ConverterParaEntidade(pedidoDto);
     }
 
 
@@ -29,27 +29,72 @@ public class PedidoGateway(IPedidoDataSource dataSource)
     {
         var pedidosDto = await dataSource.PesquisarPedidosPorClienteAsync(clienteId);
 
-        return pedidosDto.Select(p => (Pedido)p);
+        return pedidosDto.Select(ConverterParaEntidade);
     }
 
     internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido status)
     {
         var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync(status.Valor);
 
-        return pedidosDto.Select(p => (Pedido)p);
+        return pedidosDto.Select(ConverterParaEntidade);
     }
 
     internal async Task<bool> AtualizarPedido(Pedido pedido)
     {
-        var pedidoDto = (PedidoDto)pedido;
+        var pedidoDto = ConverterParaDto(pedido);
 
         return await dataSource.AtualizarPedidoAsync(pedidoDto);
     }
 
     internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)
     {
-        var pedidoDto = (PedidoDto)pedido;
+        var pedidoDto = ConverterParaDto(pedido);
 
         return await dataSource.AtualizarItensDoPedidoAsync(pedidoDto);
+    }
+
+    internal static PedidoDto ConverterParaDto(Pedido pedido)
+    {
+        return new PedidoDto
+        {
+            Id = pedido.Id,
+            DataCriacao = pedido.DataCriacao.Valor,
+            Status = pedido.Status.Valor,
+            Cliente = ClienteGateway.ConverterParaDto(pedido.Cliente),
+            Itens = pedido.Itens.Select(converterItemParaDto).ToList()
+        };
+    }
+
+    private static PedidoItemDto converterItemParaDto(PedidoItem pedidoItem)
+    {
+        return new PedidoItemDto
+        {
+            Id = pedidoItem.Id,
+            Quantidade = pedidoItem.Quantidade.Valor,
+            Observacao = pedidoItem.Observacao,
+            Valor = pedidoItem.Valor(),
+            Produto = ProdutoGateway.ConverterParaDto(pedidoItem.Produto)
+        };
+    }
+
+    internal static Pedido ConverterParaEntidade(PedidoDto pedidoDto)
+    {
+        return new Pedido(
+            pedidoDto.Id, 
+            pedidoDto.DataCriacao, 
+            pedidoDto.Status, 
+            ClienteGateway.converterParaEntidade(pedidoDto.Cliente), 
+            pedidoDto.Itens.Select(converterItemParaEntidade).ToList()
+        );
+    }
+
+    private static PedidoItem converterItemParaEntidade(PedidoItemDto pedidoItemDto)
+    {
+        return new PedidoItem(
+            pedidoItemDto.Id, 
+            ProdutoGateway.ConverterParaEntidade(pedidoItemDto.Produto),
+            pedidoItemDto.Quantidade, 
+            pedidoItemDto.Observacao
+        );
     }
 }

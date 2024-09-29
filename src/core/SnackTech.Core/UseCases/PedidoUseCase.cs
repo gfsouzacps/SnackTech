@@ -21,7 +21,7 @@ internal static class PedidoUseCase
                 return GeralPresenter.ApresentarResultadoErroLogico<Guid>(clienteResultado.Mensagem);
             }
 
-            var cliente = (Cliente)clienteResultado.RecuperarDados();
+            var cliente = ClientePresenter.ConverterParaEntidade(clienteResultado.RecuperarDados());
             var entidade = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedidoValido.Iniciado, cliente);
 
             var foiCadastrado = await pedidoGateway.CadastrarNovoPedido(entidade);
@@ -68,7 +68,7 @@ internal static class PedidoUseCase
                 return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>(clienteResultado.Mensagem);
             }
 
-            var cliente = (Cliente)clienteResultado.RecuperarDados();
+            var cliente = ClientePresenter.ConverterParaEntidade(clienteResultado.RecuperarDados());
             var ultimosPedidos = await pedidoGateway.PesquisarPedidosPorCliente(cliente.Id);
             var ultimoPedido = ultimosPedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
 
@@ -110,7 +110,7 @@ internal static class PedidoUseCase
                 return GeralPresenter.ApresentarResultadoErroLogico(pedidoResultado.Mensagem);
             }
 
-            var pedido = (Pedido)pedidoResultado.RecuperarDados();
+            var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
             pedido.FecharPedidoParaPagamento();
 
             var foiAtualizado = await pedidoGateway.AtualizarPedido(pedido);
@@ -137,7 +137,7 @@ internal static class PedidoUseCase
                 return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>(pedidoResultado.Mensagem);
             }
 
-            var pedido = (Pedido)pedidoResultado.RecuperarDados();
+            var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
 
             //itens atualizados com GUID e que não existem no pedido persistido
             var itensNovosComIds = pedidoAtualizado.Itens

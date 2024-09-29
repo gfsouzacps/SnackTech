@@ -14,7 +14,7 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
             return null;
         }
 
-        return new Produto(produtoDto);
+        return ConverterParaEntidade(produtoDto);
     }     
 
     internal async Task<Produto?> ProcurarProdutoPorIdentificacao(GuidValido id){
@@ -24,17 +24,17 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
             return null;
         }
 
-        return new Produto(produtoDto);
+        return ConverterParaEntidade(produtoDto);
     }
 
     internal async Task<bool> CadastrarNovoProduto(Produto novoProduto){            
-        ProdutoDto dto = novoProduto;
+        ProdutoDto dto = ConverterParaDto(novoProduto);
 
         return await dataSource.InserirProdutoAsync(dto);
     }
 
     internal async Task<bool> AtualizarProduto(Produto produtoAlterado){
-        ProdutoDto dto = produtoAlterado;
+        ProdutoDto dto = ConverterParaDto(produtoAlterado);
 
         return await dataSource.AlterarProdutoAsync(dto);
     }
@@ -46,6 +46,29 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
     internal async Task<IEnumerable<Produto>> ProcurarProdutosPorCategoria(CategoriaProdutoValido categoriaProduto){
         var produtosDto = await dataSource.PesquisarPorCategoriaIdAsync(categoriaProduto);
 
-        return produtosDto.Select(p => new Produto(p));
+        return produtosDto.Select(ConverterParaEntidade);
+    }
+
+    internal static Produto ConverterParaEntidade(ProdutoDto produtoDto)
+    {
+        return new Produto(
+            produtoDto.Id,
+            produtoDto.Categoria,
+            produtoDto.Nome,
+            produtoDto.Descricao,
+            produtoDto.Valor
+        );
+    }
+
+    internal static ProdutoDto ConverterParaDto(Produto produto)
+    {
+        return new ProdutoDto
+        {
+            Id = produto.Id,
+            Categoria = produto.Categoria.Valor,
+            Nome = produto.Nome.Valor,
+            Descricao = produto.Descricao.Valor,
+            Valor = produto.Valor.Valor
+        };
     }
 }
