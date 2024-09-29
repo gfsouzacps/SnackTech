@@ -142,6 +142,7 @@ internal static class PedidoUseCase
             //remover itens do pedido que estejam ausentes no pedido atualizado
             pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.Itens.Any(itemAtualizado => itemAtualizado.Id == itemPedido.Id));
 
+            //TODO: Criticar se um item vier com GUID e o guid não existir no pedido persistido
             //validar itens do pedido atualizado
             List<PedidoItem> itensValidados = await validarItensPedido(pedidoAtualizado.Itens, produtoGateway);
 
