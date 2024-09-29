@@ -1,5 +1,3 @@
-using SnackTech.Common.Dto.Api;
-
 namespace SnackTech.Common.Dto.DataSource;
 
 public class PedidoDto
