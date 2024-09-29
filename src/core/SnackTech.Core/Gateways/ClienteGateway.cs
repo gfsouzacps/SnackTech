@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.DataSource;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;

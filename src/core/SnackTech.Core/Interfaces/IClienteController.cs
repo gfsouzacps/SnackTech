@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 
 namespace SnackTech.Core.Interfaces;
 

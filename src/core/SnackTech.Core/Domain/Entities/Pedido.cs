@@ -1,4 +1,5 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
+using SnackTech.Common.Dto.DataSource;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
@@ -21,8 +22,17 @@ internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoV
     {
         Itens = pedidoDto.Itens.Select(item => (PedidoItem)item).ToList();
     }
+    public Pedido(PedidoDto pedidoDto) : this(pedidoDto.Id, pedidoDto.DataCriacao, pedidoDto.Status, (Cliente)pedidoDto.Cliente)
+    {
+        Itens = pedidoDto.Itens.Select(item => (PedidoItem)item).ToList();
+    }
 
     public static implicit operator Pedido(PedidoRetornoDto pedidoDto)
+    {
+        return new Pedido(pedidoDto);
+    }
+
+    public static implicit operator Pedido(PedidoDto pedidoDto)
     {
         return new Pedido(pedidoDto);
     }
@@ -34,8 +44,20 @@ internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoV
             Id = pedido.Id,
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
-            Cliente = (ClienteDto)pedido.Cliente,
+            Cliente = (Common.Dto.Api.ClienteDto)pedido.Cliente,
             Itens = pedido.Itens.Select(item => (PedidoItemRetornoDto)item).ToList()
+        };
+    }
+
+    public static implicit operator PedidoDto(Pedido pedido)
+    {
+        return new PedidoDto
+        {
+            Id = pedido.Id,
+            DataCriacao = pedido.DataCriacao.Valor,
+            Status = pedido.Status.Valor,
+            Cliente = (Common.Dto.DataSource.ClienteDto)pedido.Cliente,
+            Itens = pedido.Itens.Select(item => (PedidoItemDto)item).ToList()
         };
     }
 

@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;
 using SnackTech.Core.Gateways;

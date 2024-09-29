@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SnackTech.Driver.API.CustomResponses;
 using SnackTech.Domain.Common;
 using System.Runtime.CompilerServices;
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 
 [assembly: InternalsVisibleTo("SnackTech.Driver.API.Tests")]
 namespace SnackTech.Driver.API.Controllers

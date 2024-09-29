@@ -1,6 +1,6 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.DataSource;
 
-namespace SnackTech.Common.Interfaces
+namespace SnackTech.Common.Interfaces.DataSources
 {
     public interface IProdutoDataSource
     {

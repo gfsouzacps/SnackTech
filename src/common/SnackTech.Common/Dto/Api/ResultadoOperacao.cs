@@ -1,10 +1,10 @@
-namespace SnackTech.Common.Dto
+namespace SnackTech.Common.Dto.Api
 {
     public class ResultadoOperacao
     {
-        public bool Sucesso {get; protected set;}
-        public string Mensagem {get; protected set;}
-        public Exception Excecao {get; protected set;}
+        public bool Sucesso { get; protected set; }
+        public string Mensagem { get; protected set; }
+        public Exception Excecao { get; protected set; }
 
         public ResultadoOperacao()
         {
@@ -13,13 +13,15 @@ namespace SnackTech.Common.Dto
             Excecao = null!;
         }
 
-        public ResultadoOperacao(string message){
+        public ResultadoOperacao(string message)
+        {
             Sucesso = false;
             Mensagem = message;
             Excecao = null!;
         }
 
-        public ResultadoOperacao(Exception exception){
+        public ResultadoOperacao(Exception exception)
+        {
             Sucesso = false;
             Mensagem = exception.Message;
             Excecao = exception;
@@ -29,26 +31,29 @@ namespace SnackTech.Common.Dto
         public bool TeveExcecao() => Excecao != null;
     }
 
-    public class ResultadoOperacao<T> : ResultadoOperacao{
-        public T Dados {get; protected set;}
+    public class ResultadoOperacao<T> : ResultadoOperacao
+    {
+        public T Dados { get; protected set; }
 
         public ResultadoOperacao(T dados)
-            :base()
+            : base()
         {
             Dados = dados;
             Sucesso = true;
         }
 
-        public ResultadoOperacao(string mensagem, bool houveErro): base(mensagem){
-            if(!houveErro){
+        public ResultadoOperacao(string mensagem, bool houveErro) : base(mensagem)
+        {
+            if (!houveErro)
+            {
                 var mensagemExcecao = "Use ResultadoOperacao<string>(string) como construtor para resultados de sucesso.";
-                throw new ArgumentException(mensagemExcecao,nameof(houveErro));
+                throw new ArgumentException(mensagemExcecao, nameof(houveErro));
             }
             Dados = default!;
         }
 
         public ResultadoOperacao(Exception excecao)
-            :base(excecao)
+            : base(excecao)
         {
             Dados = default!;
         }

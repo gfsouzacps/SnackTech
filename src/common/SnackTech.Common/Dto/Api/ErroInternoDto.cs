@@ -1,7 +1,7 @@
-namespace SnackTech.Common.Dto
+namespace SnackTech.Common.Dto.Api
 {
 
-    public record ErroInternoDto (string Message, ExcecaoRetorno? Exception);
+    public record ErroInternoDto(string Message, ExcecaoRetorno? Exception);
 
     public class ExcecaoRetorno(Exception excecao)
     {

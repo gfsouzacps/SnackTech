@@ -1,52 +1,51 @@
-using SnackTech.Common.Dto;
-using SnackTech.Common.Interfaces;
+using SnackTech.Common.Dto.DataSource;
+using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;
 
-namespace SnackTech.Core.Gateways
-{
-    internal class ProdutoGateway(IProdutoDataSource dataSource)
-    {       
-        internal async Task<Produto?> ProcurarProdutoPorNome(StringNaoVaziaOuComEspacos nome){
-            var produtoDto = await dataSource.PesquisarPorNomeAsync(nome.ToString());
+namespace SnackTech.Core.Gateways;
 
-            if(produtoDto == null){
-                return null;
-            }
+internal class ProdutoGateway(IProdutoDataSource dataSource)
+{       
+    internal async Task<Produto?> ProcurarProdutoPorNome(StringNaoVaziaOuComEspacos nome){
+        var produtoDto = await dataSource.PesquisarPorNomeAsync(nome.ToString());
 
-            return new Produto(produtoDto);
-        }     
-
-        internal async Task<Produto?> ProcurarProdutoPorIdentificacao(GuidValido id){
-            var produtoDto = await dataSource.PesquisarPorIdentificacaoAsync(id);
-
-            if(produtoDto == null){
-                return null;
-            }
-
-            return new Produto(produtoDto);
+        if(produtoDto == null){
+            return null;
         }
 
-        internal async Task<bool> CadastrarNovoProduto(Produto novoProduto){            
-            ProdutoDto dto = novoProduto;
+        return new Produto(produtoDto);
+    }     
 
-            return await dataSource.InserirProdutoAsync(dto);
+    internal async Task<Produto?> ProcurarProdutoPorIdentificacao(GuidValido id){
+        var produtoDto = await dataSource.PesquisarPorIdentificacaoAsync(id);
+
+        if(produtoDto == null){
+            return null;
         }
 
-        internal async Task<bool> AtualizarProduto(Produto produtoAlterado){
-            ProdutoDto dto = produtoAlterado;
+        return new Produto(produtoDto);
+    }
 
-            return await dataSource.AlterarProdutoAsync(dto);
-        }
+    internal async Task<bool> CadastrarNovoProduto(Produto novoProduto){            
+        ProdutoDto dto = novoProduto;
 
-        internal async Task<bool> RemoverProduto(GuidValido id){
-            return await dataSource.RemoverProdutoPorIdentificacaoAsync(id);
-        }
+        return await dataSource.InserirProdutoAsync(dto);
+    }
 
-        internal async Task<IEnumerable<Produto>> ProcurarProdutosPorCategoria(CategoriaProdutoValido categoriaProduto){
-            var produtosDto = await dataSource.PesquisarPorCategoriaIdAsync(categoriaProduto);
+    internal async Task<bool> AtualizarProduto(Produto produtoAlterado){
+        ProdutoDto dto = produtoAlterado;
 
-            return produtosDto.Select(p => new Produto(p));
-        }
+        return await dataSource.AlterarProdutoAsync(dto);
+    }
+
+    internal async Task<bool> RemoverProduto(GuidValido id){
+        return await dataSource.RemoverProdutoPorIdentificacaoAsync(id);
+    }
+
+    internal async Task<IEnumerable<Produto>> ProcurarProdutosPorCategoria(CategoriaProdutoValido categoriaProduto){
+        var produtosDto = await dataSource.PesquisarPorCategoriaIdAsync(categoriaProduto);
+
+        return produtosDto.Select(p => new Produto(p));
     }
 }

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SnackTech.Driver.API.CustomResponses;
 using SnackTech.Domain.DTOs.Driving.Produto;
 using Swashbuckle.AspNetCore.Annotations;
-using SnackTech.Common.Dto;
 using SnackTech.Core.Interfaces;
+using SnackTech.Common.Dto.Api;
 
 
 namespace SnackTech.Driver.API.Controllers

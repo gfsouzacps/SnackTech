@@ -1,4 +1,5 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
+using SnackTech.Common.Dto.DataSource;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
@@ -12,7 +13,14 @@ internal class PedidoItem(GuidValido id, Produto produto, InteiroPositivo quanti
 
     public PedidoItem(PedidoItemRetornoDto pedidoItemDto) : this(pedidoItemDto.Id, pedidoItemDto.Produto, pedidoItemDto.Quantidade, pedidoItemDto.Observacao) { }
 
+    public PedidoItem(PedidoItemDto pedidoItemDto) : this(pedidoItemDto.Id, pedidoItemDto.Produto, pedidoItemDto.Quantidade, pedidoItemDto.Observacao) { }
+
     public static implicit operator PedidoItem(PedidoItemRetornoDto pedidoItemDto)
+    {
+        return new(pedidoItemDto);
+    }
+
+    public static implicit operator PedidoItem(PedidoItemDto pedidoItemDto)
     {
         return new(pedidoItemDto);
     }
@@ -25,7 +33,19 @@ internal class PedidoItem(GuidValido id, Produto produto, InteiroPositivo quanti
             Quantidade = pedidoItem.Quantidade.Valor,
             Observacao = pedidoItem.Observacao,
             Valor = pedidoItem.Valor(),
-            Produto = (ProdutoDto)pedidoItem.Produto
+            Produto = (Common.Dto.Api.ProdutoDto)pedidoItem.Produto
+        };
+    }
+
+    public static implicit operator PedidoItemDto(PedidoItem pedidoItem)
+    {
+        return new PedidoItemDto
+        {
+            Id = pedidoItem.Id,
+            Quantidade = pedidoItem.Quantidade.Valor,
+            Observacao = pedidoItem.Observacao,
+            Valor = pedidoItem.Valor(),
+            Produto = (Common.Dto.DataSource.ProdutoDto)pedidoItem.Produto
         };
     }
 

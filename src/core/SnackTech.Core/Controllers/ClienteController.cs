@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Gateways;
 using SnackTech.Core.Interfaces;

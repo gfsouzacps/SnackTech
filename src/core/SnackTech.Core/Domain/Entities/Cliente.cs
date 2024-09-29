@@ -1,4 +1,3 @@
-using SnackTech.Common.Dto;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
@@ -12,16 +11,33 @@ internal class Cliente(GuidValido id, StringNaoVaziaOuComEspacos nome, EmailVali
     internal EmailValido Email { get; private set; } = email;
     internal CpfValido Cpf { get; private set; } = cpf;
 
-    public Cliente(ClienteDto clienteDto) : this(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf) { }
+    public Cliente(Common.Dto.Api.ClienteDto clienteDto) : this(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf) { }
+    public Cliente(Common.Dto.DataSource.ClienteDto clienteDto) : this(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf) { }
 
-    public static implicit operator Cliente(ClienteDto clienteDto)
+    public static implicit operator Cliente(Common.Dto.Api.ClienteDto clienteDto)
     {
         return new Cliente(clienteDto);
     }
 
-    public static implicit operator ClienteDto(Cliente cliente)
+    public static implicit operator Cliente(Common.Dto.DataSource.ClienteDto clienteDto)
     {
-        return new ClienteDto
+        return new Cliente(clienteDto);
+    }
+
+    public static implicit operator Common.Dto.Api.ClienteDto(Cliente cliente)
+    {
+        return new Common.Dto.Api.ClienteDto
+        {
+            Id = cliente.Id,
+            Nome = cliente.Nome.Valor,
+            Email = cliente.Email.Valor,
+            Cpf = cliente.Cpf.Valor
+        };
+    }
+
+    public static implicit operator Common.Dto.DataSource.ClienteDto(Cliente cliente)
+    {
+        return new Common.Dto.DataSource.ClienteDto
         {
             Id = cliente.Id,
             Nome = cliente.Nome.Valor,

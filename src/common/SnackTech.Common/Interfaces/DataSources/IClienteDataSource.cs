@@ -1,5 +1,4 @@
-using System;
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.DataSource;
 
 namespace SnackTech.Common.Interfaces.DataSources;
 

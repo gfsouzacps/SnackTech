@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 using SnackTech.Core.Domain.Entities;
 
 namespace SnackTech.Core.Presenters;
