@@ -40,15 +40,23 @@ public class MappingProfile : Profile
         CreateMap<Produto, ProdutoDto>();
         CreateMap<ProdutoDto, Produto>();
 
-        // CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>()
+        // CreateMap<PedidoDto, Pedido>()
         //     .ConstructUsing((src, context) =>
         //         {
-        //             return new Domain.DTOs.Driven.PedidoDto{
+        //             var itens = src.Itens.Select(i => new PedidoItem(){
+        //                 Id = i.Id,
+        //                 Quantidade = i.Quantidade,
+        //                 Valor = i.Valor,
+        //                 Observacao = i.Observacao,
+        //                 Produto = context.Mapper.Map<Produto>(i.Produto),
+        //                 Pedido = context.Mapper.Map<Pedido>(src)
+        //             } );
+        //             return new PedidoDto{
         //                 Id = src.Id,
         //                 DataCriacao = src.DataCriacao,
         //                 Status = src.Status,
-        //                 Cliente = context.Mapper.Map<Cliente, Domain.DTOs.Driven.ClienteDto>(src.Cliente),
-        //                 Itens = context.Mapper.Map<IEnumerable<PedidoItem>, List<Domain.DTOs.Driven.PedidoItemDto>>(src.Itens)
+        //                 Cliente = context.Mapper.Map<Cliente>(src.Cliente),
+        //                 Itens = itens
         //             };
         //         });
 

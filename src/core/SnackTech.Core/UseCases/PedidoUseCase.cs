@@ -131,7 +131,7 @@ internal static class PedidoUseCase
     {
         try
         {
-            var pedidoResultado = await BuscarPorIdenticacao(pedidoAtualizado.Id.ToString(), pedidoGateway);
+            var pedidoResultado = await BuscarPorIdenticacao(pedidoAtualizado.Identificacao.ToString(), pedidoGateway);
             if (!pedidoResultado.Sucesso)
             {
                 return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>(pedidoResultado.Mensagem);
@@ -140,9 +140,9 @@ internal static class PedidoUseCase
             var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
 
             //itens atualizados com GUID e que não existem no pedido persistido
-            var itensNovosComIds = pedidoAtualizado.Itens
-                .Where(item => item.Id != null)
-                .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.Id))
+            var itensNovosComIds = pedidoAtualizado.PedidoItens
+                .Where(item => item.Identificacao != null)
+                .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.Identificacao))
                 .ToList();
 
             if (itensNovosComIds.Any())
@@ -151,10 +151,10 @@ internal static class PedidoUseCase
             }
 
             //remover itens do pedido que estejam ausentes no pedido atualizado
-            pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.Itens.Any(itemAtualizado => itemAtualizado.Id == itemPedido.Id));
+            pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.PedidoItens.Any(itemAtualizado => itemAtualizado.Identificacao == itemPedido.Id));
 
             //validar itens do pedido atualizado
-            List<PedidoItem> itensValidados = await validarItensPedido(pedidoAtualizado.Itens, produtoGateway);
+            List<PedidoItem> itensValidados = await validarItensPedido(pedidoAtualizado.PedidoItens, produtoGateway);
 
             //atualizar os itens do pedido
             pedido.Itens = itensValidados;
@@ -163,7 +163,7 @@ internal static class PedidoUseCase
 
             var retorno = foiAtualizado ?
                 PedidoPresenter.ApresentarResultadoPedido(pedido) :
-                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível atualizar os itens do pedido com identificação {pedidoAtualizado.Id}.");
+                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível atualizar os itens do pedido com identificação {pedidoAtualizado.Identificacao}.");
 
             return retorno;
         }
@@ -179,14 +179,14 @@ internal static class PedidoUseCase
 
         foreach (var item in itens)
         {
-            var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(item.ProdutoId);
+            var produto = await produtoGateway.ProcurarProdutoPorIdentificacao(item.IdentificacaoProduto);
 
             if (produto is null)
             {
-                throw new ArgumentException($"Não existe produto com identificação {item.ProdutoId}.");
+                throw new ArgumentException($"Não existe produto com identificação {item.IdentificacaoProduto}.");
             }
 
-            Guid identificacaoItem = item.Id == null ? Guid.NewGuid() : new GuidValido(item.Id);
+            Guid identificacaoItem = item.Identificacao is null || item.Identificacao == string.Empty ? Guid.NewGuid() : new GuidValido(item.Identificacao);
             itensValidados.Add(new PedidoItem(identificacaoItem, produto, item.Quantidade, item.Observacao));
         }
 

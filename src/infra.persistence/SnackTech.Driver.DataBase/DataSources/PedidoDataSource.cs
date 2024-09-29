@@ -13,9 +13,17 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
 {
     public async Task<bool> AlterarItensDoPedidoAsync(PedidoDto pedidoAtualizado)
     {
-        var itensNoBanco = await repositoryDbContext.PedidoItens
-                .Where(p => p.Pedido.Id == pedidoAtualizado.Id)
-                .ToDictionaryAsync(p => p.Id, p => p);
+        var pedido = await repositoryDbContext.Pedidos
+                .Include(p => p.Itens)
+                .Where(p => p.Id == pedidoAtualizado.Id)
+                .FirstOrDefaultAsync();
+
+        if (pedido is null)
+        {
+            throw new PedidoRepositoryException($"Pedido com identificacao {pedidoAtualizado.Id} não encontrado no banco de dados.");
+        }
+
+        var itensNoBanco = pedido.Itens.ToDictionary(p => p.Id, p => p);
 
         foreach (var itemAtualizar in pedidoAtualizado.Itens)
         {

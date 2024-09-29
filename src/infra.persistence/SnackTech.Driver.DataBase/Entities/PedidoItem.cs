@@ -8,6 +8,5 @@ namespace SnackTech.Driver.DataBase.Entities
         public string Observacao { get; set; }
         public decimal Valor { get; set; }
         public Produto Produto { get; set; }
-        public Pedido Pedido { get; set; }
     }
 }
