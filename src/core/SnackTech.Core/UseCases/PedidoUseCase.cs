@@ -139,10 +139,20 @@ internal static class PedidoUseCase
 
             var pedido = (Pedido)pedidoResultado.RecuperarDados();
 
+            //itens atualizados com GUID e que não existem no pedido persistido
+            var itensNovosComIds = pedidoAtualizado.Itens
+                .Where(item => item.Id != null)
+                .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.Id))
+                .ToList();
+
+            if (itensNovosComIds.Any())
+            {
+                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não é possivel atualizar itens que não existem no pedido. Por favor, remove a identificação dos itens novos para que eles sejam cadastrados corretamente.");
+            }
+
             //remover itens do pedido que estejam ausentes no pedido atualizado
             pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.Itens.Any(itemAtualizado => itemAtualizado.Id == itemPedido.Id));
 
-            //TODO: Criticar se um item vier com GUID e o guid não existir no pedido persistido
             //validar itens do pedido atualizado
             List<PedidoItem> itensValidados = await validarItensPedido(pedidoAtualizado.Itens, produtoGateway);
 
