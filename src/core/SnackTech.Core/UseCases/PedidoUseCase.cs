@@ -113,7 +113,7 @@ internal static class PedidoUseCase
             var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
             pedido.FecharPedidoParaPagamento();
 
-            var foiAtualizado = await pedidoGateway.AtualizarPedido(pedido);
+            var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
 
             var retorno = foiAtualizado ?
                                 PedidoPresenter.ApresentarResultadoOk() :

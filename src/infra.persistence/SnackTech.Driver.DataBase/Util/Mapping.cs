@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SnackTech.Common.Dto.Api;
+using SnackTech.Common.Dto.DataSource;
 using SnackTech.Driver.DataBase.Entities;
 
 
@@ -25,17 +25,17 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Produto, Domain.DTOs.Driven.ProdutoDto>();
-        CreateMap<Domain.DTOs.Driven.ProdutoDto, Produto>();
+        CreateMap<Produto, ProdutoDto>();
+        CreateMap<ProdutoDto, Produto>();
 
-        CreateMap<Cliente, Domain.DTOs.Driven.ClienteDto>();
-        CreateMap<Domain.DTOs.Driven.ClienteDto, Cliente>();
+        CreateMap<Cliente, ClienteDto>();
+        CreateMap<ClienteDto, Cliente>();
 
-        CreateMap<PedidoItem, Domain.DTOs.Driven.PedidoItemDto>();
-        CreateMap<Domain.DTOs.Driven.PedidoItemDto, PedidoItem>();
+        CreateMap<PedidoItem, PedidoItemDto>();
+        CreateMap<PedidoItemDto, PedidoItem>();
 
-        CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>();
-        CreateMap<Domain.DTOs.Driven.PedidoDto, Pedido>();
+        CreateMap<Pedido, PedidoDto>();
+        CreateMap<PedidoDto, Pedido>();
 
         CreateMap<Produto, ProdutoDto>();
         CreateMap<ProdutoDto, Produto>();

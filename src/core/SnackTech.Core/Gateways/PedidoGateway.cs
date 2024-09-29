@@ -27,7 +27,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 
     internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorCliente(GuidValido clienteId)
     {
-        var pedidosDto = await dataSource.PesquisarPedidosPorClienteAsync(clienteId);
+        var pedidosDto = await dataSource.PesquisarPedidosPorClienteIdAsync(clienteId);
 
         return pedidosDto.Select(ConverterParaEntidade);
     }
@@ -39,18 +39,18 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         return pedidosDto.Select(ConverterParaEntidade);
     }
 
-    internal async Task<bool> AtualizarPedido(Pedido pedido)
+    internal async Task<bool> AtualizarStatusPedido(Pedido pedido)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
-        return await dataSource.AtualizarPedidoAsync(pedidoDto);
+        return await dataSource.AlterarPedidoAsync(pedidoDto);
     }
 
     internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
-        return await dataSource.AtualizarItensDoPedidoAsync(pedidoDto);
+        return await dataSource.AlterarItensDoPedidoAsync(pedidoDto);
     }
 
     internal static PedidoDto ConverterParaDto(Pedido pedido)
