@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Common", "common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Core", "core\SnackTech.Core\SnackTech.Core.csproj", "{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Driver.MercadoPago", "infra.persistence\SnackTech.Driver.MercadoPago\SnackTech.Driver.MercadoPago.csproj", "{E1133E8E-52BE-4597-ACCB-346B6CC43BC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1133E8E-52BE-4597-ACCB-346B6CC43BC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1133E8E-52BE-4597-ACCB-346B6CC43BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1133E8E-52BE-4597-ACCB-346B6CC43BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1133E8E-52BE-4597-ACCB-346B6CC43BC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{9DFA9058-6056-4B09-9EAE-B56C4F5CD792} = {984A6F53-D819-461F-A5C6-20ABEB936F8B}
 		{182F015F-99B5-4593-A692-47968C09C0ED} = {11FAF236-6419-409A-AB3C-2B87C08A85AF}
 		{5FCF8E08-1FFF-4FB2-91D6-E0C555C4587D} = {1EDED837-E83D-49B5-A7DF-066A7105DF2F}
+		{E1133E8E-52BE-4597-ACCB-346B6CC43BC6} = {9BA84263-730B-4BE9-A122-9C4E5250E21B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52458007-70F3-4147-9721-FAA7869B8DC0}
