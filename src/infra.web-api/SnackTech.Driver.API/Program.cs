@@ -5,9 +5,12 @@ using SnackTech.Driver.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using SnackTech.Common.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddOptions<MercadoPagoOptions>()
+    .BindConfiguration(nameof(MercadoPagoOptions));
 // Add services to the container.
 builder.Services.AddAdapterDatabaseRepositories();
 builder.Services.AddApplicationServices();
