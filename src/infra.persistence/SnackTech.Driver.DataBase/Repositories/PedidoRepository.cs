@@ -25,7 +25,6 @@ namespace SnackTech.Driver.DataBase.Repositories
                     itemBanco.Valor = itemAtualizar.Valor;
                     itemBanco.Observacao = itemAtualizar.Observacao;
                     itemBanco.Produto = itemEntityAtualizar.Produto;
-                    itemBanco.Sequencial = itemAtualizar.Sequencial;
                 }
                 else
                 {
