@@ -1,11 +1,11 @@
 using SnackTech.Driver.API.Configuration.HealthChecks;
-using SnackTech.Application;
 using SnackTech.Driver.DataBase;
 using SnackTech.Driver.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using SnackTech.Common.Dto;
+using SnackTech.Driver.API.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Services.AddOptions<MercadoPagoOptions>()
     .BindConfiguration(nameof(MercadoPagoOptions));
 // Add services to the container.
 builder.Services.AddAdapterDatabaseRepositories();
-builder.Services.AddApplicationServices();
+builder.Services.AddDomainControllers();
 
 builder.Services.AddHealthChecks()
                 .ConfigureSQLHealthCheck(builder.Configuration);

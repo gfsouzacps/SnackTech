@@ -12,9 +12,8 @@ namespace SnackTech.Driver.DataBase
     {
         public static IServiceCollection AddAdapterDatabaseRepositories(this IServiceCollection services){
             
-            services.AddTransient<IClienteRepository, ClienteRepository>();
-            services.AddTransient<IPedidoRepository, PedidoRepository>();
-
+            services.AddTransient<IClienteDataSource, ClienteDataSource>();
+            services.AddTransient<IPedidoDataSource, PedidoDataSource>();
             services.AddTransient<IProdutoDataSource, ProdutoDataSource>();
             
             return services;
