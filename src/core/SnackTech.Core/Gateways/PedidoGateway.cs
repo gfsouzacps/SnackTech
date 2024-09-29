@@ -61,7 +61,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
             Cliente = ClienteGateway.ConverterParaDto(pedido.Cliente),
-            Itens = pedido.Itens.Select(converterItemParaDto).ToList()
+            Itens = pedido.Itens.Select(converterItemParaDto)
         };
     }
 

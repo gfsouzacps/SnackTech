@@ -84,7 +84,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<List<PedidoRetornoDto>>> ListarPedidosParaPagamento(PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento(PedidoGateway pedidoGateway)
     {
         try
         {
@@ -96,7 +96,7 @@ internal static class PedidoUseCase
         }
         catch (Exception ex)
         {
-            return GeralPresenter.ApresentarResultadoErroInterno<List<PedidoRetornoDto>>(ex);
+            return GeralPresenter.ApresentarResultadoErroInterno<IEnumerable<PedidoRetornoDto>>(ex);
         }
     }
 
@@ -173,7 +173,7 @@ internal static class PedidoUseCase
         }
     }
 
-    private static async Task<List<PedidoItem>> validarItensPedido(List<PedidoItemAtualizacaoDto> itens, ProdutoGateway produtoGateway)
+    private static async Task<List<PedidoItem>> validarItensPedido(IEnumerable<PedidoItemAtualizacaoDto> itens, ProdutoGateway produtoGateway)
     {
         var itensValidados = new List<PedidoItem>();
 

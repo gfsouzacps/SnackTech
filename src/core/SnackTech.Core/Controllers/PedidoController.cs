@@ -36,7 +36,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return pedido;
     }
 
-    public async Task<ResultadoOperacao<List<PedidoRetornoDto>>> ListarPedidosParaPagamento()
+    public async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento()
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
 

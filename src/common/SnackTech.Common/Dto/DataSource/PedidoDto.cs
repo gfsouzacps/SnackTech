@@ -6,5 +6,5 @@ public class PedidoDto
     public DateTime DataCriacao { get; set; }
     public int Status { get; set; }
     public ClienteDto Cliente { get; set; }
-    public List<PedidoItemDto> Itens { get; set; }
+    public IEnumerable<PedidoItemDto> Itens { get; set; }
 }

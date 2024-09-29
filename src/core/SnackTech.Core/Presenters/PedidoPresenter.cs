@@ -20,11 +20,11 @@ internal class PedidoPresenter
         return new ResultadoOperacao<Guid>(guidPedido);
     }
 
-    internal static ResultadoOperacao<List<PedidoRetornoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
+    internal static ResultadoOperacao<IEnumerable<PedidoRetornoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
     {
-        var pedidosDto = pedidos.Select(ConverterParaDto).ToList();
+        var pedidosDto = pedidos.Select(ConverterParaDto);
 
-        return new ResultadoOperacao<List<PedidoRetornoDto>>(pedidosDto);
+        return new ResultadoOperacao<IEnumerable<PedidoRetornoDto>>(pedidosDto);
     }
 
     internal static ResultadoOperacao ApresentarResultadoOk()
@@ -40,7 +40,7 @@ internal class PedidoPresenter
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
             Cliente = ClientePresenter.ConverterParaDto(pedido.Cliente),
-            Itens = pedido.Itens.Select(converterItemParaDto).ToList()
+            Itens = pedido.Itens.Select(converterItemParaDto)
         };
     }
 
