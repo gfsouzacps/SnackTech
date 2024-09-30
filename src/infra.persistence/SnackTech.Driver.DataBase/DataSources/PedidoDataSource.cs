@@ -38,6 +38,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
             else
             {
                 //adiocionando itens novos dessa forma evitasse que o EF tente criar um novo produto a partir do produto presente no item
+                pedido.Itens.Add(itemEntityAtualizar);
                 var entry = repositoryDbContext.Entry(itemEntityAtualizar);
                 entry.State = EntityState.Added;
             }
