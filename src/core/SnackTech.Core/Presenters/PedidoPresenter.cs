@@ -55,18 +55,4 @@ internal class PedidoPresenter
             Produto = ProdutoPresenter.ConverterParaDto(pedidoItem.Produto)
         };
     }
-
-    internal static Pedido ConverterParaEntidade(PedidoRetornoDto pedidoDto)
-    {
-        var clienteEntidade = ClientePresenter.ConverterParaEntidade(pedidoDto.Cliente);
-        var itens = pedidoDto.Itens.Select(converterItemParaEntidade).ToList();
-        return new Pedido(pedidoDto.Id, pedidoDto.DataCriacao, pedidoDto.Status, clienteEntidade, itens);
-    }
-
-    private static PedidoItem converterItemParaEntidade(PedidoItemRetornoDto itemDto)
-    {
-        var produto = ProdutoPresenter.ConverterParaEntidade(itemDto.Produto);
-
-        return new PedidoItem(itemDto.Id, produto, itemDto.Quantidade, itemDto.Observacao);
-    }
 }

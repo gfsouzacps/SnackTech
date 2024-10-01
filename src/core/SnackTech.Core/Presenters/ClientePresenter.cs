@@ -21,9 +21,4 @@ internal class ClientePresenter
             Cpf = cliente.Cpf.Valor
         };
     }
-
-    internal static Cliente ConverterParaEntidade(ClienteDto clienteDto)
-    {
-        return new Cliente(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf);
-    }
 }

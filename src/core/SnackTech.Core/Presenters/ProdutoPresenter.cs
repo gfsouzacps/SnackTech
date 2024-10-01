@@ -26,9 +26,4 @@ internal static class ProdutoPresenter
             Valor = produto.Valor
         };
     }
-
-    internal static Produto ConverterParaEntidade(ProdutoDto produtoDto)
-    {
-        return new Produto(produtoDto.Id, produtoDto.Categoria, produtoDto.Nome, produtoDto.Descricao, produtoDto.Valor);
-    }
 }

@@ -12,16 +12,13 @@ internal static class PedidoUseCase
     {
         try
         {
-            var clienteResultado = await (cpfCliente is null
-                ? ClienteUseCase.SelecionarClientePadrao(clienteGateway)
-                : ClienteUseCase.PesquisarPorCpf(cpfCliente, clienteGateway));
-
-            if (!clienteResultado.Sucesso)
+            var cpf = cpfCliente is null or "" ? Cliente.CPF_CLIENTE_PADRAO : cpfCliente;
+            var cliente = await clienteGateway.ProcurarClientePorCpf(cpf);
+            if (cliente is null)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<Guid>(clienteResultado.Mensagem);
+                return GeralPresenter.ApresentarResultadoErroLogico<Guid>($"Não foi possível iniciar um novo pedido para o cliente com CPF '{cpf}'.");
             }
 
-            var cliente = ClientePresenter.ConverterParaEntidade(clienteResultado.RecuperarDados());
             var entidade = new Pedido(Guid.NewGuid(), DateTime.Now, StatusPedidoValido.Iniciado, cliente);
 
             var foiCadastrado = await pedidoGateway.CadastrarNovoPedido(entidade);
@@ -59,16 +56,13 @@ internal static class PedidoUseCase
     {
         try
         {
-            var clienteResultado = await (cpfCliente is null
-                ? ClienteUseCase.SelecionarClientePadrao(clienteGateway)
-                : ClienteUseCase.PesquisarPorCpf(cpfCliente, clienteGateway));
-
-            if (!clienteResultado.Sucesso)
+            var cpf = cpfCliente is null or "" ? Cliente.CPF_CLIENTE_PADRAO : cpfCliente;
+            var cliente = await clienteGateway.ProcurarClientePorCpf(cpf);
+            if (cliente is null)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>(clienteResultado.Mensagem);
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível iniciar um novo pedido para o cliente com CPF '{cpf}'.");
             }
 
-            var cliente = ClientePresenter.ConverterParaEntidade(clienteResultado.RecuperarDados());
             var ultimosPedidos = await pedidoGateway.PesquisarPedidosPorCliente(cliente.Id);
             var ultimoPedido = ultimosPedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
 
@@ -104,13 +98,13 @@ internal static class PedidoUseCase
     {
         try
         {
-            var pedidoResultado = await BuscarPorIdenticacao(identificacao, pedidoGateway);
-            if (!pedidoResultado.Sucesso)
-            {
-                return GeralPresenter.ApresentarResultadoErroLogico(pedidoResultado.Mensagem);
-            }
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(identificacao);
 
-            var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
+            if(pedido is null)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}. Pedido não localizado.");
+            }
+            
             pedido.FecharPedidoParaPagamento();
 
             var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
@@ -131,13 +125,12 @@ internal static class PedidoUseCase
     {
         try
         {
-            var pedidoResultado = await BuscarPorIdenticacao(pedidoAtualizado.Identificacao.ToString(), pedidoGateway);
-            if (!pedidoResultado.Sucesso)
-            {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>(pedidoResultado.Mensagem);
-            }
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(pedidoAtualizado.Identificacao);
 
-            var pedido = PedidoPresenter.ConverterParaEntidade(pedidoResultado.RecuperarDados());
+            if(pedido is null)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível encontrar um pedido com identificação {pedidoAtualizado.Identificacao}.");
+            }
 
             //itens atualizados com GUID e que não existem no pedido persistido
             var itensNovosComIds = pedidoAtualizado.PedidoItens
