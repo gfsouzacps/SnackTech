@@ -68,9 +68,6 @@ namespace SnackTech.Driver.DataBase.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<int>("Sequencial")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Valor")
                         .HasColumnType("smallmoney");
 

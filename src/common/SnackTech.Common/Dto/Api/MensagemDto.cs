@@ -1,4 +1,4 @@
-namespace SnackTech.Common.Dto
+namespace SnackTech.Common.Dto.Api
 {
     public class MensagemDto(string mensagem)
     {

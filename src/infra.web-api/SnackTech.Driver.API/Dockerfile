@@ -5,8 +5,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /src
 
 # Copie os arquivos .csproj para o contêiner
-COPY core/SnackTech.Domain/SnackTech.Domain.csproj core/SnackTech.Domain/
-COPY core/SnackTech.Application/SnackTech.Application.csproj core/SnackTech.Application/
+COPY common/SnackTech.Common/SnackTech.Common.csproj common/SnackTech.Common/
+COPY core/SnackTech.Core/SnackTech.Core.csproj core/SnackTech.Core/
 COPY infra.persistence/SnackTech.Driver.DataBase/SnackTech.Driver.DataBase.csproj infra.persistence/SnackTech.Driver.DataBase/
 COPY infra.web-api/SnackTech.Driver.API/SnackTech.Driver.API.csproj infra.web-api/SnackTech.Driver.API/
 

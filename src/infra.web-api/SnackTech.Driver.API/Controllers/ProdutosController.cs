@@ -1,10 +1,9 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using SnackTech.Driver.API.CustomResponses;
-using SnackTech.Domain.DTOs.Driving.Produto;
 using Swashbuckle.AspNetCore.Annotations;
-using SnackTech.Common.Dto;
-using SnackTech.Common.Interfaces.Controllers;
+using SnackTech.Driver.API.CustomResponses;
+using SnackTech.Common.Dto.Api;
+using SnackTech.Core.Interfaces;
 
 
 namespace SnackTech.Driver.API.Controllers
@@ -64,7 +63,7 @@ namespace SnackTech.Driver.API.Controllers
         /// <param name="categoriaId">O identificador da categoria (1. Lanche, 2. Acompanhamento, 3. Bebida, 4. Sobremesa).</param>
         /// <returns>Um <see cref="IActionResult"/> contendo a lista de produtos da categoria ou um erro correspondente.</returns>
         [HttpGet]
-        [ProducesResponseType<IEnumerable<RetornoProduto>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<IEnumerable<ProdutoDto>>(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
         [Route("{categoriaId:int}")]

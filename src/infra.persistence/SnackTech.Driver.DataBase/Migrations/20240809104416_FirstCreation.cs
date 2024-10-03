@@ -84,7 +84,6 @@ namespace SnackTech.Driver.DataBase.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Sequencial = table.Column<int>(type: "int", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     Observacao = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
                     Valor = table.Column<decimal>(type: "smallmoney", nullable: false),

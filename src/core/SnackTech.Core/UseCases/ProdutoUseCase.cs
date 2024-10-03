@@ -1,4 +1,4 @@
-using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.Api;
 using SnackTech.Core.Domain.Entities;
 using SnackTech.Core.Domain.Types;
 using SnackTech.Core.Gateways;
@@ -13,7 +13,7 @@ namespace SnackTech.Core.UseCases
                 //garantir que não existe produto com mesmo nome já cadastrado
                 var produto = await produtoGateway.ProcurarProdutoPorNome(produtoDto.Nome);
 
-                if(produto == null){
+                if(produto != null){
                     return GeralPresenter.ApresentarResultadoErroLogico<ProdutoDto>($"Produto {produtoDto.Nome} já cadastrado.");
                 }
 
@@ -47,7 +47,7 @@ namespace SnackTech.Core.UseCases
                 }
                 
                 //se existe alterar entidade, repassar para gateway
-                produto.AlterarDados(produtoDto);
+                produto.Atualizar(produtoDto.Categoria, produtoDto.Nome, produtoDto.Descricao, produtoDto.Valor);
                                            
                 await produtoGateway.AtualizarProduto(produto);
                 //retorna operacao com sucesso

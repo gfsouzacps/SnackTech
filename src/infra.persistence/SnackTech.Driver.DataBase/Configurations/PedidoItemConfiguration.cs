@@ -14,10 +14,6 @@ namespace SnackTech.Driver.DataBase.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Sequencial)
-                .HasColumnType("int")
-                .IsRequired();
-
             builder.Property(p => p.Quantidade)
                 .HasColumnType("int")
                 .IsRequired();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SnackTech.Common.Dto.DataSource;
 using SnackTech.Driver.DataBase.Entities;
 
 
@@ -24,30 +25,38 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Produto, Domain.DTOs.Driven.ProdutoDto>();
-        CreateMap<Domain.DTOs.Driven.ProdutoDto, Produto>();
+        CreateMap<Produto, ProdutoDto>();
+        CreateMap<ProdutoDto, Produto>();
 
-        CreateMap<Cliente, Domain.DTOs.Driven.ClienteDto>();
-        CreateMap<Domain.DTOs.Driven.ClienteDto, Cliente>();
+        CreateMap<Cliente, ClienteDto>();
+        CreateMap<ClienteDto, Cliente>();
 
-        CreateMap<PedidoItem, Domain.DTOs.Driven.PedidoItemDto>();
-        CreateMap<Domain.DTOs.Driven.PedidoItemDto, PedidoItem>();
+        CreateMap<PedidoItem, PedidoItemDto>();
+        CreateMap<PedidoItemDto, PedidoItem>();
 
-        CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>();
-        CreateMap<Domain.DTOs.Driven.PedidoDto, Pedido>();
+        CreateMap<Pedido, PedidoDto>();
+        CreateMap<PedidoDto, Pedido>();
 
-        CreateMap<Produto, Common.Dto.ProdutoDto>();
-        CreateMap<Common.Dto.ProdutoDto, Produto>();
+        CreateMap<Produto, ProdutoDto>();
+        CreateMap<ProdutoDto, Produto>();
 
-        // CreateMap<Pedido, Domain.DTOs.Driven.PedidoDto>()
+        // CreateMap<PedidoDto, Pedido>()
         //     .ConstructUsing((src, context) =>
         //         {
-        //             return new Domain.DTOs.Driven.PedidoDto{
+        //             var itens = src.Itens.Select(i => new PedidoItem(){
+        //                 Id = i.Id,
+        //                 Quantidade = i.Quantidade,
+        //                 Valor = i.Valor,
+        //                 Observacao = i.Observacao,
+        //                 Produto = context.Mapper.Map<Produto>(i.Produto),
+        //                 Pedido = context.Mapper.Map<Pedido>(src)
+        //             } );
+        //             return new PedidoDto{
         //                 Id = src.Id,
         //                 DataCriacao = src.DataCriacao,
         //                 Status = src.Status,
-        //                 Cliente = context.Mapper.Map<Cliente, Domain.DTOs.Driven.ClienteDto>(src.Cliente),
-        //                 Itens = context.Mapper.Map<IEnumerable<PedidoItem>, List<Domain.DTOs.Driven.PedidoItemDto>>(src.Itens)
+        //                 Cliente = context.Mapper.Map<Cliente>(src.Cliente),
+        //                 Itens = itens
         //             };
         //         });
 
