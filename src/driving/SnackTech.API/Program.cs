@@ -1,9 +1,9 @@
-using SnackTech.API.Configuration.HealthChecks;
-using SnackTech.Application;
-using SnackTech.Adapter.DataBase;
-using SnackTech.Adapter.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using SnackTech.Adapter.DataBase;
+using SnackTech.Adapter.DataBase.Context;
+using SnackTech.API.Configuration.HealthChecks;
+using SnackTech.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAdapterDatabaseRepositories();
 builder.Services.AddApplicationServices();
-
-builder.Services.AddHealthChecks()
-                .ConfigureSQLHealthCheck(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,8 +22,19 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SnackTech", Version = "v1" });
 });
 
+string dbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+
+if (string.IsNullOrEmpty(dbConnectionString))
+{
+    throw new InvalidOperationException(
+        "Could not find a connection string named 'DefaultConnection'.");
+}
+
 builder.Services.AddDbContext<RepositoryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(dbConnectionString));
+
+builder.Services.AddHealthChecks()
+    .ConfigureSQLHealthCheck();
 
 var app = builder.Build();
 
@@ -45,7 +53,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "SnackTech API v1");
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCustomHealthChecks();
 app.UseAuthorization();
 app.MapControllers();
