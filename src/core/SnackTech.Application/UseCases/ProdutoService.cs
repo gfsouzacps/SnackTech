@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using SnackTech.Domain.Common;
 using SnackTech.Domain.DTOs.Driving.Produto;
+using SnackTech.Domain.Exceptions.Driven;
 using SnackTech.Domain.Guards;
 using SnackTech.Domain.Models;
 using SnackTech.Domain.Ports.Driven;
@@ -45,8 +46,17 @@ namespace SnackTech.Application.UseCases
             async Task<Result<Guid>> processo(){
                 var categoriaProduto = CustomGuards.AgainstInvalidCategoriaProduto(novoProduto.Categoria,nameof(novoProduto.Categoria));
                 var produto = new Produto(categoriaProduto,novoProduto.Nome,novoProduto.Descricao,novoProduto.Valor);
-                await produtoRepository.InserirProdutoAsync((Domain.DTOs.Driven.ProdutoDto)produto);
-                return new Result<Guid>(produto.Id);
+                
+                try{
+                    await produtoRepository.InserirProdutoAsync((Domain.DTOs.Driven.ProdutoDto)produto);
+                    return new Result<Guid>(produto.Id);
+                }
+                catch(ProdutoRepositoryException e){
+                    return new Result<Guid>(e.Message,true);
+                }
+                catch(Exception e){
+                    return new Result<Guid>(e);
+                }
             }
             return await CommonExecution($"ProdutoService.CriarNovoProduto",processo);
         }
@@ -74,12 +84,18 @@ namespace SnackTech.Application.UseCases
             async Task<Result> processo(){
                 var guid = CustomGuards.AgainstInvalidGuid(identificacao,nameof(identificacao));
 
-                var success = await produtoRepository.RemoverProdutoPorIdentificacaoAsync(guid);
+                try{
+                    var success = await produtoRepository.RemoverProdutoPorIdentificacaoAsync(guid);
 
-                if (success)
-                    return new Result();
-                else
+                    if (success)
+                        return new Result();    
                     return new Result($"Produto com identificação {identificacao} não encontrado.");
+                
+                } catch(ProdutoRepositoryException ex){
+                    return new Result(ex.Message);
+                } catch(Exception ex){
+                    return new Result(ex);
+                }
             }
             return await CommonExecution($"ProdutoService.RemoverProduto {identificacao}", processo);
         }

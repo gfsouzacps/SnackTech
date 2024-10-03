@@ -77,6 +77,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         {
             return (await _repositoryDbContext.Pedidos
                 .AsNoTracking()
+                .Include(p => p.Cliente)
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
                 .Where(p => p.Cliente.Id == identificacaoCliente)
                 .ToListAsync())

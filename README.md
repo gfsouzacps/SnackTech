@@ -40,7 +40,7 @@ Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 - Certifique-se de que o Docker Desktop (Windows ou Mac) ou o Docker Engine (Linux) esteja instalado e em execução.
 
 **3 - Inicialize os containers Docker**
-- Na raiz da pasta do projeto (dentro da pasta "src" onde está o arquivo docker-compose.yml), abra um prompt de comando e execute o seguinte comando para construir e iniciar os containers: docker-compose up --build. Esse comando configura e inicia a aplicação e o banco de dados SQL Server dentro de containers Docker.
+- Na raiz da pasta do projeto/repositório, abra um prompt de comando e execute o seguinte comando para construir e iniciar os containers: docker-compose up --build. Esse comando configura e inicia a aplicação e o banco de dados SQL Server dentro de containers Docker.
 
 **4 - Verifique a execução**
 - A aplicação estará disponível nas portas configuradas no docker-compose.yml, e o banco de dados SQL Server estará disponível para conexões conforme definido na string de conexão do arquivo de configuração da aplicação.
@@ -67,7 +67,7 @@ No Driven temos a camada de banco de dados:
 
 #### Driving
 No Driving, temos a camada de API:
-- **SnackTech.API**: Este projeto é a interface do nosso sistema. Ele contém nossos Controllers, que recebem requisições do usuário e retornam respostas. Além disso, ele contém arquivos de configuração como o appsettings, Dockerfile e docker-compose.
+- **SnackTech.API**: Este projeto é a interface do nosso sistema. Ele contém nossos Controllers, que recebem requisições do usuário e retornam respostas. Além disso, ele contém arquivos de configuração como o appsettings.
 
 #### Tests
 Em tests, temos projetos voltados para as outras camadas, sendo os projetos:
