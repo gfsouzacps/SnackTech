@@ -63,7 +63,6 @@ namespace SnackTech.Driver.MercadoPago.Services
             var httpClient = httpClientFactory.CreateClient();
 
             httpClient.BaseAddress = new Uri(urlBase);
-            httpClient.DefaultRequestHeaders.Add("Content-Type","application/json");
 
             return httpClient;
         }

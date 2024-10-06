@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using SnackTech.Common.Dto;
 using SnackTech.Common.Dto.Api;
 using SnackTech.Common.Interfaces.ApiSources;
@@ -12,7 +13,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource,
                                 IClienteDataSource clienteDataSource, 
                                 IProdutoDataSource produtoDataSource, 
                                 IMercadoPagoIntegration mercadoPagoIntegration,
-                                MercadoPagoOptions mercadoPagoOptions) : IPedidoController
+                                IOptions<MercadoPagoOptions> mercadoPagoOptions) : IPedidoController
 {
     public async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente)
     {
@@ -54,7 +55,7 @@ public class PedidoController(IPedidoDataSource pedidoDataSource,
     public async Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
-        var mercadoPagoGateway = new MercadoPagoGateway(mercadoPagoIntegration,mercadoPagoOptions);
+        var mercadoPagoGateway = new MercadoPagoGateway(mercadoPagoIntegration,mercadoPagoOptions.Value);
 
         var resultado = await PedidoUseCase.FinalizarPedidoParaPagamento(identificacao, pedidoGateway, mercadoPagoGateway);
 

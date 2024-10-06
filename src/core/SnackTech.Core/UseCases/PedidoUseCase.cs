@@ -116,6 +116,9 @@ internal static class PedidoUseCase
 
             return PedidoPresenter.ApresentarResultadoPedido(pedido,dadoPagamento);
         }
+        catch(ArgumentException ex){
+            return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>(ex.Message);
+        }
         catch (Exception ex)
         {
             return GeralPresenter.ApresentarResultadoErroInterno<PedidoPagamentoDto>(ex);
@@ -139,7 +142,7 @@ internal static class PedidoUseCase
                 .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.Identificacao))
                 .ToList();
 
-            if (itensNovosComIds.Any())
+            if (itensNovosComIds.Count > 0)
             {
                 GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não é possivel atualizar itens que não existem no pedido. Por favor, remove a identificação dos itens novos para que eles sejam cadastrados corretamente.");
             }

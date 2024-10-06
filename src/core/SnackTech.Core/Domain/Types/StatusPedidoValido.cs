@@ -2,12 +2,12 @@ namespace SnackTech.Core.Domain.Types;
 
 internal struct StatusPedidoValido
 {
-    internal static readonly StatusPedidoValido Iniciado = new StatusPedidoValido(1);
-    internal static readonly StatusPedidoValido AguardandoPagamento = new StatusPedidoValido(2);
-    internal static readonly StatusPedidoValido Recebido = new StatusPedidoValido(3);
-    internal static readonly StatusPedidoValido EmPreparacao = new StatusPedidoValido(4);
-    internal static readonly StatusPedidoValido Pronto = new StatusPedidoValido(5);
-    internal static readonly StatusPedidoValido Finalizado = new StatusPedidoValido(6);
+    internal static readonly StatusPedidoValido Iniciado = new(1);
+    internal static readonly StatusPedidoValido AguardandoPagamento = new(2);
+    internal static readonly StatusPedidoValido Recebido = new(3);
+    internal static readonly StatusPedidoValido EmPreparacao = new(4);
+    internal static readonly StatusPedidoValido Pronto = new(5);
+    internal static readonly StatusPedidoValido Finalizado = new(6);
 
     private int valor;
     private readonly Dictionary<int, string> ValoresValidos = new()

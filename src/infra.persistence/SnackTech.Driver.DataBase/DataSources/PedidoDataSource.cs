@@ -2,6 +2,7 @@
 using SnackTech.Common.CustomExceptions;
 using SnackTech.Common.Dto.DataSource;
 using SnackTech.Common.Interfaces.DataSources;
+using SnackTech.Domain.Enums;
 using SnackTech.Driver.DataBase.Context;
 using SnackTech.Driver.DataBase.Entities;
 using SnackTech.Driver.DataBase.Util;
@@ -67,6 +68,21 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         repositoryDbContext.Entry(pedidoEntity).State = EntityState.Modified;
         await repositoryDbContext.SaveChangesAsync();
 
+        return true;
+    }
+
+    public async Task<bool> AtualizarStatusPedidoAsync(PedidoDto pedidoDto){
+        var pedidoBanco = await repositoryDbContext.Pedidos
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(p => p.Id == pedidoDto.Id);
+
+        if(pedidoBanco is null)
+            return false;
+
+        pedidoBanco.Status = (StatusPedido)pedidoDto.Status;
+        repositoryDbContext.Entry(pedidoBanco).State = EntityState.Modified;
+
+        await repositoryDbContext.SaveChangesAsync();
         return true;
     }
 

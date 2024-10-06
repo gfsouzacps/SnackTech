@@ -43,7 +43,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
-        return await dataSource.AlterarPedidoAsync(pedidoDto);
+        return await dataSource.AtualizarStatusPedidoAsync(pedidoDto);
     }
 
     internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)

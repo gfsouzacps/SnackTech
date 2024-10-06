@@ -23,6 +23,13 @@ internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoV
         if (Itens.Count == 0)
             throw new ArgumentException("O pedido deve ter pelo menos um item para ser finalizado para pagamento.");
 
+        if (ValorTotal <= 0)
+            throw new ArgumentException("O cálculo do Valor total do pedido está resultando em um valor menor ou igual a zero.");
+
+        if(Status != StatusPedidoValido.Iniciado)
+            throw new ArgumentException("Pedido está com status diferente de Iniciado, não será possível movê-lo para aguardar pagamento");
+
         Status = StatusPedidoValido.AguardandoPagamento;
+        
     }
 }

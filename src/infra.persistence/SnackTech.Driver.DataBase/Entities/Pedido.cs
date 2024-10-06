@@ -9,6 +9,6 @@ namespace SnackTech.Driver.DataBase.Entities
         public DateTime DataCriacao { get; set; }
         public Cliente Cliente { get; set; } = new();
         public StatusPedido Status { get; set; }        
-        public List<PedidoItem> Itens { get; set; } = new();
+        public List<PedidoItem> Itens { get; set; } = [];
     }
 }
