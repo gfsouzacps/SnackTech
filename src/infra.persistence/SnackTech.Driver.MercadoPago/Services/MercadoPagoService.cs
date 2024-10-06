@@ -51,6 +51,19 @@ namespace SnackTech.Driver.MercadoPago.Services
             return retorno;
         }
 
+        public async Task<Guid> BuscarOrdemPagamento(string accessToken,MercadoPagoOptions mercadoPagoOptions, string orderId){
+            var rota = $"merchant_orders/{orderId}";
+
+            var httpClient = CriarHttpClientBase(mercadoPagoOptions.UrlBase);
+            httpClient.DefaultRequestHeaders.Add("Authorization",$"Bearer {accessToken}");
+
+            var resposta = await httpClient.GetAsync(rota);
+
+            var conteudoResposta = await RetornarConteudo<MerchantOrder>(resposta);
+
+            return Guid.Parse(conteudoResposta.external_reference);
+        }
+
         private static async Task<T> RetornarConteudo<T>(HttpResponseMessage resposta){
             resposta.EnsureSuccessStatusCode();
 

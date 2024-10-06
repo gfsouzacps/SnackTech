@@ -6,7 +6,6 @@ using SnackTech.Domain.Enums;
 using SnackTech.Driver.DataBase.Context;
 using SnackTech.Driver.DataBase.Entities;
 using SnackTech.Driver.DataBase.Util;
-using System.Drawing;
 
 namespace SnackTech.Driver.DataBase.DataSources;
 

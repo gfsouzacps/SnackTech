@@ -16,5 +16,13 @@ namespace SnackTech.Core.Gateways
 
             return resposta.DadoDoCodigo;
         }
+
+        internal async Task<Guid> BuscarPedidoViaOrder(string orderId){
+            var autenticacao = await apiMercadoPago.Autenticar(mercadoPagoOptions);
+
+            var resposta = await apiMercadoPago.BuscarOrdemPagamento(autenticacao.TokenDeAcesso,mercadoPagoOptions,orderId);
+
+            return resposta;
+        }
     }
 }

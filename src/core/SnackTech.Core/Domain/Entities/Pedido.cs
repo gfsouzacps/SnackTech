@@ -32,4 +32,8 @@ internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoV
         Status = StatusPedidoValido.AguardandoPagamento;
         
     }
+
+    internal void AtualizarPedidoAposPagamento(){
+        Status = StatusPedidoValido.Recebido;
+    }
 }
