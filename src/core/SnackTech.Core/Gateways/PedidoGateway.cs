@@ -18,7 +18,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
     {
         var pedidoDto = await dataSource.PesquisarPorIdentificacaoAsync(identificacao);
 
-        if (pedidoDto is null)
+        if (pedidoDto is null || pedidoDto.Id == Guid.Empty)
             return null;
 
         return ConverterParaEntidade(pedidoDto);
