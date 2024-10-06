@@ -34,7 +34,7 @@ namespace SnackTech.Core.Domain.Types
 
         private static void ValidarValorString(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))
             {
                 throw new ArgumentException("O valor atribuído não pode ser nulo, vazio ou somente com espaços");
             }

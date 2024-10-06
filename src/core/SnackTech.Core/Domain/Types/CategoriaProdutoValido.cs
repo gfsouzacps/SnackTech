@@ -2,6 +2,11 @@ namespace SnackTech.Core.Domain.Types
 {
     internal struct CategoriaProdutoValido : IEquatable<CategoriaProdutoValido>
     {
+        internal static readonly CategoriaProdutoValido Lanche = new(1);
+        internal static readonly CategoriaProdutoValido Acompanhamento = new(2);
+        internal static readonly CategoriaProdutoValido Bebida = new(3);
+        internal static readonly CategoriaProdutoValido Sobremesa = new(4);
+        
         private int valor;
         private readonly Dictionary<int, string> ValoresValidos = new()
         {
