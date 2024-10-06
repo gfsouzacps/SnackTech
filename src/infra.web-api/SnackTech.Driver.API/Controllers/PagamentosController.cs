@@ -21,5 +21,27 @@ namespace SnackTech.Driver.API.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Retorna o identificador do novo pedido")]
         public async Task<IActionResult> PagamentoHook([FromBody] PagamentoDto pagamento)
             => await ExecucaoPadrao("Pagamento.ProcessarHook",pagamentoDomainController.ProcessarPagamento(pagamento));
+        
+        /*
+        Exemplo de payload que o MP mandaria pra essa rota:
+        {
+            "action": "update",
+            "application_id": "7910800073137785",
+            "data": {
+                "currency_id": "",
+                "marketplace": "NONE",
+                "status": "closed"
+            },
+            "date_created": "2024-10-06T17:42:13.510-04:00",
+            "id": "23603350837",
+            "live_mode": false,
+            "status": "closed",
+            "type": "topic_merchant_order_wh",
+            "user_id": 2012037660,
+            "version": 1
+        }
+
+        Nosso processo só fará algo se action = update e status = closed.
+        */
     }
 }
