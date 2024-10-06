@@ -42,6 +42,7 @@ namespace SnackTech.Driver.API.Controllers
         }
 
         Nosso processo só fará algo se action = update e status = closed.
+        Mercado Pago pode enviar o mesmo payload mas com action = create e status opened
         */
     }
 }
