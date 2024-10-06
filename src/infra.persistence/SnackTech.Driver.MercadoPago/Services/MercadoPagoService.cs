@@ -1,15 +1,18 @@
 using Newtonsoft.Json;
 using SnackTech.Common.Dto;
+using SnackTech.Common.Dto.ApiSource.MercadoPago;
+using SnackTech.Common.Dto.DataSource;
+using SnackTech.Common.Interfaces.ApiSources;
 using SnackTech.Driver.MercadoPago.Payloads;
 
 namespace SnackTech.Driver.MercadoPago.Services
 {
-    public class MercadoPagoService(IHttpClientFactory httpClientFactory, MercadoPagoOptions mercadoPagoOptions)
+    public class MercadoPagoService(IHttpClientFactory httpClientFactory) : IMercadoPagoIntegration
     {
         private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
-        private readonly MercadoPagoOptions mercadoPagoOptions = mercadoPagoOptions;
 
-        public async Task<AutenticacaoResponse> Autenticar(){
+
+        public async Task<AutenticacaoMercadoPagoDto> Autenticar(MercadoPagoOptions mercadoPagoOptions){
             var rota = "oauth/token";
             var objetoPayload = Autenticacao.CriarPayload(mercadoPagoOptions.ClientId,mercadoPagoOptions.ClientSecret);
 
@@ -20,20 +23,32 @@ namespace SnackTech.Driver.MercadoPago.Services
             
             resposta.EnsureSuccessStatusCode();
 
-            return await RetornarConteudo<AutenticacaoResponse>(resposta);
+            var conteudoRespostaRequisicao = await RetornarConteudo<AutenticacaoResponse>(resposta);
+
+            AutenticacaoMercadoPagoDto dadosAutenticacao = conteudoRespostaRequisicao;
+            return dadosAutenticacao;
+
         }
 
-        public async Task<PedidoResponse> EnviarPedido(string accessToken, string userId, string posId, CriarPedido novoPedido){
+        public async Task<MercadoPagoQrCodeDto> GerarQrCode(string accessToken,MercadoPagoOptions mercadoPagoOptions, PedidoDto pedido){
+            var userId = mercadoPagoOptions.UserId;
+            var posId = mercadoPagoOptions.PosId;
+
+            var pedidoMercadoPago = new CriarPedido(pedido);
             var rota = $"instore/orders/qr/seller/collectors/{userId}/pos/{posId}/qrs";
 
-            var content = GerarContentParaRequisicao(novoPedido);
+            var content = GerarContentParaRequisicao(pedidoMercadoPago);
 
             var httpClient = CriarHttpClientBase(mercadoPagoOptions.UrlBase);
             httpClient.DefaultRequestHeaders.Add("Authorization",$"Bearer {accessToken}");
 
             var resposta = await httpClient.PutAsync(rota,content);
 
-            return await RetornarConteudo<PedidoResponse>(resposta);
+            var conteudoResposta = await RetornarConteudo<PedidoResponse>(resposta);
+
+            MercadoPagoQrCodeDto retorno = conteudoResposta;
+
+            return retorno;
         }
 
         private static async Task<T> RetornarConteudo<T>(HttpResponseMessage resposta){

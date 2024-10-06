@@ -1,6 +1,7 @@
 using SnackTech.Driver.API.Configuration.HealthChecks;
 using SnackTech.Driver.DataBase;
 using SnackTech.Driver.DataBase.Context;
+using SnackTech.Driver.MercadoPago;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -13,6 +14,7 @@ builder.Services.AddOptions<MercadoPagoOptions>()
     .BindConfiguration(nameof(MercadoPagoOptions));
 // Add services to the container.
 builder.Services.AddAdapterDatabaseRepositories();
+builder.Services.AddMercadoPagoService();
 builder.Services.AddDomainControllers();
 
 builder.Services.AddHealthChecks()

@@ -12,6 +12,13 @@ internal class PedidoPresenter
         return new ResultadoOperacao<PedidoRetornoDto>(pedidoDto);
     }
 
+    internal static ResultadoOperacao<IEnumerable<PedidoRetornoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
+    {
+        var pedidosDto = pedidos.Select(ConverterParaDto);
+
+        return new ResultadoOperacao<IEnumerable<PedidoRetornoDto>>(pedidosDto);
+    }
+
 
     internal static ResultadoOperacao<Guid> ApresentarResultadoPedidoIniciado(Pedido entidade)
     {
@@ -20,16 +27,22 @@ internal class PedidoPresenter
         return new ResultadoOperacao<Guid>(guidPedido);
     }
 
-    internal static ResultadoOperacao<IEnumerable<PedidoRetornoDto>> ApresentarResultadoPedido(IEnumerable<Pedido> pedidos)
-    {
-        var pedidosDto = pedidos.Select(ConverterParaDto);
-
-        return new ResultadoOperacao<IEnumerable<PedidoRetornoDto>>(pedidosDto);
+    internal static ResultadoOperacao<PedidoPagamentoDto> ApresentarResultadoPedido(Pedido pedido, string dadoPagamento){
+        var pedidoPagamento = ConverterParaPagamentoDto(pedido,dadoPagamento);
+        return new ResultadoOperacao<PedidoPagamentoDto>(pedidoPagamento);
     }
 
     internal static ResultadoOperacao ApresentarResultadoOk()
     {
         return new ResultadoOperacao();
+    }
+
+    internal static PedidoPagamentoDto ConverterParaPagamentoDto(Pedido pedido, string dadoPagamento){
+        return new PedidoPagamentoDto{
+            Id = pedido.Id,
+            ValorTotal = pedido.ValorTotal,
+            QrCode = dadoPagamento
+        };
     }
 
     internal static PedidoRetornoDto ConverterParaDto(Pedido pedido)

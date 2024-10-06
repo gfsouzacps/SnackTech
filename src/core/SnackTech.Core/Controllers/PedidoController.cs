@@ -1,4 +1,6 @@
+using SnackTech.Common.Dto;
 using SnackTech.Common.Dto.Api;
+using SnackTech.Common.Interfaces.ApiSources;
 using SnackTech.Common.Interfaces.DataSources;
 using SnackTech.Core.Gateways;
 using SnackTech.Core.Interfaces;
@@ -6,7 +8,11 @@ using SnackTech.Core.UseCases;
 
 namespace SnackTech.Core.Controllers;
 
-public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSource clienteDataSource, IProdutoDataSource produtoDataSource) : IPedidoController
+public class PedidoController(IPedidoDataSource pedidoDataSource, 
+                                IClienteDataSource clienteDataSource, 
+                                IProdutoDataSource produtoDataSource, 
+                                IMercadoPagoIntegration mercadoPagoIntegration,
+                                MercadoPagoOptions mercadoPagoOptions) : IPedidoController
 {
     public async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente)
     {
@@ -26,12 +32,12 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return pedido;
     }
 
-    public async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpf)
+    public async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpfCliente)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
         var clienteGateway = new ClienteGateway(clienteDataSource);
 
-        var pedido = await PedidoUseCase.BuscarUltimoPedidoCliente(cpf, pedidoGateway, clienteGateway);
+        var pedido = await PedidoUseCase.BuscarUltimoPedidoCliente(cpfCliente, pedidoGateway, clienteGateway);
 
         return pedido;
     }
@@ -45,11 +51,12 @@ public class PedidoController(IPedidoDataSource pedidoDataSource, IClienteDataSo
         return pedidos;
     }
 
-    public async Task<ResultadoOperacao> FinalizarPedidoParaPagamento(string identificacao)
+    public async Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
+        var mercadoPagoGateway = new MercadoPagoGateway(mercadoPagoIntegration,mercadoPagoOptions);
 
-        var resultado = await PedidoUseCase.FinalizarPedidoParaPagamento(identificacao, pedidoGateway);
+        var resultado = await PedidoUseCase.FinalizarPedidoParaPagamento(identificacao, pedidoGateway, mercadoPagoGateway);
 
         return resultado;
     }
