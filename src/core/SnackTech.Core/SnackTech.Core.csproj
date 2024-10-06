@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\common\SnackTech.Common\SnackTech.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="SnackTech.Core.Tests" />
+  </ItemGroup>
+
 </Project>
