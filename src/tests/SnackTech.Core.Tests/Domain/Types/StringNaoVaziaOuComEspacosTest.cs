@@ -81,4 +81,24 @@ public class StringNaoVaziaOuComEspacosTest
 
         Assert.Equal("Valor", result);
     }
+
+
+    [Fact]
+    public void Equals_ComparaDoisStringNaoVaziaIguais()
+    {
+        var stringNaoVaziaOuComEspacos = new StringNaoVaziaOuComEspacos("Valor");
+        var stringNaoVaziaOuComEspacos2 = new StringNaoVaziaOuComEspacos("Valor");
+
+        Assert.True(stringNaoVaziaOuComEspacos.Equals(stringNaoVaziaOuComEspacos2));
+    }
+
+
+    [Fact]
+    public void Equals_ComparaDoisStringNaoVaziaDiferentes()
+    {
+        var stringNaoVaziaOuComEspacos = new StringNaoVaziaOuComEspacos("Valor");
+        var stringNaoVaziaOuComEspacos2 = new StringNaoVaziaOuComEspacos("Valor2");
+
+        Assert.False(stringNaoVaziaOuComEspacos.Equals(stringNaoVaziaOuComEspacos2));
+    }
 }

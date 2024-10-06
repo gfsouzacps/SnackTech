@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types;
 
-internal struct StatusPedidoValido
+internal struct StatusPedidoValido : IEquatable<StatusPedidoValido>
 {
     internal static readonly StatusPedidoValido Iniciado = new StatusPedidoValido(1);
     internal static readonly StatusPedidoValido AguardandoPagamento = new StatusPedidoValido(2);
@@ -54,5 +54,13 @@ internal struct StatusPedidoValido
         {
             throw new ArgumentException($"Valor {value} não é uma Categoria de Produto Válida");
         }
+    }
+
+    public bool Equals(StatusPedidoValido other)
+    {
+        if (other == null) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return this.Valor == other.Valor;
     }
 }

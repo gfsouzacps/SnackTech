@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types
 {
-    internal struct CategoriaProdutoValido
+    internal struct CategoriaProdutoValido : IEquatable<CategoriaProdutoValido>
     {
         private int valor;
         private readonly Dictionary<int, string> ValoresValidos = new()
@@ -45,6 +45,14 @@ namespace SnackTech.Core.Domain.Types
             {
                 throw new ArgumentException($"Valor {value} não é uma Categoria de Produto Válida");
             }
+        }
+
+        public bool Equals(CategoriaProdutoValido other)
+        {
+            if (other == null) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return this.Valor == other.Valor;
         }
     }
 }
