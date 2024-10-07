@@ -30,7 +30,7 @@ namespace SnackTech.Core.Domain.Types
         }
 
         private static void ValidarValor(decimal value){
-            if(value <= 0){
+            if(value < 0){
                 throw new ArgumentException("O valor precisa ser maior que zero");
             }
         }   
