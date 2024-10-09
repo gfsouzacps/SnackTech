@@ -201,7 +201,10 @@ internal static class PedidoUseCase
                 ]);
 
             //A ordem dos status no Enum já representa a sequencia desejada para os status.
-            var pedidosOrdenados =  pedidos.OrderByDescending(p => (int)p.Status).ToList();
+            var pedidosOrdenados =  pedidos
+                .OrderByDescending(p => (int)p.Status)
+                .ThenByDescending(p => p.DataCriacao)
+                .ToList();
             var retorno = PedidoPresenter.ApresentarResultadoPedido(pedidos);
 
             return retorno;
