@@ -256,7 +256,7 @@ public class PedidoGatewayTest
         await _pedidoGateway.PesquisarPedidosPorStatus(StatusPedidoValido.AguardandoPagamento);
     
         // Assert
-        Mock.Assert(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int>()), Occurs.Once());
+        Mock.Assert(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int[]>()), Occurs.Once());
     }
     
     [Fact]
@@ -276,7 +276,7 @@ public class PedidoGatewayTest
             }
         };
     
-        Mock.Arrange(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int>())).ReturnsAsync(pedidosDto);
+        Mock.Arrange(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int[]>())).ReturnsAsync(pedidosDto);
     
         // Act
         var pedidos = await _pedidoGateway.PesquisarPedidosPorStatus(StatusPedidoValido.AguardandoPagamento);
@@ -291,7 +291,7 @@ public class PedidoGatewayTest
     public async Task PesquisarPedidosPorStatus_DeveRetornarListaVazia_SePesquisarPedidosPorStatusAsync_DoDataSource_RetornarListaVazia()
     {
         // Arrange
-        Mock.Arrange(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int>())).ReturnsAsync(new List<PedidoDto>());
+        Mock.Arrange(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int[]>())).ReturnsAsync(new List<PedidoDto>());
     
         // Act
         var pedidos = await _pedidoGateway.PesquisarPedidosPorStatus(StatusPedidoValido.AguardandoPagamento);
