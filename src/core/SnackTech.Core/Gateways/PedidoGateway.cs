@@ -43,7 +43,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
-        return await dataSource.AlterarPedidoAsync(pedidoDto);
+        return await dataSource.AtualizarStatusPedidoAsync(pedidoDto);
     }
 
     internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)
@@ -61,11 +61,11 @@ public class PedidoGateway(IPedidoDataSource dataSource)
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
             Cliente = ClienteGateway.ConverterParaDto(pedido.Cliente),
-            Itens = pedido.Itens.Select(converterItemParaDto)
+            Itens = pedido.Itens.Select(ConverterItemParaDto)
         };
     }
 
-    private static PedidoItemDto converterItemParaDto(PedidoItem pedidoItem)
+    internal static PedidoItemDto ConverterItemParaDto(PedidoItem pedidoItem)
     {
         return new PedidoItemDto
         {
@@ -84,11 +84,11 @@ public class PedidoGateway(IPedidoDataSource dataSource)
             pedidoDto.DataCriacao, 
             pedidoDto.Status, 
             ClienteGateway.converterParaEntidade(pedidoDto.Cliente), 
-            pedidoDto.Itens.Select(converterItemParaEntidade).ToList()
+            pedidoDto.Itens.Select(ConverterItemParaEntidade).ToList()
         );
     }
 
-    private static PedidoItem converterItemParaEntidade(PedidoItemDto pedidoItemDto)
+    internal static PedidoItem ConverterItemParaEntidade(PedidoItemDto pedidoItemDto)
     {
         return new PedidoItem(
             pedidoItemDto.Id, 

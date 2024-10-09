@@ -69,7 +69,7 @@ namespace SnackTech.Core.Tests.Domain.Entities
         {
             var pedido = new Pedido(Guid.NewGuid(), new DataPedidoValida(DateTime.Now), new StatusPedidoValido(1), new Cliente(Guid.NewGuid(), "nome", "email@email.com", "00000000191"));
 
-            Assert.Throws<Exception>(() => pedido.FecharPedidoParaPagamento());
+            Assert.Throws<ArgumentException>(() => pedido.FecharPedidoParaPagamento());
         }
 
         [Fact]

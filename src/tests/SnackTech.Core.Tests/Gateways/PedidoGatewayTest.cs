@@ -301,20 +301,20 @@ public class PedidoGatewayTest
     }
 
     [Fact]
-    public async Task AtualizarStatusPedido_DeveChamarAlterarPedidoAsync_DoDataSource()
+    public async Task AtualizarStatusPedido_DeveChamarAtualizarStatusPedidoAsync_DoDataSource()
     {
         // Act
         await _pedidoGateway.AtualizarStatusPedido(_pedidoExemplo);
     
         // Assert
-        Mock.Assert(() => _dataSource.AlterarPedidoAsync(Arg.IsAny<PedidoDto>()), Occurs.Once());
+        Mock.Assert(() => _dataSource.AtualizarStatusPedidoAsync(Arg.IsAny<PedidoDto>()), Occurs.Once());
     }
     
     [Fact]
-    public async Task AtualizarStatusPedido_DeveRetornarTrue_SeAlterarPedidoAsync_DoDataSource_RetornarTrue()
+    public async Task AtualizarStatusPedido_DeveRetornarTrue_SeAtualizarStatusPedidoAsync_DoDataSource_RetornarTrue()
     {
         // Arrange
-        Mock.Arrange(() => _dataSource.AlterarPedidoAsync(Arg.IsAny<PedidoDto>())).ReturnsAsync(true);
+        Mock.Arrange(() => _dataSource.AtualizarStatusPedidoAsync(Arg.IsAny<PedidoDto>())).ReturnsAsync(true);
     
         // Act
         var resultado = await _pedidoGateway.AtualizarStatusPedido(_pedidoExemplo);

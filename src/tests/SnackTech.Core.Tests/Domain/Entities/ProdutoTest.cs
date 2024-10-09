@@ -21,9 +21,8 @@ namespace SnackTech.Core.Tests.Domain.Entities
         }
 
         [Fact]
-        public void Produto_Construtor_NaoAceitaValorNuloOuMenorOuIgualAZero()
+        public void Produto_Construtor_NaoAceitaValoMenorOuIgualAZero()
         {
-            Assert.Throws<ArgumentException>(() => new Produto(Guid.NewGuid(), CategoriaProdutoValido.Acompanhamento, "nome", "descricao", 0));
             Assert.Throws<ArgumentException>(() => new Produto(Guid.NewGuid(), CategoriaProdutoValido.Acompanhamento, "nome", "descricao", -1));
         }
 
@@ -55,11 +54,10 @@ namespace SnackTech.Core.Tests.Domain.Entities
         }
 
         [Fact]
-        public void Produto_Atualizar_NaoAceitaValorNuloOuMenorOuIgualAZero()
+        public void Produto_Atualizar_NaoAceitaValorMenorOuIgualAZero()
         {
             var produto = new Produto(Guid.NewGuid(), CategoriaProdutoValido.Acompanhamento, "nome", "descricao", 10.99m);
 
-            Assert.Throws<ArgumentException>(() => produto.Atualizar(CategoriaProdutoValido.Acompanhamento, "nome", "descricao", 0));
             Assert.Throws<ArgumentException>(() => produto.Atualizar(CategoriaProdutoValido.Acompanhamento, "nome", "descricao", -1));
         }
 

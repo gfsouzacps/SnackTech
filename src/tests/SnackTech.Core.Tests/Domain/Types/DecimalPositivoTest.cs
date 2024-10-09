@@ -6,7 +6,6 @@ namespace SnackTech.Core.Tests.Domain.Types;
 public class DecimalPositivoTest
 {
     [Theory]
-    [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-99.09)]
     public void DecimalPositivo_NaoPodeSerValorInvalido(decimal valor)

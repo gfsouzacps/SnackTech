@@ -1,5 +1,3 @@
-using SnackTech.Common.Dto.Api;
-using SnackTech.Common.Dto.DataSource;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
@@ -11,6 +9,7 @@ internal class Pedido
     internal Cliente Cliente { get; private set; }
     internal StatusPedidoValido Status { get; private set; }
     internal List<PedidoItem> Itens { get; set; }
+    internal DecimalPositivo ValorTotal {get; private set;}
 
     public Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente)
     {
@@ -28,13 +27,25 @@ internal class Pedido
         : this(id, dataCriacao, status, cliente)
     {
         if(itens != null) Itens = itens;
+        ValorTotal = Itens.Sum(i => i.Valor());
     }
 
     internal void FecharPedidoParaPagamento()
     {
         if (Itens.Count == 0)
-            throw new Exception("O pedido deve ter pelo menos um item para ser finalizado para pagamento.");
+            throw new ArgumentException("O pedido deve ter pelo menos um item para ser finalizado para pagamento.");
+
+        if (ValorTotal <= 0)
+            throw new ArgumentException("O cálculo do Valor total do pedido está resultando em um valor menor ou igual a zero.");
+
+        if(Status != StatusPedidoValido.Iniciado)
+            throw new ArgumentException("Pedido está com status diferente de Iniciado, não será possível movê-lo para aguardar pagamento");
 
         Status = StatusPedidoValido.AguardandoPagamento;
+        
+    }
+
+    internal void AtualizarPedidoAposPagamento(){
+        Status = StatusPedidoValido.Recebido;
     }
 }

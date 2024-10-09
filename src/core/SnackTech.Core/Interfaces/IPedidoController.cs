@@ -8,6 +8,6 @@ public interface IPedidoController
     Task<ResultadoOperacao<PedidoRetornoDto>> BuscarPorIdenticacao(string identificacao);
     Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpfCliente);
     Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento();
-    Task<ResultadoOperacao> FinalizarPedidoParaPagamento(string identificacao);
+    Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao);
     Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarPedido(PedidoAtualizacaoDto pedidoAtualizado);
 }

@@ -13,6 +13,7 @@ namespace SnackTech.Driver.API.Configuration
             services.AddTransient<IClienteController, ClienteController>();
             services.AddTransient<IProdutoController, ProdutoController>();
             services.AddTransient<IPedidoController, PedidoController>();
+            services.AddTransient<IPagamentoController, PagamentoController>();
 
             return services;
         }
