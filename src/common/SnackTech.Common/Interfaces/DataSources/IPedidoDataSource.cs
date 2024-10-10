@@ -10,4 +10,5 @@ public interface IPedidoDataSource
     Task<IEnumerable<PedidoDto>> PesquisarPedidosPorStatusAsync(int valor);
     Task<bool> AlterarItensDoPedidoAsync(PedidoDto pedidoDto);
     Task<bool> AlterarPedidoAsync(PedidoDto pedidoDto);
+    Task<bool> AtualizarStatusPedidoAsync(PedidoDto pedidoDto);
 }

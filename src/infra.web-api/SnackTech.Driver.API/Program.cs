@@ -5,14 +5,16 @@ using SnackTech.Driver.API.Configuration;
 using SnackTech.Driver.API.Configuration.HealthChecks;
 using SnackTech.Driver.DataBase;
 using SnackTech.Driver.DataBase.Context;
+using SnackTech.Driver.MercadoPago;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOptions<MercadoPagoOptions>()
-    .BindConfiguration(nameof(MercadoPagoOptions));
+builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPagoOptions"));
 // Add services to the container.
+builder.Services.AddHttpClient();
 builder.Services.AddAdapterDatabaseRepositories();
+builder.Services.AddMercadoPagoService();
 builder.Services.AddDomainControllers();
 
 builder.Services.AddControllers();

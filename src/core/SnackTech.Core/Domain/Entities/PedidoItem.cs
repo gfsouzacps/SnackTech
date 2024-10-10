@@ -1,5 +1,3 @@
-using SnackTech.Common.Dto.Api;
-using SnackTech.Common.Dto.DataSource;
 using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
