@@ -155,7 +155,7 @@ namespace SnackTech.Driver.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
-        [Route("finalizar{identificacao:guid}")]
+        [Route("finalizar/{identificacao:guid}")]
         [SwaggerOperation(Summary = "Finaliza o pedido com o identificador informado e o coloca na situação Finalizado.")]
         public async Task<IActionResult> FinalizarPedido([FromRoute] string identificacao)
             => await ExecucaoPadrao("Pedidos.FinalizarPedido", pedidoDomainController.FinalizarPedido(identificacao));
