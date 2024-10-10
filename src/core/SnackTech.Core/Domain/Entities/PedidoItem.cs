@@ -2,12 +2,22 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
 
-internal class PedidoItem(GuidValido id, Produto produto, InteiroPositivo quantidade, string observacao)
+internal class PedidoItem
 {
-    internal GuidValido Id { get; private set; } = id;
-    internal InteiroPositivo Quantidade { get; private set; } = quantidade;
-    internal string Observacao { get; private set; } = observacao;
-    internal Produto Produto { get; private set; } = produto;
+    internal GuidValido Id { get; private set; } 
+    internal InteiroPositivo Quantidade { get; private set; } 
+    internal string Observacao { get; private set; } 
+    internal Produto Produto { get; private set; } 
+
+    public PedidoItem(GuidValido id, Produto produto, InteiroPositivo quantidade, string observacao)
+    {
+        if(produto is null) throw new ArgumentException("O produto não pode ser nulo.", nameof(produto));   
+
+        Id = id;
+        Quantidade = quantidade;
+        Observacao = observacao;
+        Produto = produto;
+    }
 
     internal DecimalPositivo Valor()
     {
@@ -16,6 +26,8 @@ internal class PedidoItem(GuidValido id, Produto produto, InteiroPositivo quanti
 
     internal void Atualizar(InteiroPositivo quantidade, Produto produto, string observacao)
     {
+        if(produto is null) throw new ArgumentException("O produto não pode ser nulo.", nameof(produto));
+        
         Quantidade = quantidade;
         Produto = produto;
         Observacao = observacao;

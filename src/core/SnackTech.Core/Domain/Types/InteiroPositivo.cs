@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types;
 
-internal struct InteiroPositivo
+internal struct InteiroPositivo : IEquatable<InteiroPositivo>
 {
     private int valor;
 
@@ -40,5 +40,13 @@ internal struct InteiroPositivo
         {
             throw new ArgumentException("O valor precisa ser maior que zero");
         }
+    }
+
+    public bool Equals(InteiroPositivo other)
+    {
+        if (other == null) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return this.Valor == other.Valor;
     }
 }

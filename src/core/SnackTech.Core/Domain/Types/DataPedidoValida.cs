@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types;
 
-internal struct DataPedidoValida
+internal struct DataPedidoValida : IEquatable<DataPedidoValida>
 {
     static readonly DateTime DATA_MINIMA = new DateTime(2024, 1, 1, 0, 0, 0, 0);
 
@@ -45,5 +45,12 @@ internal struct DataPedidoValida
         {
             throw new ArgumentException("Não é permitido criar pedidos com data/horário futuro.");
         }
+    }
+
+    public bool Equals(DataPedidoValida other)
+    {
+        if (ReferenceEquals(this, other)) return true;
+
+        return this.Valor == other.Valor;
     }
 }

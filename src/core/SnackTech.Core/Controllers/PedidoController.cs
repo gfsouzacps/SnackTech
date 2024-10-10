@@ -71,4 +71,13 @@ public class PedidoController(IPedidoDataSource pedidoDataSource,
 
         return resultado;
     }
+
+    public async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos()
+    {
+        var pedidoGateway = new PedidoGateway(pedidoDataSource);
+
+        var pedidos = await PedidoUseCase.ListarPedidosAtivos(pedidoGateway);
+
+        return pedidos;
+    }
 }

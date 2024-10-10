@@ -10,7 +10,7 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
     internal async Task<Produto?> ProcurarProdutoPorNome(StringNaoVaziaOuComEspacos nome){
         var produtoDto = await dataSource.PesquisarPorNomeAsync(nome.ToString());
 
-        if(produtoDto == null){
+        if(produtoDto == null || produtoDto.Id == Guid.Empty){
             return null;
         }
 
@@ -20,7 +20,7 @@ internal class ProdutoGateway(IProdutoDataSource dataSource)
     internal async Task<Produto?> ProcurarProdutoPorIdentificacao(GuidValido id){
         var produtoDto = await dataSource.PesquisarPorIdentificacaoAsync(id);
 
-        if(produtoDto == null){
+        if(produtoDto == null || produtoDto.Id == Guid.Empty){
             return null;
         }
 

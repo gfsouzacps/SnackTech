@@ -101,5 +101,18 @@ namespace SnackTech.Driver.API.Controllers
         [SwaggerOperation(Summary = "Retorna o pedido mais recente do cliente com CPF informado. Não é permitida a consulta do último pedido do cliente padrão")]
         public async Task<IActionResult> BuscarUltimoPedidoCliente([FromRoute] string cpfCliente)
             => await ExecucaoPadrao("Pedidos.ListarPedidosParaPagamento", pedidoDomainController.BuscarUltimoPedidoCliente(cpfCliente));
+
+        /// <summary>
+        /// Retorna a lista de pedidos com status Pronto, em Preparação e Recebido
+        /// </summary>
+        /// <returns>Um <see cref="IActionResult"/> contendo a lista de pedidos.</returns>
+        [HttpGet]
+        [ProducesResponseType<IEnumerable<PedidoRetornoDto>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [Route("ativos")]
+        [SwaggerOperation(Summary = "Retorna a lista de pedidos com status Pronto, em Preparação e Recebido")]
+        public async Task<IActionResult> ListarPedidosAtivos()
+            => await ExecucaoPadrao("Pedidos.ListarPedidosAtivos", pedidoDomainController.ListarPedidosAtivos());
     }
 }

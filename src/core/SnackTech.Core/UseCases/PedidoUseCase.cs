@@ -189,4 +189,29 @@ internal static class PedidoUseCase
 
         return itensValidados;
     }
+
+    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos(PedidoGateway pedidoGateway)
+    {
+        try
+        {
+            var pedidos = await pedidoGateway.PesquisarPedidosPorStatus([
+                    StatusPedidoValido.Pronto,
+                    StatusPedidoValido.EmPreparacao,
+                    StatusPedidoValido.Recebido
+                ]);
+
+            //A ordem dos status no Enum já representa a sequencia desejada para os status.
+            var pedidosOrdenados =  pedidos
+                .OrderByDescending(p => (int)p.Status)
+                .ThenByDescending(p => p.DataCriacao)
+                .ToList();
+            var retorno = PedidoPresenter.ApresentarResultadoPedido(pedidos);
+
+            return retorno;
+        }
+        catch (Exception ex)
+        {
+            return GeralPresenter.ApresentarResultadoErroInterno<IEnumerable<PedidoRetornoDto>>(ex);
+        }
+    }
 }
