@@ -214,4 +214,94 @@ internal static class PedidoUseCase
             return GeralPresenter.ApresentarResultadoErroInterno<IEnumerable<PedidoRetornoDto>>(ex);
         }
     }
+
+    internal static async Task<ResultadoOperacao> IniciarPreparacaoPedido(string identificacao, PedidoGateway pedidoGateway)
+    {
+        try
+        {
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(identificacao);
+
+            if(pedido is null)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico($"Não foi possível iniciar o preparo do pedido com identificação {identificacao}. Pedido não localizado.");
+            }
+            
+            pedido.IniciarPreparacao();
+
+            var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
+
+            if(!foiAtualizado){
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível iniciar o preparo o pedido com identificação {identificacao}.");
+            }
+
+            return PedidoPresenter.ApresentarResultadoOk();
+        }
+        catch(ArgumentException ex){
+            return GeralPresenter.ApresentarResultadoErroLogico(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return GeralPresenter.ApresentarResultadoErroInterno(ex);
+        }
+    }
+
+    internal static async Task<ResultadoOperacao> ConcluirPreparacaoPedido(string identificacao, PedidoGateway pedidoGateway)
+    {
+        try
+        {
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(identificacao);
+
+            if(pedido is null)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico($"Não foi possível concluir o preparo do pedido com identificação {identificacao}. Pedido não localizado.");
+            }
+            
+            pedido.ConcluirPreparacao();
+
+            var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
+
+            if(!foiAtualizado){
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível concluir o preparo o pedido com identificação {identificacao}.");
+            }
+
+            return PedidoPresenter.ApresentarResultadoOk();
+        }
+        catch(ArgumentException ex){
+            return GeralPresenter.ApresentarResultadoErroLogico(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return GeralPresenter.ApresentarResultadoErroInterno(ex);
+        }
+    }
+
+    internal static async Task<ResultadoOperacao> FinalizarPedido(string identificacao, PedidoGateway pedidoGateway)
+    {
+        try
+        {
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(identificacao);
+
+            if(pedido is null)
+            {
+                return GeralPresenter.ApresentarResultadoErroLogico($"Não foi possível finalizar o pedido com identificação {identificacao}. Pedido não localizado.");
+            }
+            
+            pedido.Finalizar();
+
+            var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
+
+            if(!foiAtualizado){
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível finalizar o pedido com identificação {identificacao}.");
+            }
+
+            return PedidoPresenter.ApresentarResultadoOk();
+        }
+        catch(ArgumentException ex){
+            return GeralPresenter.ApresentarResultadoErroLogico(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return GeralPresenter.ApresentarResultadoErroInterno(ex);
+        }
+    }
 }
