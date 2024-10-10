@@ -1,5 +1,5 @@
 
-using SnackTech.Domain.Enums;
+using SnackTech.Common.Enums;
 
 namespace SnackTech.Driver.DataBase.Entities
 {
