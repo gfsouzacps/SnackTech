@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snack-tech-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: snack-tech-api-pod
+  template:
+    metadata:
+      labels:
+        app: snack-tech-api-pod
+    spec:
+      containers:
+      - name: snack-tech-api-container
+        image: snack-tech-api:dev
+        imagePullPolicy: Never
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                name: snack-tech-api-secret
+                key: msslq-connection-string
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /api/health/live
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/health/ready
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3

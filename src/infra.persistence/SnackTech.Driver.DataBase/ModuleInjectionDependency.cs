@@ -1,7 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
-using SnackTech.Driver.DataBase.DataSources;
 using SnackTech.Common.Interfaces.DataSources;
+using SnackTech.Driver.DataBase.DataSources;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SnackTech.Driver.DataBase
 {
