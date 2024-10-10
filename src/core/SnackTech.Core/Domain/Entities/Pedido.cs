@@ -48,4 +48,26 @@ internal class Pedido
     internal void AtualizarPedidoAposPagamento(){
         Status = StatusPedidoValido.Recebido;
     }
+
+    internal void IniciarPreparacao(){
+        if(Status != StatusPedidoValido.Recebido){
+            throw new ArgumentException("O pedido deve estar com o status Recebido para iniciar o preparo.");
+        }
+
+        Status = StatusPedidoValido.EmPreparacao;
+    }
+
+    internal void ConcluirPreparacao()
+    {
+        if(Status != StatusPedidoValido.EmPreparacao){
+            throw new ArgumentException("O pedido deve estar com o status EmPreparacao para concluir o preparo.");
+        }
+
+        Status = StatusPedidoValido.Pronto;
+    }
+
+    internal void Finalizar()
+    {
+        Status = StatusPedidoValido.Finalizado;
+    }
 }

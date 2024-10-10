@@ -11,4 +11,7 @@ public interface IPedidoController
     Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao);
     Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarPedido(PedidoAtualizacaoDto pedidoAtualizado);
     Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos();
+    Task<ResultadoOperacao> IniciarPreparacaoPedido(string identificacao);
+    Task<ResultadoOperacao> ConcluirPreparacaoPedido(string identificacao);
+    Task<ResultadoOperacao> FinalizarPedido(string identificacao);
 }

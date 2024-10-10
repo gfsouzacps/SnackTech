@@ -47,7 +47,7 @@ namespace SnackTech.Driver.API.Controllers
             => await ExecucaoPadrao("Pedidos.AtualizarPedido", pedidoDomainController.AtualizarPedido(atualizacaoPedido));
 
         /// <summary>
-        /// Finaliza o pedido com o identificador informado e o coloca na situação de aguardando pagamento.
+        /// Finaliza a montagem do pedido com o identificador informado e o coloca na situação de aguardando pagamento.
         /// </summary>
         /// <param name="identificacao">O guid do pedido a ser finalizado.</param>
         /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
@@ -57,7 +57,7 @@ namespace SnackTech.Driver.API.Controllers
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
         [Route("finalizar-para-pagamento/{identificacao:guid}")]
-        [SwaggerOperation(Summary = "Finaliza o pedido com o identificador informado e o coloca na situação de aguardando pagamento")]
+        [SwaggerOperation(Summary = "Finaliza a montagem do pedido com o identificador informado e o coloca na situação de aguardando pagamento")]
         public async Task<IActionResult> FinalizarPedidoParaPagamento([FromRoute] string identificacao)
             => await ExecucaoPadrao("Pedidos.FinalizarPedidoParaPagamento", pedidoDomainController.FinalizarPedidoParaPagamento(identificacao));
 
@@ -114,5 +114,50 @@ namespace SnackTech.Driver.API.Controllers
         [SwaggerOperation(Summary = "Retorna a lista de pedidos com status Pronto, em Preparação e Recebido")]
         public async Task<IActionResult> ListarPedidosAtivos()
             => await ExecucaoPadrao("Pedidos.ListarPedidosAtivos", pedidoDomainController.ListarPedidosAtivos());
+
+        /// <summary>
+        /// Informar o inicio do preparo de um pedido
+        /// </summary>
+        /// <param name="identificacao">O guid do pedido a ter o preparo iniciado.</param>
+        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
+        [HttpPatch]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [Route("iniciar-preparacao/{identificacao:guid}")]
+        [SwaggerOperation(Summary = "Inicia a preparacao do pedido com o identificador informado e o coloca na situação Em Preparação.")]
+        public async Task<IActionResult> IniciarPreparacaoPedido([FromRoute] string identificacao)
+            => await ExecucaoPadrao("Pedidos.IniciarPreparacaoPedido", pedidoDomainController.IniciarPreparacaoPedido(identificacao));
+
+        /// <summary>
+        /// Informar a conclusão do preparo de um pedido
+        /// </summary>
+        /// <param name="identificacao">O guid do pedido a ter o preparo concluído.</param>
+        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
+        [HttpPatch]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [Route("concluir-preparacao/{identificacao:guid}")]
+        [SwaggerOperation(Summary = "Conclui a preparação do pedido com o identificador informado e o coloca na situação Pronto.")]
+        public async Task<IActionResult> ConcluirPreparacaoPedido([FromRoute] string identificacao)
+            => await ExecucaoPadrao("Pedidos.ConcluirPreparacaoPedido", pedidoDomainController.ConcluirPreparacaoPedido(identificacao));
+
+        /// <summary>
+        /// Finaliza o pedido
+        /// </summary>
+        /// <param name="identificacao">O guid do pedido a ser finalizado.</param>
+        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
+        [HttpPatch]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [Route("finalizar/{identificacao:guid}")]
+        [SwaggerOperation(Summary = "Finaliza o pedido com o identificador informado e o coloca na situação Finalizado.")]
+        public async Task<IActionResult> FinalizarPedido([FromRoute] string identificacao)
+            => await ExecucaoPadrao("Pedidos.FinalizarPedido", pedidoDomainController.FinalizarPedido(identificacao));
     }
 }
