@@ -18,7 +18,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
     {
         var pedidoDto = await dataSource.PesquisarPorIdentificacaoAsync(identificacao);
 
-        if (pedidoDto is null)
+        if (pedidoDto is null || pedidoDto.Id == Guid.Empty)
             return null;
 
         return ConverterParaEntidade(pedidoDto);
@@ -34,7 +34,15 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 
     internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido status)
     {
-        var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync(status.Valor);
+        var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync([status.Valor]);
+
+        return pedidosDto.Select(ConverterParaEntidade);
+    }
+
+    internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido[] status)
+    {
+        var arrayStatus = status.Select(s => s.Valor).ToArray();
+        var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync(arrayStatus);
 
         return pedidosDto.Select(ConverterParaEntidade);
     }

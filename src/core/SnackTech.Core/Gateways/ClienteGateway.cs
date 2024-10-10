@@ -18,7 +18,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
     {
         var clienteDto = await dataSource.PesquisarPorCpfAsync(cpf);
 
-        if (clienteDto == null)
+        if (clienteDto == null || clienteDto.Id == Guid.Empty)
         {
             return null;
         }
@@ -30,7 +30,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
     {
         var clienteDto = await dataSource.PesquisarPorCpfAsync(emailCliente);
 
-        if (clienteDto == null)
+        if (clienteDto == null || clienteDto.Id == Guid.Empty)
         {
             return null;
         }
@@ -42,7 +42,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
     {
         var clienteDto = await dataSource.PesquisarPorIdAsync(identificacao);
 
-        if (clienteDto == null)
+        if (clienteDto == null || clienteDto.Id == Guid.Empty)
         {
             return null;
         }

@@ -114,13 +114,13 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         return pedidosBanco.Select(Mapping.Mapper.Map<PedidoDto>);
     }
 
-    public async Task<IEnumerable<PedidoDto>> PesquisarPedidosPorStatusAsync(int valor)
+    public async Task<IEnumerable<PedidoDto>> PesquisarPedidosPorStatusAsync(int[] valor)
     {
         var pedidosBanco = await repositoryDbContext.Pedidos
                    .AsNoTracking()
                    .Include(p => p.Cliente)
                    .Include(p => p.Itens).ThenInclude(i => i.Produto)
-                   .Where(p => (int)p.Status == valor)
+                   .Where(p => valor.Contains((int)p.Status))
                    .ToListAsync();
 
         return pedidosBanco.Select(Mapping.Mapper.Map<PedidoDto>);

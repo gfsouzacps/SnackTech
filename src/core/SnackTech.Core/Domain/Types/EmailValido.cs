@@ -2,7 +2,7 @@ using System.Net.Mail;
 
 namespace SnackTech.Core.Domain.Types;
 
-internal struct EmailValido
+internal struct EmailValido : IEquatable<EmailValido>
 {
     private string enderecoEmail;
 
@@ -18,7 +18,7 @@ internal struct EmailValido
 
     internal EmailValido(string email)
     {
-        enderecoEmail = email;
+        Valor = email;
     }
 
     public static implicit operator EmailValido(string email)
@@ -60,5 +60,13 @@ internal struct EmailValido
         {
             return false;
         }
+    }
+
+    public bool Equals(EmailValido other)
+    {
+        if (other == null) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return this.Valor == other.Valor;
     }
 }

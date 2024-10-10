@@ -2,19 +2,31 @@ using SnackTech.Core.Domain.Types;
 
 namespace SnackTech.Core.Domain.Entities;
 
-internal class Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente)
+internal class Pedido
 {
-    internal GuidValido Id { get; private set; } = id;
-    internal DataPedidoValida DataCriacao { get; private set; } = dataCriacao;
-    internal Cliente Cliente { get; private set; } = cliente;
-    internal StatusPedidoValido Status { get; private set; } = status;
-    internal List<PedidoItem> Itens { get; set; } = [];
+    internal GuidValido Id { get; private set; }
+    internal DataPedidoValida DataCriacao { get; private set; }
+    internal Cliente Cliente { get; private set; }
+    internal StatusPedidoValido Status { get; private set; }
+    internal List<PedidoItem> Itens { get; set; }
     internal DecimalPositivo ValorTotal {get; private set;}
+
+    public Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente)
+    {
+        Id = id;
+        DataCriacao = dataCriacao;
+        Status = status;
+        
+        if(cliente == null) throw new ArgumentException("O cliente deve ser informado.", nameof(cliente));
+        
+        Cliente = cliente;
+        Itens = new List<PedidoItem>();
+    }
 
     public Pedido(GuidValido id, DataPedidoValida dataCriacao, StatusPedidoValido status, Cliente cliente, List<PedidoItem> itens)
         : this(id, dataCriacao, status, cliente)
     {
-        Itens = itens;
+        if(itens != null) Itens = itens;
         ValorTotal = Itens.Sum(i => i.Valor());
     }
 

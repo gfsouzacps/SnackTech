@@ -1,6 +1,6 @@
 namespace SnackTech.Core.Domain.Types
 {
-    internal class StringNaoVazia
+    internal class StringNaoVazia : IEquatable<StringNaoVazia>
     {
         private string valor = default!;
 
@@ -27,10 +27,19 @@ namespace SnackTech.Core.Domain.Types
         public override string ToString()
             => Valor;
 
+        
         private static void ValidarValorString(string value){
             if(string.IsNullOrEmpty(value)){
                     throw new ArgumentException("O valor atribuído não pode ser nulo ou vazio");
             }
+        }
+
+        public bool Equals(StringNaoVazia? other)
+        {
+            if (other == null) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return this.Valor == other.Valor;
         }
     }
 }
