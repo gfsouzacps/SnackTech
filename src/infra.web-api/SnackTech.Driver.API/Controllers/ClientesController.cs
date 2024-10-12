@@ -18,7 +18,7 @@ namespace SnackTech.Driver.API.Controllers
         /// Cria um nova cliente no sistema.
         /// </remarks>
         /// <param name="cadastroCliente">Os dados do cliente a ser criado.</param>
-        /// <returns>Um <see cref="IActionResult"/> representando o resultado da opera��o.</returns>
+        /// <returns>Um <see cref="IActionResult"/> representando o resultado da operação.</returns>
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType<ClienteDto>(StatusCodes.Status200OK)]
@@ -32,7 +32,7 @@ namespace SnackTech.Driver.API.Controllers
         /// Retorna o cliente com o CPF informado.
         /// </summary>
         /// <remarks>
-        /// Retorna as informa��es de um cliente baseado no CPF fornecido.
+        /// Retorna as informações de um cliente baseado no CPF fornecido.
         /// </remarks>
         /// <param name="cpf">O CPF do cliente a ser pesquisado.</param>
         /// <returns>Um <see cref="IActionResult"/> contendo o cliente encontrado ou um erro correspondente.</returns>
@@ -49,7 +49,7 @@ namespace SnackTech.Driver.API.Controllers
         /// Retorna o cliente padrao.
         /// </summary>
         /// <remarks>
-        /// Retorna as informa��es do cliente padr?o do sistema.
+        /// Retorna as informações do cliente padrão do sistema.
         /// </remarks>
         /// <returns>Um <see cref="IActionResult"/> contendo o cliente encontrado ou um erro correspondente.</returns>
         [HttpGet]

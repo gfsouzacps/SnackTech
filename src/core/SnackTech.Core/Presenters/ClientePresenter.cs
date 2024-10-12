@@ -15,7 +15,7 @@ internal class ClientePresenter
     {
         return new ClienteDto
         {
-            Id = cliente.Id,
+            IdentificacaoCliente = cliente.Id,
             Nome = cliente.Nome.Valor,
             Email = cliente.Email.Valor,
             Cpf = cliente.Cpf.Valor

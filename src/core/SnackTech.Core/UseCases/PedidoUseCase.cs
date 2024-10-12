@@ -129,17 +129,17 @@ internal static class PedidoUseCase
     {
         try
         {
-            var pedido = await pedidoGateway.PesquisarPorIdentificacao(pedidoAtualizado.Identificacao);
+            var pedido = await pedidoGateway.PesquisarPorIdentificacao(pedidoAtualizado.IdentificacaoPedido);
 
             if(pedido is null)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível encontrar um pedido com identificação {pedidoAtualizado.Identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível encontrar um pedido com identificação {pedidoAtualizado.IdentificacaoPedido}.");
             }
 
             //itens atualizados com GUID e que não existem no pedido persistido
             var itensNovosComIds = pedidoAtualizado.PedidoItens
-                .Where(item => item.Identificacao != null)
-                .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.Identificacao))
+                .Where(item => item.IdentificacaoItem != null)
+                .Where(itemAtualizado => !pedido.Itens.Any(item => item.Id == itemAtualizado.IdentificacaoItem))
                 .ToList();
 
             if (itensNovosComIds.Count > 0)
@@ -148,7 +148,7 @@ internal static class PedidoUseCase
             }
 
             //remover itens do pedido que estejam ausentes no pedido atualizado
-            pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.PedidoItens.Any(itemAtualizado => itemAtualizado.Identificacao == itemPedido.Id));
+            pedido.Itens.RemoveAll(itemPedido => !pedidoAtualizado.PedidoItens.Any(itemAtualizado => itemAtualizado.IdentificacaoItem == itemPedido.Id));
 
             //validar itens do pedido atualizado
             List<PedidoItem> itensValidados = await validarItensPedido(pedidoAtualizado.PedidoItens, produtoGateway);
@@ -160,7 +160,7 @@ internal static class PedidoUseCase
 
             var retorno = foiAtualizado ?
                 PedidoPresenter.ApresentarResultadoPedido(pedido) :
-                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível atualizar os itens do pedido com identificação {pedidoAtualizado.Identificacao}.");
+                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível atualizar os itens do pedido com identificação {pedidoAtualizado.IdentificacaoPedido}.");
 
             return retorno;
         }
@@ -183,7 +183,7 @@ internal static class PedidoUseCase
                 throw new ArgumentException($"Não existe produto com identificação {item.IdentificacaoProduto}.");
             }
 
-            Guid identificacaoItem = item.Identificacao is null || item.Identificacao == string.Empty ? Guid.NewGuid() : new GuidValido(item.Identificacao);
+            Guid identificacaoItem = item.IdentificacaoItem is null || item.IdentificacaoItem == string.Empty ? Guid.NewGuid() : new GuidValido(item.IdentificacaoItem);
             itensValidados.Add(new PedidoItem(identificacaoItem, produto, item.Quantidade, item.Observacao));
         }
 

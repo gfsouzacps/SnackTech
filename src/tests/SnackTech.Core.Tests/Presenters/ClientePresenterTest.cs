@@ -20,7 +20,7 @@ public class ClientePresenterTest
     
         // Assert
         clienteDto.Should().NotBeNull();
-        clienteDto.Id.Should().Be(_clienteExemplo.Id.Valor);
+        clienteDto.IdentificacaoCliente.Should().Be(_clienteExemplo.Id.Valor);
         clienteDto.Nome.Should().Be(_clienteExemplo.Nome.Valor);
         clienteDto.Email.Should().Be(_clienteExemplo.Email.Valor);
         clienteDto.Cpf.Should().Be(_clienteExemplo.Cpf.Valor);
@@ -35,7 +35,7 @@ public class ClientePresenterTest
         // Assert
         resultado.Should().NotBeNull();
         resultado.Dados.Should().NotBeNull();
-        resultado.Dados.Id.Should().Be(_clienteExemplo.Id.Valor);
+        resultado.Dados.IdentificacaoCliente.Should().Be(_clienteExemplo.Id.Valor);
         resultado.Dados.Nome.Should().Be(_clienteExemplo.Nome.Valor);
         resultado.Dados.Email.Should().Be(_clienteExemplo.Email.Valor);
         resultado.Dados.Cpf.Should().Be(_clienteExemplo.Cpf.Valor);
