@@ -11,7 +11,7 @@ namespace SnackTech.Driver.MercadoPago.Payloads
         public IEnumerable<CriarPedidoItem> items {get; set;}
 
         public CriarPedido(PedidoDto pedidoDto){
-            var listaItens = pedidoDto.Itens.Select(i => new CriarPedidoItem(i));
+            var listaItens = new CriarPedidoItem[]{new(pedidoDto.Itens)};
             
             items = listaItens;
             total_amount = listaItens.Sum(l => l.total_amount);
@@ -33,16 +33,16 @@ namespace SnackTech.Driver.MercadoPago.Payloads
         public string unit_measure {get; set;}
         public decimal total_amount {get; set;}
 
-        public CriarPedidoItem(PedidoItemDto pedidoItemDto){
-            var produto = pedidoItemDto.Produto;
-            sku_number = produto.Id.ToString();
-            category = produto.Categoria.ToString();
-            title = produto.Nome;
-            description = produto.Descricao;
-            unit_price = produto.Valor;
-            quantity = pedidoItemDto.Quantidade;
+        public CriarPedidoItem(IEnumerable<PedidoItemDto> itensDoPedido){
+            var valor = itensDoPedido.Sum(i => i.Produto.Valor * i.Quantidade);
+            sku_number = "produto-001";
+            category = "Combo";
+            title = "Combo SnackTech";
+            description = "Conjunto de produtos da lanchonete SnackTeck";
+            unit_price = valor;
+            quantity = 1;
             unit_measure = "unit";
-            total_amount = produto.Valor * pedidoItemDto.Quantidade;
+            total_amount = valor;
         }
     }
 }
