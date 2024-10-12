@@ -10,7 +10,7 @@
 			"name": "Pedido",
 			"item": [
 				{
-					"name": "Pedido - Iniciar",
+					"name": "1. Pedido - Iniciar",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -39,13 +39,13 @@
 					"response": []
 				},
 				{
-					"name": "Pedido - Atualizar",
+					"name": "2. Pedido - Atualizar",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"identificacao\": \"8668f733-ab3d-4fb4-b644-d5aab840d5fe\",\r\n  \"pedidoItens\": [\r\n    // {\r\n    //   \"sequencial\": 3,\r\n    //   \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n    //   \"quantidade\": 3,\r\n    //   \"observacao\": \"descrição 3\"\r\n    // },\r\n    {\r\n      \"sequencial\": 2,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 2\"\r\n    },\r\n    {\r\n      \"sequencial\": 1,\r\n      \"identificacaoProduto\": \"3f30c44a-e76a-47e7-8253-487cd9eaa4b6\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"descrição 1\"\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"identificacaoPedido\": \"df34566d-8b04-4de6-b396-96bd294e5a93\",\r\n  \"pedidoItens\": [\r\n    {\r\n      \"identificacaoProduto\": \"0c74c3ba-d33b-43d4-8aa1-fceeda0fed92\",\r\n      \"quantidade\": 1,\r\n      \"observacao\": \"\"\r\n    },\r\n    {\r\n      \"identificacaoProduto\": \"0c74c3ba-d33b-43d4-8aa1-fceeda0fed92\",\r\n      \"quantidade\": 2,\r\n      \"observacao\": \"descrição 2\"\r\n    }\r\n    // {\r\n    //   \"identificacaoProduto\": \"340ac3d2-f798-4dd1-9b7c-b8ad6ea891b0\",\r\n    //   \"quantidade\": 1,\r\n    //   \"observacao\": \"descrição 1\"\r\n    // }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,7 +68,7 @@
 					"response": []
 				},
 				{
-					"name": "Pedido - Finalizar para pagamento",
+					"name": "3. Pedido - Finalizar para pagamento",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -99,12 +99,21 @@
 					"response": []
 				},
 				{
-					"name": "Pedido - Pesquisar",
+					"name": "5. Pedido - Iniciar Preparação",
 					"request": {
-						"method": "GET",
+						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/api/Pedidos/8668f733-ab3d-4fb4-b644-d5aab840d5fe",
+							"raw": "http://localhost:8080/api/Pedidos/iniciar-preparacao/df34566d-8b04-4de6-b396-96bd294e5a93",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +122,91 @@
 							"path": [
 								"api",
 								"Pedidos",
-								"8668f733-ab3d-4fb4-b644-d5aab840d5fe"
+								"iniciar-preparacao",
+								"df34566d-8b04-4de6-b396-96bd294e5a93"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Pedido - Concluir Preparação",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/concluir-preparacao/df34566d-8b04-4de6-b396-96bd294e5a93",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"concluir-preparacao",
+								"df34566d-8b04-4de6-b396-96bd294e5a93"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Pedido - Finalizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/finalizar/df34566d-8b04-4de6-b396-96bd294e5a93",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"finalizar",
+								"df34566d-8b04-4de6-b396-96bd294e5a93"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedido - Pesquisar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/df34566d-8b04-4de6-b396-96bd294e5a93",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"df34566d-8b04-4de6-b396-96bd294e5a93"
 							]
 						}
 					},
@@ -142,7 +235,7 @@
 					"response": []
 				},
 				{
-					"name": "Pedido - Aguardando Pagamento",
+					"name": "Pedido - Listar Aguardando Pagamento",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -161,6 +254,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Pedido - Listar Ativos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/Pedidos/ativos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"Pedidos",
+								"ativos"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -174,7 +288,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 2\",\r\n//   \"descricao\": \"vvvvvv\",\r\n//   \"valor\": 3\r\n// }\r\n\r\n{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 1\",\r\n  \"descricao\": \"aaaa\",\r\n  \"valor\": 32\r\n}\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"raw": "{\r\n  \"categoria\": 3,\r\n  \"nome\": \"Produto 3\",\r\n  \"descricao\": \"teste descrição\",\r\n  \"valor\": 30\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -203,7 +317,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 2 - Editado\",\r\n  \"descricao\": \"vvvvvv\",\r\n  \"valor\": 10\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"raw": "{\r\n  \"categoria\": 3,\r\n  \"nome\": \"Produto 3 - Editado\",\r\n  \"descricao\": \"nova descrição\",\r\n  \"valor\": 10\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -211,7 +325,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Produtos/3f30c44a-e76a-47e7-8253-487cd9eaa4b6",
+							"raw": "http://localhost:8080/api/Produtos/8b04b40e-b446-4585-bd9d-e826a2254848",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -220,7 +334,7 @@
 							"path": [
 								"api",
 								"Produtos",
-								"3f30c44a-e76a-47e7-8253-487cd9eaa4b6"
+								"8b04b40e-b446-4585-bd9d-e826a2254848"
 							]
 						}
 					},
@@ -233,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"categoria\": 1,\r\n  \"nome\": \"Lanche 2 - Editado\",\r\n  \"descricao\": \"vvvvvv\",\r\n  \"valor\": 10\r\n}\r\n\r\n// {\r\n//   \"categoria\": 1,\r\n//   \"nome\": \"Lanche 1\",\r\n//   \"descricao\": \"aaaa\",\r\n//   \"valor\": 32\r\n// }\r\n\r\n// {\r\n//   \"categoria\": 2,\r\n//   \"nome\": \"Acompanhamento 1\",\r\n//   \"descricao\": \"aaaaaaa\",\r\n//   \"valor\": 1\r\n// }",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +355,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/Produtos/f9e66763-345b-49a8-9582-8dcbece7a27e",
+							"raw": "http://localhost:8080/api/Produtos/8b04b40e-b446-4585-bd9d-e826a2254848",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -250,7 +364,7 @@
 							"path": [
 								"api",
 								"Produtos",
-								"f9e66763-345b-49a8-9582-8dcbece7a27e"
+								"8b04b40e-b446-4585-bd9d-e826a2254848"
 							]
 						}
 					},
@@ -289,7 +403,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Teste usuario\",\r\n  \"email\": \"adriano@aaaaa.com\",\r\n  \"cpf\": \"08742938473\"\r\n}\r\n",
+							"raw": "{\r\n  \"nome\": \"Teste usuario\",\r\n  \"email\": \"teste@aaaaa.com\",\r\n  \"cpf\": \"12345678909\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -317,7 +431,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/Clientes/00000000191",
+							"raw": "http://localhost:8080/api/Clientes/12345678909",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -326,7 +440,7 @@
 							"path": [
 								"api",
 								"Clientes",
-								"00000000191"
+								"12345678909"
 							]
 						}
 					},
