@@ -64,7 +64,7 @@ internal static class PedidoUseCase
             }
 
             var ultimosPedidos = await pedidoGateway.PesquisarPedidosPorCliente(cliente.Id);
-            var ultimoPedido = ultimosPedidos.OrderBy(p => p.DataCriacao).LastOrDefault();
+            var ultimoPedido = ultimosPedidos.OrderBy(p => p.DataCriacao.Valor).LastOrDefault();
 
             var retorno = ultimoPedido is null ?
                                 GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível encontrar um pedido para o cliente com CPF {cpfCliente}.") :
@@ -203,7 +203,7 @@ internal static class PedidoUseCase
             //A ordem dos status no Enum já representa a sequencia desejada para os status.
             var pedidosOrdenados =  pedidos
                 .OrderByDescending(p => (int)p.Status)
-                .ThenByDescending(p => p.DataCriacao)
+                .ThenByDescending(p => p.DataCriacao.Valor)
                 .ToList();
             var retorno = PedidoPresenter.ApresentarResultadoPedido(pedidos);
 
