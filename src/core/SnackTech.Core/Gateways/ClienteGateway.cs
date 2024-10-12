@@ -28,7 +28,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
 
     internal async Task<Cliente?> ProcurarClientePorEmail(EmailValido emailCliente)
     {
-        var clienteDto = await dataSource.PesquisarPorCpfAsync(emailCliente);
+        var clienteDto = await dataSource.PesquisarPorEmailAsync(emailCliente);
 
         if (clienteDto == null || clienteDto.Id == Guid.Empty)
         {
