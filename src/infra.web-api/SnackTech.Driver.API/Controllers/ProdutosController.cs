@@ -32,7 +32,7 @@ namespace SnackTech.Driver.API.Controllers
         /// </summary>
         /// <param name="identificacao">O guid do produto a ser editado.</param>
         /// <param name="produtoEditado">Os novos dados do produto.</param>
-        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da opera��o.</returns>
+        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
         [HttpPut]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +47,7 @@ namespace SnackTech.Driver.API.Controllers
         /// Remove um produto existente no sistema.
         /// </summary>
         /// <param name="identificacao">O guid do produto a ser removido.</param>
-        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da opera��o.</returns>
+        /// <returns>Um <see cref="IActionResult"/> indicando o sucesso ou falha da operação.</returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]

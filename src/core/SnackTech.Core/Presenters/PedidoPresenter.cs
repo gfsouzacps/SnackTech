@@ -49,7 +49,7 @@ internal class PedidoPresenter
     {
         return new PedidoRetornoDto
         {
-            Id = pedido.Id,
+            IdentificacaoPedido = pedido.Id,
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
             Cliente = ClientePresenter.ConverterParaDto(pedido.Cliente),
@@ -61,7 +61,7 @@ internal class PedidoPresenter
     {
         return new PedidoItemRetornoDto
         {
-            Id = pedidoItem.Id,
+            IdentificacaoItem = pedidoItem.Id,
             Quantidade = pedidoItem.Quantidade.Valor,
             Observacao = pedidoItem.Observacao,
             Valor = pedidoItem.Valor(),

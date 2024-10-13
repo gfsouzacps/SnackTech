@@ -109,7 +109,7 @@ namespace SnackTech.Core.Tests.Gateways
         }
 
         [Fact]
-        public async Task ProcurarClientePorEmail_DeveChamarPesquisarPorCpfAsync_DoDataSource()
+        public async Task ProcurarClientePorEmail_DeveChamarPesquisarPorEmailAsync_DoDataSource()
         {
             // Arrange
             var email = new EmailValido("email@email.com");
@@ -118,16 +118,16 @@ namespace SnackTech.Core.Tests.Gateways
             await _clienteGateway.ProcurarClientePorEmail(email);
         
             // Assert
-            Mock.Assert(() => _dataSource.PesquisarPorCpfAsync(Arg.IsAny<string>()), Occurs.Once());
+            Mock.Assert(() => _dataSource.PesquisarPorEmailAsync(Arg.IsAny<string>()), Occurs.Once());
         }
         
         [Fact]
-        public async Task ProcurarClientePorEmail_DeveRetornarCliente_SePesquisarPorCpfAsync_DoDataSource_RetornarClienteDto()
+        public async Task ProcurarClientePorEmail_DeveRetornarCliente_SePesquisarPorEmailAsync_DoDataSource_RetornarClienteDto()
         {
             // Arrange
             var email = new EmailValido("email@email.com");
             var clienteDto = new ClienteDto { Id = Guid.NewGuid(), Nome = "nome", Email = "email@email.com", Cpf = "00000000191" };
-            Mock.Arrange(() => _dataSource.PesquisarPorCpfAsync(Arg.IsAny<string>())).ReturnsAsync(clienteDto);
+            Mock.Arrange(() => _dataSource.PesquisarPorEmailAsync(Arg.IsAny<string>())).ReturnsAsync(clienteDto);
         
             // Act
             var cliente = await _clienteGateway.ProcurarClientePorEmail(email);

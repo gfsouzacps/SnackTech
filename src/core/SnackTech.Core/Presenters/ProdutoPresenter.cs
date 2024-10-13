@@ -19,7 +19,7 @@ internal static class ProdutoPresenter
     {
         return new ProdutoDto
         {
-            Id = produto.Id,
+            IdentificacaoProduto = produto.Id,
             Categoria = produto.Categoria,
             Descricao = produto.Descricao,
             Nome = produto.Nome,

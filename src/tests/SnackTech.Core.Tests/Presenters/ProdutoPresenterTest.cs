@@ -23,7 +23,7 @@ public class ProdutoPresenterTest
     
         // Assert
         produtoDto.Should().NotBeNull();
-        produtoDto.Id.Should().Be(_produtoExemplo.Id.Valor);
+        produtoDto.IdentificacaoProduto.Should().Be(_produtoExemplo.Id.Valor);
         produtoDto.Categoria.Should().Be(_produtoExemplo.Categoria.Valor);
         produtoDto.Descricao.Should().Be(_produtoExemplo.Descricao);
         produtoDto.Nome.Should().Be(_produtoExemplo.Nome.Valor);
@@ -39,7 +39,7 @@ public class ProdutoPresenterTest
         // Assert
         resultado.Should().NotBeNull();
         resultado.Dados.Should().NotBeNull();
-        resultado.Dados.Id.Should().Be(_produtoExemplo.Id.Valor);
+        resultado.Dados.IdentificacaoProduto.Should().Be(_produtoExemplo.Id.Valor);
         resultado.Dados.Categoria.Should().Be(_produtoExemplo.Categoria.Valor);
         resultado.Dados.Descricao.Should().Be(_produtoExemplo.Descricao);
         resultado.Dados.Nome.Should().Be(_produtoExemplo.Nome.Valor);

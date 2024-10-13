@@ -47,7 +47,7 @@ internal struct GuidValido : IEquatable<GuidValido>
         }
         else
         {
-            throw new ArgumentException($"A Identifica��o informada {guidValue} n�o � um Guid v�lido.");
+            throw new ArgumentException($"A Identificação informada {guidValue} não é um Guid válido.");
         }
     }
 
