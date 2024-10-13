@@ -16,10 +16,7 @@ internal class Pedido
         Id = id;
         DataCriacao = dataCriacao;
         Status = status;
-        
-        if(cliente == null) throw new ArgumentException("O cliente deve ser informado.", nameof(cliente));
-        
-        Cliente = cliente;
+        Cliente = cliente ?? throw new ArgumentException("O cliente deve ser informado.", nameof(cliente));
         Itens = new List<PedidoItem>();
     }
 

@@ -44,5 +44,14 @@ namespace SnackTech.Driver.API.Controllers
         Nosso processo só fará algo se action = update e status = closed.
         Mercado Pago pode enviar o mesmo payload mas com action = create e status opened
         */
+
+        [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+        [Route("mock/{identificacao:guid}")]
+        public async Task<IActionResult> PagamentoMock([FromRoute] Guid identificacao)
+            => await ExecucaoPadrao("Pagamento.ProcessarMock",pagamentoDomainController.ProcessarPagamentoMock(identificacao));
     }
 }

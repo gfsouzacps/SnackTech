@@ -23,5 +23,12 @@ namespace SnackTech.Core.Controllers
             
             return resultado;
         }
+
+        public async Task<ResultadoOperacao> ProcessarPagamentoMock(Guid identificacaoPedido){
+            var pedidoGateway = new PedidoGateway(pedidoDataSource);
+
+            var resultado = await PagamentoUseCase.ProcessarPagamentoViaMock(pedidoGateway,identificacaoPedido);
+            return resultado;
+        }
     }
 }

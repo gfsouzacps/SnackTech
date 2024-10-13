@@ -3,7 +3,7 @@ using SnackTech.Core.Domain.Entities;
 
 namespace SnackTech.Core.Presenters;
 
-internal class ClientePresenter
+internal static class ClientePresenter
 {
     internal static ResultadoOperacao<ClienteDto> ApresentarResultadoCliente(Cliente cliente)
     {
