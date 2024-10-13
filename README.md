@@ -49,7 +49,7 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 
 Antes de rodar o projeto SnackTech, certifique-se de que você possui os seguintes pré-requisitos:
 
-- **.NET SDK**: O projeto foi desenvolvido com o .NET SDK. Instale a versão necessária para garantir a compatibilidade com o código.
+- **.NET SDK**: O projeto foi desenvolvido com o .NET SDK 8. Instale a versão necessária para garantir a compatibilidade com o código.
 - **Docker**: O projeto utiliza Docker para contêinerizar a aplicação e o banco de dados. Instale o Docker Desktop para Windows ou Mac, ou configure o Docker Engine para Linux. O Docker Compose também é necessário para orquestrar os containers.
 - **SQL Server (Opcional)**: O projeto configura e gerencia uma instância do SQL Server dentro de um container Docker. Sendo assim, a instalação do SQL Server é opcional.
 
@@ -82,29 +82,37 @@ Este é um projeto desenvolvido em .NET, utilizando arquitetura Hexagonal. A apl
 
 #### Core
 No core temos os seguintes projetos:
-- **SnackTech.Application**: Este projeto é responsável por implementar as UseCases da aplicação. Ele atua como uma ponte entre a interface do usuário e a lógica de negócios.
-- **SnackTech.Domain**: Este é o coração do nosso sistema, onde definimos nossas entidades de domínio, regras de negócios e lógica de domínio. Aqui guardamos nossas Dtos, Models, entre outras estruturas fundamentais.
+- **SnackTech.Core**: Este projeto é o responsável por implementar o "coração" da aplicação. Foi construído seguindo o Clean Architecture, atuando como uma ponte entre a as rotas da API com as camadas de persistência (Banco de Dados e integração com processadora de pagamento). 
 
-#### Driven
-No Driven temos a camada de banco de dados:
-- **SnackTech.Adapter.Database**: Este projeto é responsável por todas as operações relacionadas ao banco de dados. Ele contém nosso DbContext, repositories, e outras classes que nos ajudam a criar e manipular o banco de dados.
+#### Infra.Persistence
+Aqui temos os projetos com o código necessário para atuar com a camada de dados e outras persistências
 
-#### Driving
-No Driving, temos a camada de API:
-- **SnackTech.API**: Este projeto é a interface do nosso sistema. Ele contém nossos Controllers, que recebem requisições do usuário e retornam respostas. Além disso, ele contém arquivos de configuração como o appsettings.
+- **SnackTech.Driver.DataBase**: Este projeto é responsável por todas as operações relacionadas ao banco de dados. Ele contém nosso DbContext, repositories, e outras classes que nos ajudam a criar e manipular o banco de dados.
+
+- **SnackTech.Driver.MercadoPago**: O Mercado Pago está auxiliando como processador de pagamentos, por onde a aplicação envia o pedido, recebe uma forma válida para realizar o pagamento, que uma vez feito é notificado ao projeto para que faça o processamento interno do pedido
+
+#### Infra.web-api
+Aqui ficam os projetos relacionado a interface externa, ao que o projeto fornece de comunicação para executar seus procedimentos.
+
+- **SnackTech.Driver.API**: Este projeto é a interface do nosso sistema. Ele contém nossos Controllers, que recebem requisições do usuário e retornam respostas. Além disso, ele contém arquivos de configuração como o appsettings.
+
+#### Common
+Aqui ficam os projetos que possuem estruturas de dados, interfaces e operações que possuem relação comum a qualquer um dos projetos envolvidos no desenho atual
+
+- **SnackTech.Common**: Este projeto possui todas as estruturas de dados e interfaces que são de comum conhecimento entre os outros projetos da solução.
 
 #### Tests
 Em tests, temos projetos voltados para as outras camadas, sendo os projetos:
 
-- **SnackTech.Adapter.Database.Tests**: Este projeto contém testes para a camada de banco de dados. Ele nos ajuda a garantir que nossas operações de banco de dados estão funcionando corretamente.
-- **SnackTech.API.Tests**: Este projeto contém testes para a camada de API. Ele nos ajuda a garantir que nossos endpoints estão retornando as respostas corretas.
-- **SnackTech.Application.Tests**: Este projeto contém testes para as UseCases. Ele nos ajuda a garantir que nossa lógica de negócios está funcionando corretamente.
-- **SnackTech.Domain.Tests**: Este projeto contém testes para a camada de domínio. Ele nos ajuda a garantir que nossas regras de negócios e lógica de domínio estão corretas.
+- **SnackTech.Driver.DataBase.Tests**: Este projeto contém testes para a camada de banco de dados. Ele nos ajuda a garantir que nossas operações de banco de dados estão funcionando corretamente.
+- **SnackTech.Driver.API.Tests**: Este projeto contém testes para a camada de API. Ele nos ajuda a garantir que nossos endpoints estão retornando as respostas corretas.
+- **SnackTech.Core.Tests**: Este projeto contém os testes para o código do Core. Ele nos ajuda a garantir que toda a implementação feita seguindo o Clean Architecture alem da nossa lógica de negócios estejam funcionando corretamente.
+
 
 ### Modificabilidade
 
 O projeto foi estruturado para facilitar a modificação e a expansão:
 
-- **Adicionar Novas Funcionalidades:** Novos casos de uso e funcionalidades podem ser adicionados na camada SnackTech.Application. Atualize também a camada SnackTech.API para expor novos endpoints, se necessário.
-- **Modificar Funcionalidades Existentes:** Alterações na lógica de negócios devem ser feitas na camada SnackTech.Application e SnackTech.Domain. As alterações na interação com o banco de dados são feitas na camada SnackTech.Adapter.Database.
+- **Adicionar Novas Funcionalidades:** Novos casos de uso e funcionalidades podem ser adicionados na camada SnackTech.Application. Atualize também a camada SnackTech.Driver.API para expor novos endpoints, se necessário.
+- **Modificar Funcionalidades Existentes:** Alterações na lógica de negócios devem ser feitas na camada SnackTech.Application e SnackTech.Domain. As alterações na interação com o banco de dados são feitas na camada SnackTech.Driver.DataBase.
 - **Manutenção:** A arquitetura modular permite que as alterações em uma parte do sistema (como o banco de dados ou a API) sejam feitas com impacto mínimo nas outras partes do sistema.
