@@ -1,0 +1,48 @@
+version: '3.4'
+
+name: snack-tech
+
+services:
+  sql-db:
+    container_name: snack-tech-database
+    image: mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-22.04    
+    restart: always
+    networks:
+      - snack-tech-net
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Senha@12345 #TODO: guardar isso em local mais seguro
+    ports:
+      - 1433:1433 #TODO: talvez remover isso antes de entregar, para que nao seja possivel acessar o banco sem ser pela aplicacao
+    volumes:
+      - sql-db-volume:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Senha@12345 -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  web-api:
+    container_name: snack-tech-web-api
+    build:
+      context: .
+      dockerfile: infra.web-api/SnackTech.Driver.API/Dockerfile
+    image: snack-tech-api:alpha
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: on-failure
+    networks:
+      - snack-tech-net
+    depends_on:
+      - sql-db
+
+volumes:
+  sql-db-volume: {}
+
+networks:
+  snack-tech-net:
+    driver: bridge

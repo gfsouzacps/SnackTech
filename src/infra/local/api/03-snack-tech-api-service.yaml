@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: snack-tech-api-service
+  labels:
+    run: snack-tech-api-service
+spec:
+  selector:
+    app: snack-tech-api-pod
+  ports:
+  - name: port8080  
+    port: 8080    
+    targetPort: 8080
+    protocol: TCP
+  type: LoadBalancer
