@@ -1,14 +1,37 @@
 # SnackTech ![ ](LogoSnackTech.png)
 
-## Descrição
+## O Problema
 
-O SnackTech é um projeto voltado para a estrutura backend de uma lanchonete. Ele foi projetado para gerenciar os principais aspectos de um negócio de lanchonete, incluindo a gestão de clientes, pedidos e produtos.
+Com o sucesso crescente da lanchonete de bairro e a expansão inevitável, a falta de um sistema de controle de pedidos começa a criar um caos. Imagine um cliente fazendo um pedido bem específico—tipo um hambúrguer com uma combinação única de ingredientes, acompanhando batatas fritas e uma bebida especial. O atendente anota no papel e entrega à cozinha, mas as chances de erro são altas. Sem um sistema eficiente, pedidos se perdem ou são interpretados erradamente, causando atrasos e insatisfação geral. Um sistema de controle de pedidos automatizado e eficiente é crucial para manter a ordem, melhorar o atendimento e assegurar a satisfação dos clientes à medida que o negócio cresce.
 
-A API do projeto é dividida em várias camadas, cada uma focada em uma área específica:
+## Com isso, vamos aos requisitos do negócio!
 
-- **Clientes**: Gerencia os clientes da lanchonete, permitindo o cadastro de novos clientes e a consulta de informações dos clientes existentes.
-- **Pedidos**: Lida com todos os aspectos relacionados aos pedidos dos clientes, incluindo a criação de novos pedidos, a atualização de pedidos existentes e a consulta de detalhes dos pedidos.
-- **Produtos**: Dedica-se ao gerenciamento dos produtos oferecidos pela lanchonete, permitindo o cadastro de novos produtos, a atualização e exclusão de produtos existentes e a consulta de informações dos produtos.
+**1-Gestão de Pedidos**:
+
+- Clientes devem ter uma interface para selecionar e personalizar seus pedidos (CPF, nome e e-mail opcionais), montando combos de Lanche, Acompanhamento e Bebida, com exibição de nome, descrição e preço de cada produto.
+
+**2 - Pagamento**:
+
+- Integração com pagamento via QRCode do Mercado Pago para o MVP.
+
+**3 - Acompanhamento de Pedido**:
+
+- Após a confirmação e pagamento, o pedido deve ser enviado à cozinha, e o cliente deve poder acompanhar o progresso através de um monitor com status: Recebido, Em preparação, Pronto e Finalizado.
+
+**4 - Entrega**:
+
+- Notificação ao cliente quando o pedido estiver pronto para retirada e atualização do status para finalizado após a retirada.
+
+**5 - Acesso Administrativo**:
+
+- Gerenciamento de clientes para campanhas promocionais.
+
+- Gerenciamento de produtos e categorias (Lanche, Acompanhamento, Bebida, Sobremesa) com definição de nome, categoria, preço, descrição e imagens.
+
+- Acompanhamento de pedidos em andamento e tempo de espera.
+
+- Painel administrativo para gerenciar todas as informações de pedidos.
+
 
 O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para garantir um alto nível de qualidade e eficiência.
 
@@ -16,8 +39,9 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 
 - <img src="https://raw.githubusercontent.com/github/explore/main/topics/csharp/csharp.png" alt="C#" width="20"/> **C#**: Linguagem de programação utilizada para desenvolver o projeto.
 - <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="SQL Server" width="20"/> **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
-- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para contêinerizar a aplicação.
 - <img src="https://static1.smartbear.co/swagger/media/assets/swagger_fav.png" alt="Swagger" width="20"/> **Swagger**: Plataforma utilizada para documentação da API.
+- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para contêinerizar a aplicação.
+- <img src="https://cdn2.iconfinder.com/data/icons/mixd/512/20_kubernetes-512.png" alt="Kubernetes" width="20"/> Kubernetes: Plataforma de orquestração de containers para escalabilidade.
 
 ## Como Utilizar
 
