@@ -52,25 +52,82 @@ Antes de rodar o projeto SnackTech, certifique-se de que você possui os seguint
 - **.NET SDK**: O projeto foi desenvolvido com o .NET SDK 8. Instale a versão necessária para garantir a compatibilidade com o código.
 - **Docker**: O projeto utiliza Docker para contêinerizar a aplicação e o banco de dados. Instale o Docker Desktop para Windows ou Mac, ou configure o Docker Engine para Linux. O Docker Compose também é necessário para orquestrar os containers.
 - **SQL Server (Opcional)**: O projeto configura e gerencia uma instância do SQL Server dentro de um container Docker. Sendo assim, a instalação do SQL Server é opcional.
+- **Kubernetes**: A aplicação é implantada em um cluster Kubernetes. Certifique-se de ter o Kubernetes instalado e configurado. Se estiver utilizando o Docker Desktop, verifique se a opção de Kubernetes está habilitada.
+- **Minikube**: Para rodar o Kubernetes localmente, é necessário instalar o Minikube, que cria um ambiente de desenvolvimento Kubernetes em sua máquina.
 
-### Preparando o ambiente
+# 🚀 **Passo a Passo para Configuração e Deploy da Aplicação**
 
-Siga os passos abaixo para instalar e configurar o projeto SnackTech:
 
-**1 - Clone o repositório** 
-- Clone o repositório do projeto para sua máquina local usando o Git: git clone https://github.com/seu-usuario/SnackTech.git
+## 1. 📥 **Clonar o repositório**
+Clone o repositório do projeto para sua máquina local e posteriormente abra um terminal na raiz do projeto em `SnackTech/src/`. : 
+```bash
+git clone https://github.com/seu-usuario/SnackTech.git
+```
 
-**2 - Configure o ambiente Docker** 
-- Certifique-se de que o Docker Desktop (Windows ou Mac) ou o Docker Engine (Linux) esteja instalado e em execução.
+## 2. 🟢 **Iniciar o Minikube**
+Com o terminal aberto na raiz do projeto, inicie um cluster Minikube para criar um ambiente Kubernetes local:
 
-**3 - Inicialize os containers Docker**
-- Na raiz da pasta do projeto/repositório, abra um prompt de comando e execute o seguinte comando para construir e iniciar os containers: docker-compose up --build. Esse comando configura e inicia a aplicação e o banco de dados SQL Server dentro de containers Docker.
+```bash
+minikube start
+```
 
-**4 - Verifique a execução**
-- A aplicação estará disponível nas portas configuradas no docker-compose.yml, e o banco de dados SQL Server estará disponível para conexões conforme definido na string de conexão do arquivo de configuração da aplicação.
+## 3. 🐳 **Configurar o Ambiente Docker com Minikube**
+Configure o Docker para utilizar o ambiente Minikube:
 
-**4 - Utilize a aplicação**
-- Para uma execução local a página do Swagger pode ser acessada no endereço "http://localhost:porta_configurada/swagger/index.html". Ou ainda, você usar o Postman e importar o arquivo [SnackTech.postman_collection.json](SnackTech.postman_collection.json), isso vai te dar acesso a exemplos de uso de todos os endpoints.
+```bash
+eval $(minikube docker-env)
+```
+
+## 4. 🔨 **Construir a Imagem Docker**
+Construa a imagem Docker da aplicação utilizando o Dockerfile especificado:
+
+```bash
+docker buildx build -t snack-tech-api:dev -f infra.web-api/SnackTech.Driver.API/Dockerfile .
+```
+
+## 5. 📂 **Navegar para o Diretório e Iniciar o Minikube**
+Navegue até o diretório `infra/local` e inicie o Minikube se ele ainda não estiver em execução:
+
+```bash
+cd infra/local && minikube start
+```
+
+## 6. 💾 **Criar o Pod do Banco de Dados**
+Crie o pod do banco de dados aplicando os arquivos de configuração no diretório `database`:
+
+```bash
+kubectl apply -f database --validate=false
+```
+
+## 7. 👀 **Verificar os Pods**
+Verifique se os pods foram criados com sucesso:
+
+```bash
+kubectl get pod
+```
+
+## 8. 📦 **Criar os Pods da Aplicação**
+Crie os pods da aplicação aplicando os arquivos de configuração no diretório `api`:
+
+```bash
+kubectl apply -f api
+```
+
+## 9. 📝 **Listar os Serviços**
+Mostre todos os serviços rodando no cluster Kubernetes:
+
+```bash
+kubectl get services
+```
+
+## 10. 🌐 **Expor o Serviço Externamente**
+Exponha o serviço `snack-tech-api-service` externamente:
+
+```bash
+minikube service snack-tech-api-service
+```
+
+**Feito todo o passo a passo, o navegador já deve apresentar toda a API. Você também pode usar o Postman e importar o arquivo [SnackTech.postman_collection.json](SnackTech.postman_collection.json), isso vai te dar acesso a exemplos de uso de todos os endpoints.**
 
 ### Uso
 
