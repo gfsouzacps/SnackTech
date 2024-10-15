@@ -144,7 +144,7 @@ No core temos os seguintes projetos:
 #### Infra.Persistence
 Aqui temos os projetos com o código necessário para atuar com a camada de dados e outras persistências
 
-- **SnackTech.Driver.DataBase**: Este projeto é responsável por todas as operações relacionadas ao banco de dados. Ele contém nosso DbContext, repositories, e outras classes que nos ajudam a criar e manipular o banco de dados.
+- **SnackTech.Driver.DataBase**: Este projeto é responsável por todas as operações relacionadas ao banco de dados. Ele contém nosso DbContext, DataSources e outras classes que nos ajudam a criar e manipular o banco de dados.
 
 - **SnackTech.Driver.MercadoPago**: O Mercado Pago está auxiliando como processador de pagamentos, por onde a aplicação envia o pedido, recebe uma forma válida para realizar o pagamento, que uma vez feito é notificado ao projeto para que faça o processamento interno do pedido
 
@@ -156,7 +156,7 @@ Aqui ficam os projetos relacionado a interface externa, ao que o projeto fornece
 #### Common
 Aqui ficam os projetos que possuem estruturas de dados, interfaces e operações que possuem relação comum a qualquer um dos projetos envolvidos no desenho atual
 
-- **SnackTech.Common**: Este projeto possui todas as estruturas de dados e interfaces que são de comum conhecimento entre os outros projetos da solução.
+- **SnackTech.Common**: Este projeto possui todas as estruturas de dados (DTOs) e interfaces que são de comum conhecimento entre os outros projetos da solução.
 
 #### Tests
 Em tests, temos projetos voltados para as outras camadas, sendo os projetos:
@@ -170,6 +170,6 @@ Em tests, temos projetos voltados para as outras camadas, sendo os projetos:
 
 O projeto foi estruturado para facilitar a modificação e a expansão:
 
-- **Adicionar Novas Funcionalidades:** Novos casos de uso e funcionalidades podem ser adicionados na camada SnackTech.Application. Atualize também a camada SnackTech.Driver.API para expor novos endpoints, se necessário.
-- **Modificar Funcionalidades Existentes:** Alterações na lógica de negócios devem ser feitas na camada SnackTech.Application e SnackTech.Domain. As alterações na interação com o banco de dados são feitas na camada SnackTech.Driver.DataBase.
+- **Adicionar Novas Funcionalidades:** Novos casos de uso e funcionalidades podem ser adicionados na camada SnackTech.Core. Atualize também a camada SnackTech.Driver.API para expor novos endpoints, se necessário.
+- **Modificar Funcionalidades Existentes:** Alterações na lógica de negócios devem ser feitas na camada SnackTech.Core. As alterações na interação com o banco de dados são feitas na camada SnackTech.Driver.DataBase.
 - **Manutenção:** A arquitetura modular permite que as alterações em uma parte do sistema (como o banco de dados ou a API) sejam feitas com impacto mínimo nas outras partes do sistema.
