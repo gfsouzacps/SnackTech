@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snack-tech-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: snack-tech-api-pod
+  template:
+    metadata:
+      labels:
+        app: snack-tech-api-pod
+    spec:
+      containers:
+      - name: snack-tech-api-container
+        image: 620333538289.dkr.ecr.us-east-1.amazonaws.com/snack-tech-api:alpha
+        imagePullPolicy: Never
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                name: snack-tech-api-secret
+                key: msslq-connection-string
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
