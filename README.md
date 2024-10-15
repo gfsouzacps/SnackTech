@@ -144,17 +144,9 @@ Este é um projeto desenvolvido em .NET, utilizando arquitetura Hexagonal. A apl
 
 ## Equipe
 
-* Adriano de Melo Costa
-Email: adriano.dmcosta@gmail.com
-Discord: adrianocosta0591
-* Rafael Duarte Gervásio da Silva
-Email: rafael.dgs.1993@gmail.com
-Discord: rafadu4984
-* Guilherme Felipe de Souza
-Email: gui240799@outlook.com
-Discord: gui3504
-* Dayvid Ribeiro Correia
-Email: dayvidrc@gmail.com
-Discord: dayvid4015
+* Adriano de Melo Costa. Email: adriano.dmcosta@gmail.com
+* Rafael Duarte Gervásio da Silva. Email: rafael.dgs.1993@gmail.com
+* Guilherme Felipe de Souza. Email: gui240799@outlook.com
+* Dayvid Ribeiro Correia. Email: dayvidrc@gmail.com
 
 
