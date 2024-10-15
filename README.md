@@ -1,5 +1,8 @@
 # SnackTech ![ ](LogoSnackTech.png)
 
+#### [Video de apresentação](https://www.youtube.com/watch?v=jzBI3kgGVEs) 
+
+
 ## O Problema
 
 Com o sucesso crescente da lanchonete de bairro e a expansão inevitável, a falta de um sistema de controle de pedidos começa a criar um caos. Imagine um cliente fazendo um pedido bem específico—tipo um hambúrguer com uma combinação única de ingredientes, acompanhando batatas fritas e uma bebida especial. O atendente anota no papel e entrega à cozinha, mas as chances de erro são altas. Sem um sistema eficiente, pedidos se perdem ou são interpretados erradamente, causando atrasos e insatisfação geral. Um sistema de controle de pedidos automatizado e eficiente é crucial para manter a ordem, melhorar o atendimento e assegurar a satisfação dos clientes à medida que o negócio cresce.
