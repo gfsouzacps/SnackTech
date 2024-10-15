@@ -43,7 +43,7 @@ O projeto utiliza tecnologias modernas e práticas de desenvolvimento ágil para
 - <img src="https://raw.githubusercontent.com/github/explore/main/topics/csharp/csharp.png" alt="C#" width="20"/> **C#**: Linguagem de programação utilizada para desenvolver o projeto.
 - <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="SQL Server" width="20"/> **SQL Server**: Sistema de gerenciamento de banco de dados utilizado.
 - <img src="https://static1.smartbear.co/swagger/media/assets/swagger_fav.png" alt="Swagger" width="20"/> **Swagger**: Plataforma utilizada para documentação da API.
-- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para contêinerizar a aplicação.
+- <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="20"/> **Docker**: Plataforma utilizada para conteinerizar a aplicação.
 - <img src="https://cdn2.iconfinder.com/data/icons/mixd/512/20_kubernetes-512.png" alt="Kubernetes" width="20"/> Kubernetes: Plataforma de orquestração de containers para escalabilidade.
 
 ## Como Utilizar
@@ -134,13 +134,13 @@ minikube service snack-tech-api-service
 
 ### Uso
 
-Este é um projeto desenvolvido em .NET, utilizando arquitetura Hexagonal. A aplicação é um monolito que se comunica com um banco de dados SQL Server. O projeto está configurado para ser executado em contêineres Docker, facilitando a implantação e escalabilidade.
+Este é um projeto desenvolvido em .NET, utilizando arquitetura Hexagonal. A aplicação é um monólito que se comunica com um banco de dados SQL Server. O projeto está configurado para ser executado em contêineres Docker, facilitando a implantação e escalabilidade.
 
 ## Para mais detalhes 
 
 #### [Arquitetura da aplicação](docs/arquitetura/arquitetura-aplicacao.md)
 #### [Arquitetura da infraestrutura](docs/arquitetura/arquitetura-infra.md)
-#### [Arquitetura de Código](docs/arquitetura/arquitetura-codigo.md)
+#### [Arquitetura de código](docs/arquitetura/arquitetura-codigo.md)
 
 ## Equipe
 
